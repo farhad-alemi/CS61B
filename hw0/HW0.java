@@ -1,6 +1,6 @@
 import static org.junit.Assert.*;
 
-public class hw0 {
+public class Hw0 {
     /** Returns the max element in an array. */
     public static int max(int[] a) {
         int maxVal = -1000;
