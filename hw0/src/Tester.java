@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 import ucb.junit.textui;
 
 /** Tests for hw0. 
- *  @author YOUR NAMES HERE
+ *  @author Farhad Alemi
  */
 public class Tester {
 
@@ -23,27 +23,28 @@ public class Tester {
 
     @Test
     public void maxTest() {
-        // Change call to max to make this call yours.
-        assertEquals(14, max(new int[] { 0, -5, 2, 14, 10 }));
-        // REPLACE THIS WITH MORE TESTS.
+        assertEquals(14, hw0.max(new int[] { 0, -5, 2, 14, 10 }));
+        assertEquals(0, hw0.max(new int[] { 0, -5, -2, -14, -10 }));
+        assertEquals(0, hw0.max(new int[] { 0 }));
     }
 
     @Test
     public void threeSumTest() {
-        // Change call to threeSum to make this call yours.
-        assertTrue(threeSum(new int[] { -6, 3, 10, 200 }));
-        // REPLACE THIS WITH MORE TESTS.
+        assertTrue(hw0.threeSum(new int[] { -6, 3, 10, 200 }));
+        assertTrue(hw0.threeSum(new int[] { 8, 2, -1, 15 }));
+        assertTrue(hw0.threeSum(new int[] { 8, 2, -1, -1, 15 }));
+        assertTrue(hw0.threeSum(new int[] { 5, 1, 0, 3, 6 }));
     }
 
     @Test
     public void threeSumDistinctTest() {
-        // Change call to threeSumDistinct to make this call yours.
-        assertFalse(threeSumDistinct(new int[] { -6, 3, 10, 200 }));
-        // REPLACE THIS WITH MORE TESTS.
+        assertFalse(hw0.threeSumDistinct(new int[] { -6, 3, 10, 200 }));
+        assertFalse(hw0.threeSumDistinct(new int[] { 8, 2, -1, 15 }));
+        assertTrue(hw0.threeSumDistinct(new int[] { 8, 2, -1, -1, 15 }));
+        assertFalse(hw0.threeSumDistinct(new int[] { 5, 1, 0, 3, 6 }));
     }
 
     public static void main(String[] unused) {
         textui.runClasses(Tester.class);
     }
-
 }
