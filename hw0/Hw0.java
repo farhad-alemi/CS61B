@@ -6,8 +6,7 @@ public class Hw0 {
         int maxVal = -1000;
         if (a == null) {
             return maxVal;
-        }
-        else {
+        } else {
             maxVal = a[0];
             for (int i = 1; i < a.length; ++i) {
                 if (a[i] > maxVal) {
