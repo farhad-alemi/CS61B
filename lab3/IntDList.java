@@ -57,7 +57,11 @@ public class IntDList {
         return count;
     }
 
-    //
+    /**
+     *
+     * @param i The index of element to return.
+     * @return The pointer to DNode at index i.
+     */
     private DNode getNode(int i) {
         if (size() == 0) {
             return null;
@@ -86,7 +90,8 @@ public class IntDList {
      *          i = 1 returns the second element,
      *          i = -1 returns the last element,
      *          i = -2 returns the second to last element, and so on.
-     *          You can assume i will always be a valid index, i.e 0 <= i < size for positive indices
+     *          You can assume i will always be a valid index,
+     *          i.e 0 <= i < size for positive indices,
      *          and -size <= i <= -1 for negative indices.
      * @return The integer value at index i
      */
@@ -128,25 +133,27 @@ public class IntDList {
      *              index = -1 inserts at the back,
      *              index = -2 inserts at the second to last position, and so on.
      *              You can assume index will always be a valid index,
-     *              i.e 0 <= index <= size for positive indices (including insertions at front and back)
-     *              and -(size+1) <= index <= -1 for negative indices (including insertions at front and back).
+     *              i.e 0 <= index <= size for positive indices
+     *               (including insertions at front and back)
+     *              and -(size+1) <= index <= -1 for negative indices
+     *              (including insertions at front and back).
      */
     public void insertAtIndex(int d, int index) {
         int listSize = size();
         if (listSize == 0 || index == -1 || listSize <= index) {
             insertBack(d);
+        } else if (index == 0 || index == -listSize - 1) {
+            insertFront(d);
         } else {
             DNode ptr = getNode(index);
+
+            if (index < 0) {
+                ptr = ptr._next;
+            }
             DNode obj = new DNode(ptr._prev, d, ptr);
             if (index != 0) {
                 ptr._prev._next = obj;
             }
-            if (index == 0) {
-                _front = obj;
-            }
-            /*else if (index == -1) {
-                _back = obj;
-            }*/
             ptr._prev = obj;
         }
     }
@@ -182,8 +189,7 @@ public class IntDList {
         int tempVal;
         if (size() == 0 || size() == 1) {
             tempVal = deleteFront();
-        }
-        else {
+        } else {
             tempVal = _back._val;
             _back._prev._next = null;
             _back = _back._prev;
@@ -198,8 +204,10 @@ public class IntDList {
      *          index = -1 will delete the last element,
      *          index = -2 will delete the second to last element, and so on.
      *          You can assume index will always be a valid index,
-     *              i.e 0 <= index < size for positive indices (including deletions at front and back)
-     *              and -size <= index <= -1 for negative indices (including deletions at front and back).
+     *              i.e 0 <= index < size for positive indices
+     *              (including deletions at front and back)
+     *              and -size <= index <= -1 for negative indices
+     *              (including deletions at front and back).
      * @return the item that was deleted
      */
     public int deleteAtIndex(int index) {
