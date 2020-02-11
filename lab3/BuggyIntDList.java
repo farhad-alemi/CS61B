@@ -32,19 +32,19 @@ public class BuggyIntDList extends IntDList {
      */
     private DNode sortedMerge(DNode d1, DNode d2) {
 
-        // FIXME: Below code has multiple problems. Debug the code to implement correct functionality.
-
-        // ------ WRITE ADDITIONAL CODE HERE AND ONLY HERE (IF NEEDED) ------
-
-        // ------------------------------------------------------------------
+        if (d1 == null) {
+            return d2;
+        } else if (d2 == null) {
+            return d1;
+        }
 
         if (d1._val <= d2._val) {
-            d1._next = sortedMerge(d1, d2._next);   // FIXME: Replace this line (if needed). HINT: Step Into(F7) using debugger and try to figure out what it does.
+            d1._next = sortedMerge(d1._next, d2);   // FIXME: Replace this line (if needed). HINT: Step Into(F7) using debugger and try to figure out what it does.
             d1._next._prev = d1;
             d1._prev = null;
             return d1;
         } else {
-            d2._next = sortedMerge(d1._next, d2);   // FIXME: Replace this line (if needed). HINT: Step Into(F7) using debugger and try to figure out what it does.
+            d2._next = sortedMerge(d1, d2._next);   // FIXME: Replace this line (if needed). HINT: Step Into(F7) using debugger and try to figure out what it does.
             d2._next._prev = d2;
             d2._prev = null;
             return d2;

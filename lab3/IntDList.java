@@ -48,13 +48,36 @@ public class IntDList {
      */
     public int size() {
         DNode iter = _front;
-        int size = 0;
+        int count = 0;
 
         while (iter != null) {
-            size += 1;
+            count += 1;
             iter = iter._next;
         }
-        return size;
+        return count;
+    }
+
+    //
+    private DNode getNode(int i) {
+        if (size() == 0) {
+            return null;
+        } else {
+            DNode iter;
+            if (i >= 0) {
+                iter = _front;
+                while (i != 0) {
+                    --i;
+                    iter = iter._next;
+                }
+            } else {
+                iter = _back;
+                while (i < -1) {
+                    ++i;
+                    iter = iter._prev;
+                }
+            }
+            return iter;
+        }
     }
 
     /**
@@ -68,38 +91,31 @@ public class IntDList {
      * @return The integer value at index i
      */
     public int get(int i) {
-        DNode iter;
-        if (i >= 0) {
-            iter = _front;
-            while (i != 0) {
-                --i;
-                iter = iter._next;
-            }
-        } else {
-            iter = _back;
-            while (i < -1) {
-                ++i;
-                iter = iter._prev;
-            }
-        }
-        return iter._val;
+        return getNode(i)._val;
     }
 
     /**
      * @param d value to be inserted in the front
      */
     public void insertFront(int d) {
-        // FIXME: Implement this method
+        DNode obj = new DNode(null, d, _front);
+        if (_front !=  null) {
+            _front._prev = obj;
+        } else {
+            _back = obj;
+        }
+        _front = obj;
     }
 
     /**
      * @param d value to be inserted in the back
      */
     public void insertBack(int d) {
-        DNode obj = new DNode(_back, d, _front);
+        DNode obj = new DNode(_back, d, null);
         if (_back != null) {
             _back._next = obj;
-            obj._prev = _back;
+        } else {
+            _front = obj;
         }
         _back = obj;
     }
@@ -116,7 +132,23 @@ public class IntDList {
      *              and -(size+1) <= index <= -1 for negative indices (including insertions at front and back).
      */
     public void insertAtIndex(int d, int index) {
-        // FIXME: Implement this method
+        int listSize = size();
+        if (listSize == 0 || index == -1 || listSize <= index) {
+            insertBack(d);
+        } else {
+            DNode ptr = getNode(index);
+            DNode obj = new DNode(ptr._prev, d, ptr);
+            if (index != 0) {
+                ptr._prev._next = obj;
+            }
+            if (index == 0) {
+                _front = obj;
+            }
+            /*else if (index == -1) {
+                _back = obj;
+            }*/
+            ptr._prev = obj;
+        }
     }
 
     /**
@@ -125,8 +157,20 @@ public class IntDList {
      * @return the item that was deleted
      */
     public int deleteFront() {
-        // FIXME: Implement this method and return correct value
-        return 0;
+        int tempVal = -1000;
+        if (size() == 0) {
+            return tempVal;
+        }
+
+        tempVal = _front._val;
+        if (size() == 1) {
+            _front = _back = null;
+
+        } else {
+            _front._next._prev = null;
+            _front = _front._next;
+        }
+        return tempVal;
     }
 
     /**
@@ -135,8 +179,16 @@ public class IntDList {
      * @return the item that was deleted
      */
     public int deleteBack() {
-        // FIXME: Implement this method and return correct value
-        return 0;
+        int tempVal;
+        if (size() == 0 || size() == 1) {
+            tempVal = deleteFront();
+        }
+        else {
+            tempVal = _back._val;
+            _back._prev._next = null;
+            _back = _back._prev;
+        }
+        return tempVal;
     }
 
     /**
@@ -164,8 +216,17 @@ public class IntDList {
      * System.out.println(a); //prints ab
      */
     public String toString() {
-        // FIXME: Implement this method to return correct value
-        return null;
+        if (size() == 0) {
+            return "[]";
+        }
+        String stringList = "[" + _front._val;
+        DNode iter = _front._next;
+
+        while (iter != null) {
+            stringList += ", " + iter._val;
+            iter = iter._next;
+        }
+        return stringList += "]";
     }
 
     /**
