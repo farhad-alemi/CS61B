@@ -87,12 +87,7 @@ class Place {
      *  one queen move away from square (x, y) in direction dir on a
      *  WIDTH x HEIGHT board.  Additionally, M[x][y][0] is a list of all Places
      *  that are a queen move away from (x, y) in any direction (the union of
-     *  the lists of queen moves in directions 1-8).
-     *
-     *  FIXME: There are two errors intentionally introduced into this code.
-     *  Find and fix it. First, just take some time stepping through the code
-     *  to understand  what it is doing. Try drawing out what the 3D array
-     *  looks like. */
+     *  the lists of queen moves in directions 1-8). */
     static PlaceList[][][] successorCells(int width, int height) {
         PlaceList[][][] M = new PlaceList[width][height][9];
         for (int x0 = 0; x0 < width; x0 += 1) {
@@ -104,9 +99,11 @@ class Place {
                 for (int x1 = 0; x1 < width; x1 += 1) {
                     for (int y1 = 0; y1 < height; y1 += 1) {
                         int dir = dirOf(x0, y0, x1, y1);
-                        Place p = pl(x1, y1);
-                        places0[dir].add(p);
-                        places0[0].add(p);
+                        if (dir != 0) {
+                            Place p = pl(x1, y1);
+                            places0[dir].add(p);
+                            places0[0].add(p);
+                        }
                     }
                 }
             }
