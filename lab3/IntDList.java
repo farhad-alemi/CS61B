@@ -47,8 +47,14 @@ public class IntDList {
      * @return The number of elements in this list.
      */
     public int size() {
-        // FIXME: Implement this method and return correct value
-        return 0;
+        DNode iter = _front;
+        int size = 0;
+
+        while (iter != null) {
+            size += 1;
+            iter = iter._next;
+        }
+        return size;
     }
 
     /**
@@ -62,8 +68,21 @@ public class IntDList {
      * @return The integer value at index i
      */
     public int get(int i) {
-        // FIXME: Implement this method and return correct value
-        return 0;
+        DNode iter;
+        if (i >= 0) {
+            iter = _front;
+            while (i != 0) {
+                --i;
+                iter = iter._next;
+            }
+        } else {
+            iter = _back;
+            while (i < -1) {
+                ++i;
+                iter = iter._prev;
+            }
+        }
+        return iter._val;
     }
 
     /**
@@ -77,7 +96,12 @@ public class IntDList {
      * @param d value to be inserted in the back
      */
     public void insertBack(int d) {
-        // FIXME: Implement this method
+        DNode obj = new DNode(_back, d, _front);
+        if (_back != null) {
+            _back._next = obj;
+            obj._prev = _back;
+        }
+        _back = obj;
     }
 
     /**
