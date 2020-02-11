@@ -216,11 +216,9 @@ public class IntDList {
 
         if (size == 0) {
             val = -1000;
-        }
-        else if (index == 0 || index == -size || size == 1) {
+        } else if (index == 0 || index == -size || size == 1) {
             val =  deleteFront();
-        }
-        else if (index == -1 || index == size - 1) {
+        } else if (index == -1 || index == size - 1) {
             val = deleteBack();
         } else {
             DNode ptr = getNode(index);
