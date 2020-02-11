@@ -211,8 +211,24 @@ public class IntDList {
      * @return the item that was deleted
      */
     public int deleteAtIndex(int index) {
-        // FIXME: Implement this method and return correct value
-        return 0;
+        int val;
+        int size = size();
+
+        if (size == 0) {
+            val = -1000;
+        }
+        else if (index == 0 || index == -size || size == 1) {
+            val =  deleteFront();
+        }
+        else if (index == -1 || index == size - 1) {
+            val = deleteBack();
+        } else {
+            DNode ptr = getNode(index);
+            val = ptr._val;
+            ptr._prev._next = ptr._next;
+            ptr._next._prev = ptr._prev;
+        }
+        return val;
     }
 
     /**
