@@ -39,7 +39,7 @@ class Arrays {
         } else if (A.length == 1) {
             int[][] tempArr = new int[1][];
             tempArr[0] = new int[1];
-            System.arraycopy(A, 0,tempArr[0], 0, A.length);
+            System.arraycopy(A, 0, tempArr[0], 0, A.length);
             return tempArr;
         }
         int[][] tempArr = new int[A.length][];
@@ -52,7 +52,8 @@ class Arrays {
                 startIndex = j;
                 ++ascIndex;
                 //1, 3, 7, 5, 4, 6, 9, 10, 10, 11
-            } if (j == A.length - 1) {
+            }
+            if (j == A.length - 1) {
                 tempArr[ascIndex] = new int[j - startIndex + 1];
                 System.arraycopy(A, startIndex, tempArr[ascIndex], 0, j - startIndex + 1);
                 ++ascIndex;

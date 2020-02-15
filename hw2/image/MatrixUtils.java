@@ -3,7 +3,7 @@ package image;
 /** Provides a variety of utilities for operating on matrices.
  *  All methods assume that the double[][] arrays provided are rectangular.
  *
- *  @author Josh Hug and YOU
+ *  @author Josh Hug and Farhad Alemi
  */
 
 public class MatrixUtils {
@@ -55,7 +55,28 @@ public class MatrixUtils {
      */
 
     public static double[][] accumulateVertical(double[][] m) {
-        return null; //your code here
+        if (m.length == 0) {
+            return new double[0][0];
+        }
+        double[][] result = new double[m.length][];
+        result[0] = new double[m[0].length];
+        //arraycopy(Object source_arr, int sourcePos, Object dest_arr, int destPos, int len)
+        System.arraycopy(m[0], 0, result[0], 0, m[0].length);
+
+        for (int i = 1; i < m.length; ++ i) {
+            result[i] = new double[m[i].length];
+            for (int j = 0; j < m[i].length; ++j) {
+                if (j == 0) {
+                    result[i][j] = Math.min(result[i - 1][j], result[i - 1][j + 1]);
+                } else if (j == m[i].length - 1) {
+                    result[i][j] = Math.min(result[i - 1][j - 1], result[i - 1][j]);
+                } else {
+                    result[i][j] = Math.min(result[i - 1][j - 1], Math.min(result[i - 1][j], result[i - 1][j + 1]));
+                }
+                result[i][j] += m[i][j];
+            }
+        }
+        return result;
     }
 
     /** Non-destructively accumulates a matrix M along the specified
