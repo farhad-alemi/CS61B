@@ -57,6 +57,37 @@ public class ArraysTest {
         assertTrue(Utils.equals(Arrays.remove(test5A, 2, 4), test5B));
 
     }
+
+    /**
+     * Tests the Arrays.naturalRuns method
+     */
+    @Test
+    public void naturalRunsTest() {
+        int[] test1A = {1, 3, 7, 5, 4, 6, 9, 10, 10, 11};
+        int[][] test1B = Arrays.naturalRuns(test1A);
+        int[][] test1C = {{1, 3, 7}, {5}, {4, 6, 9, 10}, {10, 11}};
+        assertTrue(Utils.equals(test1B, test1C));
+
+        int[] test2A = {9, 8, 7, 5, 4, 1, 3, 3, 3};
+        int[][] test2B = Arrays.naturalRuns(test2A);
+        int[][] test2C = {{9}, {8}, {7}, {5}, {4}, {1, 3}, {3}, {3}};
+        assertTrue(Utils.equals(test2B, test2C));
+
+        int[] test3A = {1, 3, 4, 6, 9, 10, 11};
+        int[][] test3B = Arrays.naturalRuns(test3A);
+        int[][] test3C = {{1, 3, 4, 6, 9, 10, 11}};
+        assertTrue(Utils.equals(test3B, test3C));
+
+        int[] test4A = {1};
+        int[][] test4B = Arrays.naturalRuns(test4A);
+        int[][] test4C = {{1}};
+        assertTrue(Utils.equals(test4C, test4C));
+
+        int[] test5A = {};
+        int[][] test5B = Arrays.naturalRuns(test5A);
+        int[][] test5C = {};
+        assertTrue(Utils.equals(test5B, test5C));
+    }
     public static void main(String[] args) {
         System.exit(ucb.junit.textui.runClasses(ArraysTest.class));
     }

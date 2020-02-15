@@ -34,9 +34,32 @@ class Arrays {
      *  returns the three-element array
      *  {{1, 3, 7}, {5}, {4, 6, 9, 10}}. */
     static int[][] naturalRuns(int[] A) {
-        //arraycopy(Object source_arr, int sourcePos, Object dest_arr, int destPos, int len)
+        if (A.length == 0) {
+            return new int[0][0];
+        } else if (A.length == 1) {
+            int[][] tempArr = new int[1][];
+            tempArr[0] = new int[1];
+            System.arraycopy(A, 0,tempArr[0], 0, A.length);
+            return tempArr;
+        }
+        int[][] tempArr = new int[A.length][];
+        int startIndex = 0, ascIndex = 0;
 
-        /* *Replace this body with the solution. */
-        return null;
+        for (int i = 0, j = 1; j < A.length; ++i, ++j) {
+            if (A[i] >= A[j]) {
+                tempArr[ascIndex] = new int[j - startIndex];
+                System.arraycopy(A, startIndex, tempArr[ascIndex], 0, j - startIndex);
+                startIndex = j;
+                ++ascIndex;
+                //1, 3, 7, 5, 4, 6, 9, 10, 10, 11
+            } if (j == A.length - 1) {
+                tempArr[ascIndex] = new int[j - startIndex + 1];
+                System.arraycopy(A, startIndex, tempArr[ascIndex], 0, j - startIndex + 1);
+                ++ascIndex;
+            }
+        }
+        int[][] ascArr = new int[ascIndex][];
+        System.arraycopy(tempArr, 0, ascArr, 0, ascIndex);
+        return ascArr;
     }
 }
