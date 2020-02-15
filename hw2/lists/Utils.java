@@ -184,7 +184,7 @@ public class Utils {
     /** Sentinel indicating an end of file (as opposed to empty list). */
     static final IntListList IntListList_EOF = new IntListList(null, null);
 
-    /** Read an list of integers from System.in (the standard input).
+    /** Read a list of integers from System.in (the standard input).
      *  The input must consist of a left curly brace ("["), followed by a
      *  sequence of integers separated by commas or blanks, followed by a
      *  closing right curly brace ("]").  Returns INTLIST_EOF if an
