@@ -63,7 +63,7 @@ public class MatrixUtils {
         //arraycopy(Object source_arr, int sourcePos, Object dest_arr, int destPos, int len)
         System.arraycopy(m[0], 0, result[0], 0, m[0].length);
 
-        for (int i = 1; i < m.length; ++ i) {
+        for (int i = 1; i < m.length; ++i) {
             result[i] = new double[m[i].length];
             for (int j = 0; j < m[i].length; ++j) {
                 if (j == 0) {
@@ -71,7 +71,8 @@ public class MatrixUtils {
                 } else if (j == m[i].length - 1) {
                     result[i][j] = Math.min(result[i - 1][j - 1], result[i - 1][j]);
                 } else {
-                    result[i][j] = Math.min(result[i - 1][j - 1], Math.min(result[i - 1][j], result[i - 1][j + 1]));
+                    result[i][j] = Math.min(result[i - 1][j - 1],
+                            Math.min(result[i - 1][j], result[i - 1][j + 1]));
                 }
                 result[i][j] += m[i][j];
             }
@@ -92,7 +93,7 @@ public class MatrixUtils {
      *  accumulateVertical(mT) returns the correct result.
      *
      *  accumulate should be very short (only a few lines). Most of the
-     *  work should be done in creaing the helper function (and even
+     *  work should be done in creating the helper function (and even
      *  that function should be pretty short and straightforward).
      *
      *  The important lesson here is that you should never have big
@@ -103,7 +104,34 @@ public class MatrixUtils {
      */
 
     public static double[][] accumulate(double[][] m, Orientation orientation) {
-        return null; //your code here
+        if (orientation == Orientation.VERTICAL) {
+            return accumulateVertical(m);
+        }
+        double[][] mTranspose = transpose(m);
+        return transpose(accumulateVertical(mTranspose));
+    }
+
+    /** Transposes a given 2D matrix
+     */
+    public static double[][] transpose(double[][] matrix) {
+        /*
+      for (c = 0; c < m; c++)
+      for (d = 0; d < n; d++)
+        matrix[c][d] = in.nextInt();
+
+    int transpose[][] = new int[n][m];
+
+    for (c = 0; c < m; c++)
+      for (d = 0; d < n; d++)
+        transpose[d][c] = matrix[c][d];*/
+        double[][] transpose = new double[matrix[0].length][matrix.length];
+        for (int i = 0; i < matrix.length; ++i) {
+            //transpose[i] = new double[matrix.length];
+            for (int j = 0; j < matrix[0].length; ++j) {
+                transpose[j][i] = matrix[i][j];
+            }
+        }
+        return transpose;
     }
 
     /** Finds the vertical seam VERTSEAM of the given matrix M.
