@@ -44,5 +44,4 @@ public class PlaceTests {
         { Place.pl(0, 2) },
         { Place.pl(1, 2), Place.pl(1, 3) },
     };
-
 }

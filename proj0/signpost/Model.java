@@ -64,7 +64,7 @@ import static signpost.Utils.*;
  *  0) and all cells with fixed sequence numbers appear at the
  *  corresponding position in that sequence.
  *
- *  @author
+ *  @author Farhad Alemi
  */
 class Model implements Iterable<Model.Sq> {
 
