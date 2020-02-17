@@ -520,7 +520,19 @@ class Model implements Iterable<Model.Sq> {
          *    they are not part of the same connected sequence.
          */
         boolean connectable(Sq s1) {
-            // FIXME
+            int tempDir = Place.dirOf(this.x, this.y, s1.x, s1.y);
+            boolean incorrectDir = (tempDir == 0 || tempDir != _dir);
+            boolean firstOrLast = this.sequenceNum() == width() * height() || s1.sequenceNum() == 1;
+            boolean hasPredecessorOrSuccessor = this._successor != null || s1._predecessor != null;
+            boolean numberedAndNotConsec = (this.sequenceNum() != 0 && s1.sequenceNum() != 0) &&
+                    !(sequenceNum() == s1.sequenceNum() - 1);
+            boolean unnumberedAndSameGroup = this.sequenceNum() == 0 && s1.sequenceNum() == 0 &&
+                    group() == s1.group() && group() != -1;
+
+            if (incorrectDir || firstOrLast || hasPredecessorOrSuccessor || numberedAndNotConsec ||
+                    unnumberedAndSameGroup) {
+                return false;
+            }
             return true;
         }
 
@@ -534,23 +546,48 @@ class Model implements Iterable<Model.Sq> {
             int sgroup = s1.group();
 
             _unconnected -= 1;
+            s1._predecessor = this;
+            this._successor = s1;
 
-            // FIXME: Connect this square to its successor:
-            //        + Set this square's _successor field and S1's
-            //          _predecessor field.
-            //        + If this square has a number, number all its successors
-            //          accordingly (if needed).
-            //        + If S1 is numbered, number this square and its
-            //          predecessors accordingly (if needed).
-            //        + Set the _head fields of this square's successors this
-            //          square's _head.
-            //        + If either of this square or S1 used to be unnumbered
-            //          and is now numbered, release its group of whichever
-            //          was unnumbered, so that it can be reused.
-            //        + If both this square and S1 are unnumbered, set the
-            //          group of this square's head to the result of joining
-            //          the two groups.
+            Sq temp;
+            int thisNum = sequenceNum(),
+            s1Num = s1.sequenceNum();
 
+            if (thisNum != 0 && s1Num == 0) {
+                int seqNum = thisNum;
+                temp = this.successor();
+                ++seqNum;
+                while (temp != null) {
+                    temp._sequenceNum = seqNum;
+                    temp = temp.successor();
+                    ++seqNum;
+                }
+            } else if (s1Num != 0 && thisNum == 0) {
+                int seqNum = s1Num;
+                temp = s1.predecessor();
+                --seqNum;
+                while (temp != null) {
+                    temp._sequenceNum = seqNum;
+                    --seqNum;
+                    temp = temp.predecessor();
+                }
+            }
+
+            temp = successor();
+            while (temp != null) {
+                temp._head = _head;
+                temp = temp.successor();
+            }
+
+            if (thisNum == 0) {
+                releaseGroup(group());
+            }
+            if (s1Num == 0) {
+                releaseGroup(sgroup);
+            }
+            if (sequenceNum() == 0 && s1.sequenceNum() == 0) {
+                _head._group = joinGroups(group(), sgroup);
+            }
             return true;
         }
 
