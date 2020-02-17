@@ -524,13 +524,13 @@ class Model implements Iterable<Model.Sq> {
             boolean incorrectDir = (tempDir == 0 || tempDir != _dir);
             boolean firstOrLast = this.sequenceNum() == width() * height() || s1.sequenceNum() == 1;
             boolean hasPredecessorOrSuccessor = this._successor != null || s1._predecessor != null;
-            boolean numberedAndNotConsec = (this.sequenceNum() != 0 && s1.sequenceNum() != 0) &&
-                    !(sequenceNum() == s1.sequenceNum() - 1);
-            boolean unnumberedAndSameGroup = this.sequenceNum() == 0 && s1.sequenceNum() == 0 &&
-                    group() == s1.group() && group() != -1;
+            boolean numberedAndNotConsec = (this.sequenceNum() != 0 && s1.sequenceNum() != 0)
+                    && !(sequenceNum() == s1.sequenceNum() - 1);
+            boolean unnumberedAndSameGroup = this.sequenceNum() == 0 && s1.sequenceNum() == 0
+                    && group() == s1.group() && group() != -1;
 
-            if (incorrectDir || firstOrLast || hasPredecessorOrSuccessor || numberedAndNotConsec ||
-                    unnumberedAndSameGroup) {
+            if (incorrectDir || firstOrLast || hasPredecessorOrSuccessor || numberedAndNotConsec
+                    || unnumberedAndSameGroup) {
                 return false;
             }
             return true;
@@ -551,7 +551,7 @@ class Model implements Iterable<Model.Sq> {
 
             Sq temp;
             int thisNum = sequenceNum(),
-            s1Num = s1.sequenceNum();
+                s1Num = s1.sequenceNum();
 
             if (thisNum != 0 && s1Num == 0) {
                 int seqNum = thisNum;
@@ -597,31 +597,71 @@ class Model implements Iterable<Model.Sq> {
             if (next == null) {
                 return;
             }
+            Sq iter1, iter2, iter3, iter4, iter5;
             _unconnected += 1;
             next._predecessor = _successor = null;
             if (_sequenceNum == 0) {
-                // FIXME: If both this and next are now one-element groups,
-                //        release their former group and set both group
-                //        numbers to -1.
-                //        Otherwise, if either is now a one-element group, set
-                //        its group number to -1 without releasing the group
-                //        number.
-                //        Otherwise, the group has been split into two multi-
-                //        element groups.  Create a new group for next.
+                if (predecessor() == null && next.successor() == null) {
+                    releaseGroup(group());
+                    _group = next._group = -1;
+                } else if (predecessor() != null && next.successor() != null) {
+                    next._group = newGroup();
+                } else if (predecessor() != null) {
+                    next._group = -1;
+                } else {
+                    _group = -1;
+                }
             } else {
-                // FIXME: If neither this nor any square in its group that
-                //        precedes it has a fixed sequence number, set all
-                //        their sequence numbers to 0 and create a new group
-                //        for them if this has a current predecessor (other
-                //        set group to -1).
-                // FIXME: If neither next nor any square in its group that
-                //        follows it has a fixed sequence number, set all
-                //        their sequence numbers to 0 and create a new
-                //        group for them if next has a current successor
-                //        (otherwise set next's group to -1.)
+                iter1 = this;
+                boolean preFixedNum = false;
+                boolean postFixedNum = false;
+
+                while (iter1 != null) {
+                    if (iter1.hasFixedNum()) {
+                        preFixedNum = true;
+                        break;
+                    }
+                    iter1 = iter1.predecessor();
+                }
+                if (!preFixedNum) {
+                    iter2 = this;
+                    while (iter2 != null) {
+                        iter2._sequenceNum = 0;
+                        iter2 = iter2.predecessor();
+                    }
+                    if (predecessor() != null) {
+                        _head._group = newGroup();
+                    }
+                } else {
+                    _group = -1;
+                }
+
+                iter3 = next;
+                while (iter3 != null) {
+                    if (iter3.hasFixedNum()) {
+                        postFixedNum = true;
+                        break;
+                    }
+                    iter3 = iter3.successor();
+                }
+                if (!postFixedNum) {
+                    iter4 = next;
+                    while (iter4 != null) {
+                        iter4._sequenceNum = 0;
+                        iter4 = iter4.successor();
+                    }
+                    if (next.successor() != null) {
+                        next._group = newGroup();
+                    }
+                } else {
+                    next._group = -1;
+                }
             }
-            // FIXME: Set the _head of next and all squares in its group to
-            //        next.
+            iter5 = next;
+            while (iter5 != null) {
+                iter5._head = next;
+                iter5 = iter5.successor();
+            }
         }
 
         @Override
@@ -708,5 +748,4 @@ class Model implements Iterable<Model.Sq> {
     private Place[] _solnNumToPlace;
     /** The set of positive group numbers currently in use. */
     private HashSet<Integer> _usedGroups = new HashSet<>();
-
 }
