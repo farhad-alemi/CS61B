@@ -113,7 +113,7 @@ class Model implements Iterable<Model.Sq> {
             for (int j = 0; j < height(); ++j) {
                 Sq square = _board[i][j];
                 square._dir = arrowDirection(i, j);
-                for(Place place0 : square._successors) {
+                for (Place place0 : square._successors) {
                     Sq successorSq = _board[place0.x][place0.y];
                     if (successorSq._predecessors == null) {
                         successorSq._predecessors = new PlaceList();
@@ -128,7 +128,8 @@ class Model implements Iterable<Model.Sq> {
         firstSq._hasFixedNum = true;
         firstSq._group = 0;
 
-        Sq lastSq = _board[_solnNumToPlace[width() * height()].x][_solnNumToPlace[width() * height()].y];
+        Sq lastSq = _board[_solnNumToPlace[width() * height()].x]
+                [_solnNumToPlace[width() * height()].y];
         lastSq._sequenceNum = width() * height();
         lastSq._hasFixedNum = true;
         lastSq._group = 0;
@@ -148,7 +149,8 @@ class Model implements Iterable<Model.Sq> {
         for (int x0 = 0; x0 < width(); ++x0) {
             for (int y0 = 0; y0 < height(); ++y0) {
                 Sq origSquare = model._board[x0][y0];
-                Sq square = new Sq(x0, y0, origSquare.sequenceNum(), origSquare.hasFixedNum(), origSquare.direction(),
+                Sq square = new Sq(x0, y0, origSquare.sequenceNum(),
+                        origSquare.hasFixedNum(), origSquare.direction(),
                         origSquare.group());
                 square._predecessor = square._successor = null;
                 _board[x0][y0] = square;
@@ -162,15 +164,17 @@ class Model implements Iterable<Model.Sq> {
                 Sq origSquare = model._board[x0][y0];
                 Sq newSquare = _board[x0][y0];
                 if (origSquare.predecessor() != null) {
-                    newSquare._predecessor = _board[origSquare.predecessor().x][origSquare.predecessor().y];
+                    newSquare._predecessor = _board[origSquare.predecessor().x]
+                            [origSquare.predecessor().y];
                 }
                 if (origSquare.successor() != null) {
-                    newSquare._successor = _board[origSquare.successor().x][origSquare.successor().y];
+                    newSquare._successor = _board[origSquare.successor().x]
+                            [origSquare.successor().y];
                 }
                 if (origSquare.head() != null) {
                     newSquare._head = _board[origSquare.head().x][origSquare.head().y];
                 }
-                for(Place place0 : newSquare._successors) {
+                for (Place place0 : newSquare._successors) {
                     Sq successorSq = _board[place0.x][place0.y];
                     if (successorSq._predecessors == null) {
                         successorSq._predecessors = new PlaceList();
@@ -180,7 +184,8 @@ class Model implements Iterable<Model.Sq> {
             }
         }
         Sq firstSq = _board[_solnNumToPlace[1].x][_solnNumToPlace[1].y];
-        Sq lastSq = _board[_solnNumToPlace[width() * height()].x][_solnNumToPlace[width() * height()].y];
+        Sq lastSq = _board[_solnNumToPlace[width() * height()].x]
+                [_solnNumToPlace[width() * height()].y];
         firstSq._sequenceNum = 1;
         lastSq._sequenceNum = width() * height();
         firstSq._hasFixedNum = true;
@@ -188,7 +193,8 @@ class Model implements Iterable<Model.Sq> {
     }
 
     /**
-     * Helper method that performs linear search on a 2D int array for the element ELEM.
+     * Helper method that performs linear search on a 2D
+     * int array for the element ELEM.
      */
     private boolean linSearch(int[][] arr, int elem) {
         for (int i = 0; i < width(); ++i) {
@@ -427,6 +433,13 @@ class Model implements Iterable<Model.Sq> {
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(_solution) * Arrays.deepHashCode(_board);
+    }
+
+    /**
+     * Returns the _board variable
+     */
+    Sq[][] getBoard() {
+        return _board;
     }
 
     /** Represents a square on the board. */

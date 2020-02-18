@@ -127,8 +127,29 @@ class PuzzleGenerator implements PuzzleSource {
      *  numbered square in the proper direction from START (with the next
      *  number in sequence). */
     static Sq findUniqueSuccessor(Model model, Sq start) {
-        // FIXME: Fill in to satisfy the comment.
-        return null;
+        boolean numberedSq = start.sequenceNum() != 0;
+        int numFound = 0;
+        Sq successor = null;
+
+        for (int i = 0; i < model.width(); ++i) {
+            for (int j = 0; j < model.height(); ++j) {
+                successor = model.getBoard()[i][j];
+                if (start.connectable(successor)) {
+                    if (numberedSq) {
+                        if (successor.sequenceNum() == start.sequenceNum() + 1)
+                        {
+                            return successor;
+                        }
+                    } else {
+                        if (numFound > 1) {
+                            return null;
+                        }
+                        ++numFound;
+                    }
+                }
+            }
+        }
+        return successor;
     }
 
     /** Make all unique backward connections in MODEL (those in which there is
@@ -156,7 +177,14 @@ class PuzzleGenerator implements PuzzleSource {
      *  the only unconnected predecessor.  This is because findUniqueSuccessor
      *  already finds the other cases of numbered, unconnected cells. */
     static Sq findUniquePredecessor(Model model, Sq end) {
-        // FIXME: Replace the following to satisfy the comment.
+        for (int i = 0; i < model.width(); ++i) {
+            for (int j = 0; j < model.height(); ++j) {
+                Sq potentialPredecessor = model.getBoard()[i][j];
+                if (end == findUniqueSuccessor(model, potentialPredecessor)) {
+                    return potentialPredecessor;
+                }
+            }
+        }
         return null;
     }
 
