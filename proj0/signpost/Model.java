@@ -90,43 +90,48 @@ class Model implements Iterable<Model.Sq> {
         _solution = new int[_width][_height];
         deepCopy(solution, _solution);
 
-        // DUMMY SETUP
-        // This is a particular puzzle provided as a filler until the
-        // puzzle-generation software is complete.
-        // FIXME: Remove everything down to and including
-        // "// END DUMMY SETUP".
-        _board = new Sq[][] {
-            { new Sq(0, 0, 0, false, 2, -1), new Sq(0, 1, 0, false, 2, -1),
-              new Sq(0, 2, 0, false, 4, -1), new Sq(0, 3, 1, true, 2, 0) },
-            { new Sq(1, 0, 0, false, 2, -1), new Sq(1, 1, 0, false, 2, -1),
-              new Sq(1, 2, 0, false, 6, -1), new Sq(1, 3, 0, false, 2, -1) },
-            { new Sq(2, 0, 0, false, 6, -1), new Sq(2, 1, 0, false, 2, -1),
-              new Sq(2, 2, 0, false, 6, -1), new Sq(2, 3, 0, false, 2, -1) },
-            { new Sq(3, 0, 16, true, 0, 0), new Sq(3, 1, 0, false, 5, -1),
-              new Sq(3, 2, 0, false, 6, -1), new Sq(3, 3, 0, false, 4, -1) }
-        };
-        for (Sq[] col: _board) {
-            for (Sq sq : col) {
-                _allSquares.add(sq);
+        for (int num = 1; num <= width() * height(); ++num) {
+            if (!linSearch(_solution, num)) {
+                throw badArgs("Bad Solution Sequence!");
             }
         }
-        // END DUMMY SETUP
 
-        // FIXME: Initialize _board so that _board[x][y] contains the Sq object
-        //        representing the contents at cell (x, y), _allSquares
-        //        contains the list of all Sq objects on the board, and
-        //        _solnNumToPlace[k] contains the Place in _solution that
-        //        contains sequence number k.  Check that all numbers from
-        //        1 - last appear; else throw IllegalArgumentException (see
-        //        badArgs utility).
+        _board = new Sq[width()][height()];
+        _solnNumToPlace = new Place[width() * height()];
+        for (int x0 = 0; x0 < width(); ++x0) {
+            for (int y0 = 0; y0 < height(); ++y0) {
+                Sq square = new Sq(x0, y0, 0, false, 0, -1);
+                square._predecessor = square._successor = null;
+                _board[x0][y0] = square;
+                _allSquares.add(square);
+                _solnNumToPlace[_solution[x0][y0] - 1] = square.pl;
+                square._successors = allSuccessors(x0, y0, square.direction());
+            }
+        }
 
-        // FIXME: For each Sq object on the board, set its _successors list
-        //        to the list of locations of all cells that it might
-        //        connect to (i.e., all cells that are a queen move away
-        //        in the direction of its arrow).
-        //        Likewise, set its _predecessors list to the list of
-        //        all cells that might connect to it.
+        for (int i = 0; i < width(); ++i) {
+            for (int j = 0; j < height(); ++j) {
+                Sq square = _board[i][j];
+                square._dir = arrowDirection(i, j);
+                for(Place place0 : square._successors) {
+                    Sq successorSq = _board[place0.x][place0.y];
+                    if (successorSq._predecessors == null) {
+                        successorSq._predecessors = new PlaceList();
+                    }
+                    successorSq._predecessors.add(pl(square.x, square.y));
+                }
+            }
+        }
 
+        Sq firstSq = _board[0][0];
+        firstSq._sequenceNum = 1;
+        firstSq._hasFixedNum = true;
+        firstSq._group = 0;
+
+        Sq lastSq = _board[width() - 1][height() - 1];
+        lastSq._sequenceNum = width() * height();
+        lastSq._hasFixedNum = true;
+        lastSq._group = 0;
         _unconnected = last - 1;
     }
 
@@ -153,6 +158,20 @@ class Model implements Iterable<Model.Sq> {
         //        position (4, 1) in this copy.  Be careful NOT to have
         //        any of these fields in the copy pointing at the old Sqs in
         //        MODEL.
+    }
+
+    /**
+     * Helper method that performs linear search on a 2D int array for the element ELEM.
+     */
+    private boolean linSearch(int[][] arr, int elem) {
+        for (int i = 0; i < width(); ++i) {
+            for (int j = 0; j < height(); ++j) {
+                if (_solution[i][j] == elem) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /** Returns the width (number of columns of cells) of the board. */
@@ -260,9 +279,13 @@ class Model implements Iterable<Model.Sq> {
 
     /** Return the direction from cell (X, Y) in the solution to its
      *  successor, or 0 if it has none. */
-    private int arrowDirection(int x, int y) {
+    public int arrowDirection(int x, int y) {
         int seq0 = _solution[x][y];
-        // FIXME
+
+        if (seq0 != width() * height()) {
+            Sq s1 = solnNumToSq(seq0);
+            return Place.dirOf(x, y, s1.x, s1.y);
+        }
         return 0;
     }
 
