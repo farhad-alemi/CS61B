@@ -299,7 +299,6 @@ public class ModelTests {
     @Test
     public void arrowDirectionTest() {
         Model testModel = new Model(tr(SOLN1));
-        //fixme /////////////////////////public to priate
         assertEquals(testModel.arrowDirection(0, 3), 2);
         assertEquals(testModel.arrowDirection(0, 2), 1);
         assertEquals(testModel.arrowDirection(1, 2), 5);
@@ -344,5 +343,4 @@ public class ModelTests {
         { 0, 0, 0, 0, 0 },
         { 0, 0, 0, 0, 0 },
         { 0, 0, 0, 0, 20} };
-
 }

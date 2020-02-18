@@ -97,14 +97,14 @@ class Model implements Iterable<Model.Sq> {
         }
 
         _board = new Sq[width()][height()];
-        _solnNumToPlace = new Place[width() * height()];
+        _solnNumToPlace = new Place[width() * height() + 1];
         for (int x0 = 0; x0 < width(); ++x0) {
             for (int y0 = 0; y0 < height(); ++y0) {
                 Sq square = new Sq(x0, y0, 0, false, 0, -1);
                 square._predecessor = square._successor = null;
                 _board[x0][y0] = square;
                 _allSquares.add(square);
-                _solnNumToPlace[_solution[x0][y0] - 1] = square.pl;
+                _solnNumToPlace[_solution[x0][y0]] = square.pl;
                 square._successors = allSuccessors(x0, y0, square.direction());
             }
         }
@@ -123,12 +123,12 @@ class Model implements Iterable<Model.Sq> {
             }
         }
 
-        Sq firstSq = _board[0][0];
+        Sq firstSq = _board[_solnNumToPlace[1].x][_solnNumToPlace[1].y];
         firstSq._sequenceNum = 1;
         firstSq._hasFixedNum = true;
         firstSq._group = 0;
 
-        Sq lastSq = _board[width() - 1][height() - 1];
+        Sq lastSq = _board[_solnNumToPlace[width() * height()].x][_solnNumToPlace[width() * height()].y];
         lastSq._sequenceNum = width() * height();
         lastSq._hasFixedNum = true;
         lastSq._group = 0;
@@ -144,20 +144,47 @@ class Model implements Iterable<Model.Sq> {
         _usedGroups.addAll(model._usedGroups);
         _allSuccessors = model._allSuccessors;
 
-        // FIXME: Initialize _board and _allSquares to contain copies of the
-        //        the Sq objects in MODEL other than their _successor,
-        //        _predecessor, and _head fields (which can't necessarily be
-        //        set until all the Sq objects are first created.)
+        _board = new Sq[width()][height()];
+        for (int x0 = 0; x0 < width(); ++x0) {
+            for (int y0 = 0; y0 < height(); ++y0) {
+                Sq origSquare = model._board[x0][y0];
+                Sq square = new Sq(x0, y0, origSquare.sequenceNum(), origSquare.hasFixedNum(), origSquare.direction(),
+                        origSquare.group());
+                square._predecessor = square._successor = null;
+                _board[x0][y0] = square;
+                _allSquares.add(square);
+                square._successors = allSuccessors(x0, y0, square.direction());
+            }
+        }
 
-        // FIXME: Once all the new Sq objects are in place, fill in their
-        //        _successor, _predecessor, and _head fields.  For example,
-        //        if in MODEL, the _successor field of the Sq at
-        //        position (2, 3) pointed to the Sq in MODEL at position
-        //        (4, 1), then the Sq at position (2, 3) in this copy
-        //        will have a _successor field pointing to the Sq at
-        //        position (4, 1) in this copy.  Be careful NOT to have
-        //        any of these fields in the copy pointing at the old Sqs in
-        //        MODEL.
+        for (int x0 = 0; x0 < width(); ++x0) {
+            for (int y0 = 0; y0 < height(); ++y0) {
+                Sq origSquare = model._board[x0][y0];
+                Sq newSquare = _board[x0][y0];
+                if (origSquare.predecessor() != null) {
+                    newSquare._predecessor = _board[origSquare.predecessor().x][origSquare.predecessor().y];
+                }
+                if (origSquare.successor() != null) {
+                    newSquare._successor = _board[origSquare.successor().x][origSquare.successor().y];
+                }
+                if (origSquare.head() != null) {
+                    newSquare._head = _board[origSquare.head().x][origSquare.head().y];
+                }
+                for(Place place0 : newSquare._successors) {
+                    Sq successorSq = _board[place0.x][place0.y];
+                    if (successorSq._predecessors == null) {
+                        successorSq._predecessors = new PlaceList();
+                    }
+                    successorSq._predecessors.add(pl(newSquare.x, newSquare.y));
+                }
+            }
+        }
+        Sq firstSq = _board[_solnNumToPlace[1].x][_solnNumToPlace[1].y];
+        Sq lastSq = _board[_solnNumToPlace[width() * height()].x][_solnNumToPlace[width() * height()].y];
+        firstSq._sequenceNum = 1;
+        lastSq._sequenceNum = width() * height();
+        firstSq._hasFixedNum = true;
+        lastSq._hasFixedNum = true;
     }
 
     /**
@@ -267,13 +294,31 @@ class Model implements Iterable<Model.Sq> {
      *  unconnected and are separated by a queen move.  Returns true iff
      *  any changes were made. */
     boolean autoconnect() {
-        return false; // FIXME
+        Sq[] squareArr = new Sq[width() * height() + 1];
+        int arrIndex = 0;
+        for (int num = 1; num <= width() * height(); ++num) {
+            Sq square = _board[solnNumToPlace(num).x][solnNumToPlace(num).y];
+            if (square.sequenceNum() != 0) {
+                squareArr[arrIndex] = square;
+                ++arrIndex;
+            }
+        }
+        boolean atLeastOne = false;
+        for (int i = 0; i < arrIndex - 1; ++i) {
+            if (squareArr[i].sequenceNum() + 1 == squareArr[i + 1].sequenceNum()) {
+                atLeastOne = atLeastOne || squareArr[i].connect(squareArr[i + 1]);
+            }
+        }
+        return atLeastOne;
     }
 
     /** Sets the numbers in this board's squares to the solution from which
      *  this board was last initialized by the constructor. */
     void solve() {
-        // FIXME
+        for (int num = 1; num <= width() * height(); ++num) {
+            _board[solnNumToPlace(num).x][solnNumToPlace(num).y]._sequenceNum = num;
+        }
+        autoconnect();
         _unconnected = 0;
     }
 
@@ -283,7 +328,7 @@ class Model implements Iterable<Model.Sq> {
         int seq0 = _solution[x][y];
 
         if (seq0 != width() * height()) {
-            Sq s1 = solnNumToSq(seq0);
+            Sq s1 = solnNumToSq(seq0 + 1);
             return Place.dirOf(x, y, s1.x, s1.y);
         }
         return 0;

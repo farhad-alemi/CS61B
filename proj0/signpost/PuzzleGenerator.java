@@ -23,8 +23,8 @@ class PuzzleGenerator implements PuzzleSource {
         Model model =
             new Model(makePuzzleSolution(width, height, allowFreeEnds));
         // FIXME: Remove the "//" on the following two lines.
-        // makeSolutionUnique(model); do not remove this one
-        // model.autoconnect();
+        //makeSolutionUnique(model); //do not remove this one
+        model.autoconnect();
         return model;
     }
 
