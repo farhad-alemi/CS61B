@@ -660,10 +660,10 @@ class Model implements Iterable<Model.Sq> {
                 temp._head = _head;
                 temp = temp.successor();
             }
-            if (thisNum == 0) {
+            if (thisNum == 0 && sequenceNum() != 0) {
                 releaseGroup(group());
             }
-            if (s1Num == 0) {
+            if (s1Num == 0 && s1.sequenceNum() != 0) {
                 releaseGroup(sgroup);
             }
             if (sequenceNum() == 0 && s1.sequenceNum() == 0) {
