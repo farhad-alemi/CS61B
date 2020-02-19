@@ -22,7 +22,7 @@ class PuzzleGenerator implements PuzzleSource {
     public Model getPuzzle(int width, int height, boolean allowFreeEnds) {
         Model model =
             new Model(makePuzzleSolution(width, height, allowFreeEnds));
-        /*makeSolutionUnique(model); Bug in Skeleton - Refer to Piazza*/
+        /** makeSolutionUnique(model); Bug in Skeleton - Refer to Piazza */
         model.autoconnect();
         return model;
     }
@@ -199,7 +199,7 @@ class PuzzleGenerator implements PuzzleSource {
     }
 
     /** Remove all links in MODEL and unfix numbers (other than the first and
-     *  last) that do not affect solvability.  Not all such numbers are
+     *  last) that do not affect solvability. Not all such numbers are
      *  necessarily removed. */
     private void trimFixed(Model model) {
         int w = model.width(), h = model.height();

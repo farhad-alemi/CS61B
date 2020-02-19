@@ -195,9 +195,8 @@ class Model implements Iterable<Model.Sq> {
 
     /**
      * Helper method that performs linear search on a 2D
-     * int array for the element ELEM.
-     * @param arr 2D-int array to be searched
-     * @return True if value is found, false otherwise.
+     * int array ARR for the element ELEM and returns True if value
+     * is found, false otherwise.
      */
     private boolean linSearch(int[][] arr, int elem) {
         for (int i = 0; i < width(); ++i) {
@@ -634,19 +633,19 @@ class Model implements Iterable<Model.Sq> {
             if (!connectable(s1)) {
                 return false;
             }
-            int sgroup = s1.group();
+            int sgroup = s1.group(); int thisGroup = group();
             _unconnected -= 1; s1._predecessor = this; this._successor = s1;
             Sq temp; int thisNum = sequenceNum(), s1Num = s1.sequenceNum();
-            if (thisNum != 0 && s1Num == 0) {
-                int seqNum = thisNum; temp = this.successor(); ++seqNum;
+            if (sequenceNum() != 0 && s1.sequenceNum() == 0) {
+                int seqNum = sequenceNum(); temp = this.successor(); ++seqNum;
 
                 while (temp != null) {
                     temp._sequenceNum = seqNum;
                     temp = temp.successor();
                     ++seqNum;
                 }
-            } else if (s1Num != 0 && thisNum == 0) {
-                int seqNum = s1Num;
+            } else if (s1.sequenceNum() != 0 && sequenceNum() == 0) {
+                int seqNum = s1.sequenceNum();
                 temp = s1.predecessor();
                 --seqNum;
                 while (temp != null) {
@@ -660,8 +659,8 @@ class Model implements Iterable<Model.Sq> {
                 temp._head = _head;
                 temp = temp.successor();
             }
-            if (thisNum == 0 && sequenceNum() != 0) {
-                releaseGroup(group());
+            if (thisNum == 0 && _sequenceNum != 0) {
+                releaseGroup(thisGroup);
             }
             if (s1Num == 0 && s1.sequenceNum() != 0) {
                 releaseGroup(sgroup);
@@ -678,70 +677,57 @@ class Model implements Iterable<Model.Sq> {
             if (next == null) {
                 return;
             }
-            Sq iter1, iter2, iter3, iter4, iter5;
-            _unconnected += 1;
-            next._predecessor = _successor = null;
-            if (_sequenceNum == 0) {
-                if (predecessor() == null && next.successor() == null) {
-                    releaseGroup(group());
-                    _group = next._group = -1;
-                } else if (predecessor() != null && next.successor() != null) {
-                    next._group = newGroup();
-                } else if (predecessor() != null) {
-                    next._group = -1;
-                } else {
+            Sq iter;
+            boolean preFixedNum = false; boolean postFixedNum = false;
+            _unconnected += 1; next._predecessor = null; _successor = null;
+            if (predecessor() == null && next.successor() == null) {
+                releaseGroup(group());
+                _group = -1; next._group = -1;
+            } else if (predecessor() == null && next.successor() != null) {
+                if (_group != 0 && _group != -1) {
+                    next._group = _group;
                     _group = -1;
                 }
-            } else {
-                iter1 = this;
-                boolean preFixedNum = false;
-                boolean postFixedNum = false;
-
-                while (iter1 != null) {
-                    if (iter1.hasFixedNum()) {
-                        preFixedNum = true;
-                        break;
-                    }
-                    iter1 = iter1.predecessor();
-                }
-                if (!preFixedNum) {
-                    iter2 = this;
-                    while (iter2 != null) {
-                        iter2._sequenceNum = 0;
-                        iter2 = iter2.predecessor();
-                    }
-                    if (predecessor() != null) {
-                        _head._group = newGroup();
-                    }
-                } else {
-                    _group = -1;
-                }
-
-                iter3 = next;
-                while (iter3 != null) {
-                    if (iter3.hasFixedNum()) {
-                        postFixedNum = true;
-                        break;
-                    }
-                    iter3 = iter3.successor();
-                }
-                if (!postFixedNum) {
-                    iter4 = next;
-                    while (iter4 != null) {
-                        iter4._sequenceNum = 0;
-                        iter4 = iter4.successor();
-                    }
-                    if (next.successor() != null) {
-                        next._group = newGroup();
-                    }
-                } else {
+            } else if (predecessor() != null && next.successor() == null) {
+                if (!next.hasFixedNum()) {
                     next._group = -1;
                 }
             }
-            iter5 = next;
-            while (iter5 != null) {
-                iter5._head = next;
-                iter5 = iter5.successor();
+            iter = this;
+            while (iter != null) {
+                if (iter.hasFixedNum()) {
+                    preFixedNum = true; break;
+                }
+                iter = iter.predecessor();
+            }
+            iter = next;
+            while (iter != null) {
+                if (iter.hasFixedNum()) {
+                    postFixedNum = true; break;
+                }
+                iter = iter.successor();
+            }
+            if (!preFixedNum) {
+                iter = this;
+                while (iter != null) {
+                    iter._sequenceNum = 0; iter = iter.predecessor();
+                }
+                if (predecessor() != null && postFixedNum) {
+                    _head._group = newGroup();
+                }
+            }
+            if (!postFixedNum) {
+                iter = next;
+                while (iter != null) {
+                    iter._sequenceNum = 0; iter = iter.successor();
+                }
+                if (predecessor() != null && next.successor() != null) {
+                    next._group = newGroup();
+                }
+            }
+            iter = next;
+            while (iter != null) {
+                iter._head = next; iter = iter.successor();
             }
         }
 
@@ -749,14 +735,14 @@ class Model implements Iterable<Model.Sq> {
         public boolean equals(Object obj) {
             Sq sq = (Sq) obj;
             return sq != null
-                && pl == sq.pl
-                && _hasFixedNum == sq._hasFixedNum
-                && _sequenceNum == sq._sequenceNum
-                && _dir == sq._dir
-                && (_predecessor == null) == (sq._predecessor == null)
-                && (_predecessor == null
+                    && pl == sq.pl
+                    && _hasFixedNum == sq._hasFixedNum
+                    && _sequenceNum == sq._sequenceNum
+                    && _dir == sq._dir
+                    && (_predecessor == null) == (sq._predecessor == null)
+                    && (_predecessor == null
                     || _predecessor.pl == sq._predecessor.pl)
-                && (_successor == null || _successor.pl == sq._successor.pl);
+                    && (_successor == null || _successor.pl == sq._successor.pl);
         }
 
         @Override
