@@ -318,8 +318,8 @@ class Model implements Iterable<Model.Sq> {
 
             if (s1.sequenceNum() + 1 == s2.sequenceNum()) {
                 atLeastOne = atLeastOne || s1.connect(s2);
-                if(i != 0) {
-                         s2._predecessor = s1;
+                if (i != 0) {
+                    s2._predecessor = s1;
                 }
                 s1._successor = s2;
             }
