@@ -326,8 +326,16 @@ class Model implements Iterable<Model.Sq> {
      *  this board was last initialized by the constructor. */
     void solve() {
         for (int num = 1; num <= width() * height(); ++num) {
-            _board[solnNumToPlace(num).x][solnNumToPlace(num).y]
-                    ._sequenceNum = num;
+            Sq square = _board[solnNumToPlace(num).x][solnNumToPlace(num).y];
+            square._sequenceNum = num;
+            if (num != 1) {
+                square._predecessor = _board[solnNumToPlace(num - 1).x]
+                        [solnNumToPlace(num - 1).y];
+            }
+            if (num != width() * height()) {
+                square._successor = _board[solnNumToPlace(num + 1).x]
+                        [solnNumToPlace(num + 1).y];
+            }
         }
         autoconnect();
         _unconnected = 0;
