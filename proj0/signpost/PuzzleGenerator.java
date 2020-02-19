@@ -129,27 +129,39 @@ class PuzzleGenerator implements PuzzleSource {
     static Sq findUniqueSuccessor(Model model, Sq start) {
         boolean numberedSq = start.sequenceNum() != 0;
         int numFound = 0;
-        Sq successor = null;
-
+        Sq unnumberedSuccessor = null, numberedSuccessor = null,
+                potentialSuccessor = null, temp;
         for (int i = 0; i < model.width(); ++i) {
             for (int j = 0; j < model.height(); ++j) {
-                successor = model.getBoard()[i][j];
-                if (start.connectable(successor)) {
+                temp = model.getBoard()[i][j];
+                if (start.connectable(temp)) {
                     if (numberedSq) {
-                        if (successor.sequenceNum() == start.sequenceNum() + 1)
+                        if (temp.sequenceNum() == start.sequenceNum() + 1)
                         {
-                            return successor;
+                            potentialSuccessor = temp;
+                            return potentialSuccessor;
+                        } else {
+                            if (numFound > 1) {
+                                return null;
+                            }
+                            unnumberedSuccessor = temp;
+                            ++numFound;
                         }
                     } else {
                         if (numFound > 1) {
                             return null;
                         }
+                        potentialSuccessor = temp;
                         ++numFound;
                     }
                 }
             }
         }
-        return successor;
+        if (numberedSq) {
+            return unnumberedSuccessor;
+        }
+        return potentialSuccessor;
+        //start.successors().x
     }
 
     /** Make all unique backward connections in MODEL (those in which there is
