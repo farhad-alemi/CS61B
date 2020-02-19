@@ -742,7 +742,8 @@ class Model implements Iterable<Model.Sq> {
                     && (_predecessor == null) == (sq._predecessor == null)
                     && (_predecessor == null
                     || _predecessor.pl == sq._predecessor.pl)
-                    && (_successor == null || _successor.pl == sq._successor.pl);
+                    && (_successor == null || _successor.pl
+                    == sq._successor.pl);
         }
 
         @Override

@@ -22,7 +22,6 @@ class PuzzleGenerator implements PuzzleSource {
     public Model getPuzzle(int width, int height, boolean allowFreeEnds) {
         Model model =
             new Model(makePuzzleSolution(width, height, allowFreeEnds));
-        /** makeSolutionUnique(model); Bug in Skeleton - Refer to Piazza */
         model.autoconnect();
         return model;
     }

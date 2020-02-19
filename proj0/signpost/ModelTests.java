@@ -294,48 +294,6 @@ public class ModelTests {
         s8.disconnect();
         checkSquare(s8, s8, null, null, 0, -1);
         checkSquare(s9, s9, null, null, 9, 0);
-
-        /*
-
-        Sq s03 = model.new Sq(0, 3, 1, true, 3, 0);
-
-        Sq s12 = model.new Sq(1, 2, 0, false, 1, -1);
-        Sq s23 = model.new Sq(2, 3, 0, false, 4, -1);
-        Sq s11 = model.new Sq(1, 1, 0, false, 1, -1);
-
-        Sq s33 = model.new Sq(3, 3, 0, false, 4, -1);
-        Sq s32 = model.new Sq(3, 2, 0, false, 6, -1);
-        Sq s00 = model.new Sq(0, 0, 0, false, 8, -1);
-        Sq s10 = model.new Sq(1, 0, 0, false, 2, -1);
-
-        Sq s13 = model.new Sq(1, 3, 0, false, 4, -1);
-        Sq s01 = model.new Sq(0, 1, 0, false, 2, -1);
-        Sq s30 = model.new Sq(3, 0, 16, true, 0, 0);
-        Sq s31 = model.new Sq(3,1,0,false,8,-1);
-
-        s03.connect(s12);
-        s12.connect(s23);
-        s13.connect(s11);
-        s11.connect(s33);
-        s33.connect(s32);
-        s00.connect(s01);
-        s12.disconnect();;
-
-        s32.connect(s12);
-        s32.disconnect();
-
-        s01.connect(s31);
-        s31.connect(s30);
-        s31.disconnect();
-
-        s10.connect(s00);
-        s13.connect(s10);
-        s03.connect(s12);
-        s13.disconnect();
-
-        s13.connect(s10);
-        s01.connect(s11);
-        s01.disconnect();*/
     }
 
     @Test
