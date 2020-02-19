@@ -22,8 +22,7 @@ class PuzzleGenerator implements PuzzleSource {
     public Model getPuzzle(int width, int height, boolean allowFreeEnds) {
         Model model =
             new Model(makePuzzleSolution(width, height, allowFreeEnds));
-        // FIXME: Remove the "//" on the following two lines.
-        //makeSolutionUnique(model); //do not remove this one
+        /*makeSolutionUnique(model); Bug in Skeleton - Refer to Piazza*/
         model.autoconnect();
         return model;
     }
@@ -129,22 +128,16 @@ class PuzzleGenerator implements PuzzleSource {
     static Sq findUniqueSuccessor(Model model, Sq start) {
         boolean numberedSq = start.sequenceNum() != 0;
         int numFound = 0;
-        Sq unnumberedSuccessor = null, numberedSuccessor = null,
-                potentialSuccessor = null, temp;
+        Sq potentialSuccessor = null, temp;
         for (int i = 0; i < model.width(); ++i) {
             for (int j = 0; j < model.height(); ++j) {
                 temp = model.getBoard()[i][j];
                 if (start.connectable(temp)) {
                     if (numberedSq) {
-                        if (temp.sequenceNum() == start.sequenceNum() + 1)
-                        {
-                            potentialSuccessor = temp;
-                            return potentialSuccessor;
+                        if (temp.sequenceNum() == start.sequenceNum() + 1) {
+                            return temp;
                         } else {
-                            if (numFound > 1) {
-                                return null;
-                            }
-                            unnumberedSuccessor = temp;
+                            potentialSuccessor = temp;
                             ++numFound;
                         }
                     } else {
@@ -157,11 +150,10 @@ class PuzzleGenerator implements PuzzleSource {
                 }
             }
         }
-        if (numberedSq) {
-            return unnumberedSuccessor;
+        if (numFound > 1 && numberedSq) {
+            return null;
         }
         return potentialSuccessor;
-        //start.successors().x
     }
 
     /** Make all unique backward connections in MODEL (those in which there is
@@ -189,15 +181,21 @@ class PuzzleGenerator implements PuzzleSource {
      *  the only unconnected predecessor.  This is because findUniqueSuccessor
      *  already finds the other cases of numbered, unconnected cells. */
     static Sq findUniquePredecessor(Model model, Sq end) {
+        int numFound = 0;
+        Sq potentialPredecessor = null, temp;
         for (int i = 0; i < model.width(); ++i) {
             for (int j = 0; j < model.height(); ++j) {
-                Sq potentialPredecessor = model.getBoard()[i][j];
-                if (end == findUniqueSuccessor(model, potentialPredecessor)) {
-                    return potentialPredecessor;
+                temp = model.getBoard()[i][j];
+                if (temp.connectable(end)) {
+                    potentialPredecessor = temp;
+                    ++numFound;
+                }
+                if (numFound > 1) {
+                    return null;
                 }
             }
         }
-        return null;
+        return potentialPredecessor;
     }
 
     /** Remove all links in MODEL and unfix numbers (other than the first and
