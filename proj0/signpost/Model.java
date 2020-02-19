@@ -302,7 +302,7 @@ class Model implements Iterable<Model.Sq> {
      *  unconnected and are separated by a queen move.  Returns true iff
      *  any changes were made. */
     boolean autoconnect() {
-        Sq[] squareArr = new Sq[width() * height() + 1];
+        Sq[] squareArr = new Sq[width() * height()];
         int arrIndex = 0;
         for (int num = 1; num <= width() * height(); ++num) {
             Sq square = _board[solnNumToPlace(num).x][solnNumToPlace(num).y];
@@ -313,10 +313,15 @@ class Model implements Iterable<Model.Sq> {
         }
         boolean atLeastOne = false;
         for (int i = 0; i < arrIndex - 1; ++i) {
-            if (squareArr[i].sequenceNum() + 1 == squareArr[i + 1]
-                    .sequenceNum()) {
-                atLeastOne = atLeastOne || squareArr[i]
-                        .connect(squareArr[i + 1]);
+            Sq s1 = squareArr[i];
+            Sq s2 = squareArr[i + 1];
+
+            if (s1.sequenceNum() + 1 == s2.sequenceNum()) {
+                atLeastOne = atLeastOne || s1.connect(s2);
+                if(i != 0) {
+                         s2._predecessor = s1;
+                }
+                s1._successor = s2;
             }
         }
         return atLeastOne;
@@ -327,7 +332,6 @@ class Model implements Iterable<Model.Sq> {
     void solve() {
         for (int num = 1; num <= width() * height(); ++num) {
             Sq square = _board[solnNumToPlace(num).x][solnNumToPlace(num).y];
-            square._sequenceNum = num;
             if (num != 1) {
                 square._predecessor = _board[solnNumToPlace(num - 1).x]
                         [solnNumToPlace(num - 1).y];
@@ -336,6 +340,7 @@ class Model implements Iterable<Model.Sq> {
                 square._successor = _board[solnNumToPlace(num + 1).x]
                         [solnNumToPlace(num + 1).y];
             }
+            square._sequenceNum = num;
         }
         autoconnect();
         _unconnected = 0;
