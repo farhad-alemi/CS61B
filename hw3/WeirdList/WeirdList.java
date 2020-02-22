@@ -3,7 +3,7 @@
  */
 public class WeirdList {
     /** The empty sequence of integers. */
-    public static final WeirdList EMPTY = new Helper(0, null);
+    public static final WeirdList EMPTY = new Helper(0,null);
 
     /** Sequence head */
     private int _head;
@@ -48,7 +48,7 @@ public class WeirdList {
          * tail element.
          */
         Helper(int head, WeirdList tail) {
-            super(head, tail);
+            super(0, null);
         }
 
         /**

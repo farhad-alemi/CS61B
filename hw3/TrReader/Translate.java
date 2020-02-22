@@ -14,7 +14,7 @@ public class Translate {
         try {
             new TrReader(new StringReader(S), from, to)
                     .read(buffer, 0, S.length());;
-            return buffer.toString();
+            return new String(buffer);
         } catch (IOException e) {
             return null;
         }

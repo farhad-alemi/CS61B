@@ -26,9 +26,11 @@ public class TrReader extends Reader {
      * number of characters read or -1 if stream is closed.
      */
     public int read(char[] cbuf, int off, int len)  throws IOException {
-        int count = 0;
+        int c = str.read(), index, count = 0;
+        if (c == -1) {
+            return -1;
+        }
         while (count < len) {
-            int c = str.read(), index;
             if (c == -1) {
                 break;
             }
@@ -39,6 +41,7 @@ public class TrReader extends Reader {
                 cbuf[count + off] = (char) c;
             }
             ++count;
+            c = str.read();
         }
         return count;
     }
