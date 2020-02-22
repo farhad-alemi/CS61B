@@ -50,18 +50,13 @@ public class TrReader extends Reader {
         str.close();
     }
 
-    /**
-     * The reader object whose read() is called in TrReader.Read method.
-     */
+    /** The reader object whose read() is called in TrReader.Read method. */
     Reader str;
 
-    /**
-     * String containing all characters that should be changed.
-     */
+    /** String containing all characters that should be changed. */
     String from;
 
-    /**
-     * String containing all characters that those in FROM should change to.
-     */
+    /** String containing all characters that those in FROM should change
+     * to. */
     String to;
 }
