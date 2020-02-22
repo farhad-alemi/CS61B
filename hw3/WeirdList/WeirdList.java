@@ -48,7 +48,7 @@ public class WeirdList {
          * tail element.
          */
         Helper(int head, WeirdList tail) {
-            super(0, null);
+            super(head, tail);
         }
 
         /**
@@ -63,7 +63,7 @@ public class WeirdList {
          */
         @Override
         public String toString() {
-            return null;
+            return "";
         }
 
         /**
