@@ -1,20 +1,26 @@
 /**
  * TableFilter to filter for entries whose two columns match.
  *
- * @author Matthew Owen
+ * @author Matthew Owen, Farhad Alemi
  */
 public class ColumnMatchFilter extends TableFilter {
 
     public ColumnMatchFilter(Table input, String colName1, String colName2) {
         super(input);
-        // FIXME: Add your code here.
+        _colName1 = colName1;
+        _colName2 = colName2;
     }
 
     @Override
     protected boolean keep() {
-        // FIXME: Replace this line with your code.
-        return false;
+        String firstEntry = candidateNext().getValue(headerList().indexOf(_colName1));
+        String secondEntry = candidateNext().getValue(headerList().indexOf(_colName2));
+        return firstEntry.equals(secondEntry);
     }
 
-    // FIXME: Add instance variables?
+    /** First Column Name */
+    String _colName1;
+
+    /** Second Column Name */
+    String _colName2;
 }

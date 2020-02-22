@@ -1,20 +1,27 @@
+import java.rmi.activation.ActivationGroup_Stub;
+
 /**
  * TableFilter to filter for containing substrings.
  *
- * @author Matthew Owen
+ * @author Matthew Owen, Farhad Alemi
  */
 public class SubstringFilter extends TableFilter {
 
     public SubstringFilter(Table input, String colName, String subStr) {
         super(input);
-        // FIXME: Add your code here.
+        _colName = colName;
+        _subStr = subStr;
     }
 
     @Override
     protected boolean keep() {
-        // FIXME: Replace this line with your code.
-        return false;
+        return candidateNext().getValue(headerList().indexOf(_colName))
+                .contains(_subStr);
     }
 
-    // FIXME: Add instance variables?
+    /** Column Name */
+    String _colName;
+
+    /** Substring */
+    String _subStr;
 }
