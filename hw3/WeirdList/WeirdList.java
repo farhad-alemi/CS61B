@@ -61,8 +61,9 @@ public class WeirdList {
         /**
          * Returns the String representation of the lists.
          */
+        @Override
         public String toString() {
-            return "";
+            return null;
         }
 
         /**
@@ -71,7 +72,7 @@ public class WeirdList {
          * This behavior is required for polymorphism to work correctly.
          */
         public WeirdList map(IntUnaryFunction func) {
-            return null;
+            return new Helper(0, null);
         }
     }
 }
