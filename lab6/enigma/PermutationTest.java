@@ -85,10 +85,17 @@ public abstract class PermutationTest {
     @Test
     public void testInvertChar() {
         Permutation p = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
+        Permutation p1 = getNewPermutation("(!@) (12)", getNewAlphabet("1!@2"));
+
         assertEquals('B', p.invert('A'));
         assertEquals('A', p.invert('C'));
         assertEquals('C', p.invert('D'));
         assertEquals('D', p.invert('B'));
+
+        assertEquals('2', p1.invert('1'));
+        assertEquals('@', p1.invert('!'));
+        assertEquals('!', p1.invert('@'));
+        assertEquals('1', p1.invert('2'));
     }
 
     @Test
@@ -96,16 +103,19 @@ public abstract class PermutationTest {
         Permutation p1 = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
         Permutation p2 = getNewPermutation("(B)", getNewAlphabet("B"));
         Permutation p3 = getNewPermutation("", getNewAlphabet(""));
+        Permutation p4 = getNewPermutation("(!@) (12)", getNewAlphabet("1!@2"));
 
         assertEquals(p1.size(), 4);
         assertEquals(p2.size(), 1);
         assertEquals(p3.size(), 0);
+        assertEquals(p4.size(), 4);
     }
 
     @Test
     public void testPermuteChar() {
         Permutation p1 = getNewPermutation("(ACBD)", getNewAlphabet("ABCD"));
         Permutation p2 = getNewPermutation("(B)", getNewAlphabet("ABCD"));
+        Permutation p3 = getNewPermutation("(!@) (12)", getNewAlphabet("1!@2"));
 
         assertEquals('C', p1.permute('A'));
         assertEquals('B', p1.permute('C'));
@@ -113,22 +123,35 @@ public abstract class PermutationTest {
         assertEquals('A', p1.permute('D'));
 
         assertEquals('B', p2.permute('B'));
+
+        assertEquals('2', p3.permute('1'));
+        assertEquals('@', p3.permute('!'));
+        assertEquals('!', p3.permute('@'));
+        assertEquals('1', p3.permute('2'));
+
     }
 
     @Test
     public void testAlphabet() {
         Permutation p1 = getNewPermutation("(ACBD)", getNewAlphabet("ABCD"));
+        Permutation p2 = getNewPermutation("(!@) (12)", getNewAlphabet("1!@2"));
 
         assertEquals(p1.alphabet().toChar(0), 'A');
         assertEquals(p1.alphabet().toChar(1), 'B');
         assertEquals(p1.alphabet().toChar(2), 'C');
         assertEquals(p1.alphabet().toChar(3), 'D');
+
+        assertEquals(p2.alphabet().toChar(0), '1');
+        assertEquals(p2.alphabet().toChar(1), '!');
+        assertEquals(p2.alphabet().toChar(2), '@');
+        assertEquals(p2.alphabet().toChar(3), '2');
     }
 
     @Test
     public void testPermuteInt() {
         Permutation p1 = getNewPermutation("(ACBD)", getNewAlphabet("ABCD"));
         Permutation p2 = getNewPermutation("(B)", getNewAlphabet("ABCD"));
+        Permutation p3 = getNewPermutation("(!@) (12)", getNewAlphabet("1!@2"));
 
         assertEquals(2, p1.permute(0));
         assertEquals(3, p1.permute(1));
@@ -136,12 +159,18 @@ public abstract class PermutationTest {
         assertEquals(0, p1.permute(3));
 
         assertEquals(1, p2.permute(1));
+
+        assertEquals(3, p3.permute(0));
+        assertEquals(2, p3.permute(1));
+        assertEquals(1, p3.permute(2));
+        assertEquals(0, p3.permute(3));
     }
 
     @Test
     public void testInverseInt() {
         Permutation p1 = getNewPermutation("(ACBDEF)", getNewAlphabet("ABCDEF"));
         Permutation p2 = getNewPermutation("(BA)", getNewAlphabet("ABCD"));
+        Permutation p3 = getNewPermutation("(!@) (12)", getNewAlphabet("1!@2"));
 
         assertEquals(5, p1.invert(0));
         assertEquals(2, p1.invert(1));
@@ -151,6 +180,11 @@ public abstract class PermutationTest {
         assertEquals(4, p1.invert(5));
 
         assertEquals(0, p2.invert(1));
+
+        assertEquals(3, p3.invert(0));
+        assertEquals(2, p3.invert(1));
+        assertEquals(1, p3.invert(2));
+        assertEquals(0, p3.invert(3));
     }
 
     @Test
@@ -159,10 +193,13 @@ public abstract class PermutationTest {
         Permutation p2 = getNewPermutation("(BA) (CD)", getNewAlphabet("ABCD"));
         Permutation p3 = getNewPermutation("(A) (CBDEF)", getNewAlphabet("ABCDEF"));
         Permutation p4 = getNewPermutation("(B)", getNewAlphabet("ABCD"));
+        Permutation p5 = getNewPermutation("(!@) (12)", getNewAlphabet("1!@2"));
+        Permutation p6 = getNewPermutation("(!@) (1)", getNewAlphabet("1!@2"));
 
         assertTrue(p1.derangement());
         assertTrue(p2.derangement());
         assertFalse(p3.derangement());
         assertFalse(p4.derangement());
+        assertFalse(p5.derangement());
     }
 }
