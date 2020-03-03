@@ -95,7 +95,7 @@ public abstract class PermutationTest {
     public void testSize() {
         Permutation p1 = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
         Permutation p2 = getNewPermutation("(B)", getNewAlphabet("B"));
-        Permutation p3 = getNewPermutation("()", getNewAlphabet(""));
+        Permutation p3 = getNewPermutation("", getNewAlphabet(""));
 
         assertEquals(p1.size(), 4);
         assertEquals(p2.size(), 1);
@@ -118,9 +118,10 @@ public abstract class PermutationTest {
     @Test
     public void testAlphabet() {
         Permutation p1 = getNewPermutation("(ACBD)", getNewAlphabet("ABCD"));
-        Permutation p2 = getNewPermutation("(B)", getNewAlphabet("ABCD"));
 
-        assertEquals(p1.alphabet(), getNewAlphabet("ABCD"));
-        assertEquals(p2.alphabet(), getNewAlphabet("B"));
+        assertEquals(p1.alphabet().toChar(0), 'A');
+        assertEquals(p1.alphabet().toChar(1), 'B');
+        assertEquals(p1.alphabet().toChar(2), 'C');
+        assertEquals(p1.alphabet().toChar(3), 'D');
     }
 }
