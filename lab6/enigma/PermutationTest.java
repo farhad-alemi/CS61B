@@ -95,11 +95,9 @@ public abstract class PermutationTest {
     public void testSize() {
         Permutation p1 = getNewPermutation("BACD", getNewAlphabet("ABCD"));
         Permutation p2 = getNewPermutation("B", getNewAlphabet("B"));
-        Permutation p3 = getNewPermutation("", getNewAlphabet(""));
 
         assertEquals(p1.size(), 4);
         assertEquals(p2.size(), 1);
-        assertEquals(p3.size(), 0);
     }
 
     @Test
