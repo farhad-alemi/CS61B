@@ -105,22 +105,16 @@ public abstract class PermutationTest {
     @Test
     public void testPermuteChar() {
         Permutation p1 = getNewPermutation("ACBD", getNewAlphabet("ABCD"));
-        Permutation p2 = getNewPermutation("B", getNewAlphabet("ABCD"));
 
         assertEquals('C', p1.permute('A'));
         assertEquals('B', p1.permute('C'));
         assertEquals('D', p1.permute('B'));
         assertEquals('A', p1.permute('D'));
-
-        assertEquals('B', p2.permute('B'));
     }
 
     @Test
     public void testAlphabet() {
         Permutation p1 = getNewPermutation("ACBD", getNewAlphabet("ABCD"));
-        Permutation p2 = getNewPermutation("B", getNewAlphabet("ABCD"));
-
         assertEquals(p1.alphabet(), getNewAlphabet("ABCD"));
-        assertEquals(p2.alphabet(), getNewAlphabet("B"));
     }
 }
