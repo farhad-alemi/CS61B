@@ -144,19 +144,19 @@ public abstract class PermutationTest {
         Permutation p2 = getNewPermutation("(BA)", getNewAlphabet("ABCD"));
 
         assertEquals(5, p1.invert(0));
-        assertEquals(2, p1.permute(1));
-        assertEquals(0, p1.permute(2));
-        assertEquals(1, p1.permute(3));
-        assertEquals(3, p1.permute(4));
-        assertEquals(4, p1.permute(5));
+        assertEquals(2, p1.invert(1));
+        assertEquals(0, p1.invert(2));
+        assertEquals(1, p1.invert(3));
+        assertEquals(3, p1.invert(4));
+        assertEquals(4, p1.invert(5));
 
-        assertEquals(0, p2.permute(1));
+        assertEquals(0, p2.invert(1));
     }
 
     @Test
     public void testDerangement() {
         Permutation p1 = getNewPermutation("(ACBDEF)", getNewAlphabet("ABCDEF"));
-        Permutation p2 = getNewPermutation("(BA) (CDA)", getNewAlphabet("ABCD"));
+        Permutation p2 = getNewPermutation("(BA) (CD)", getNewAlphabet("ABCD"));
         Permutation p3 = getNewPermutation("(A) (CBDEF)", getNewAlphabet("ABCDEF"));
         Permutation p4 = getNewPermutation("(B)", getNewAlphabet("ABCD"));
 
