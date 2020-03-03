@@ -200,6 +200,7 @@ public abstract class PermutationTest {
         assertTrue(p2.derangement());
         assertFalse(p3.derangement());
         assertFalse(p4.derangement());
-        assertFalse(p5.derangement());
+        assertTrue(p5.derangement());
+        assertFalse(p6.derangement());
     }
 }
