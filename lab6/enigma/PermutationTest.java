@@ -94,25 +94,25 @@ public abstract class PermutationTest {
     @Test
     public void testSize() {
         Permutation p1 = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
-        //Permutation p2 = getNewPermutation("(B)", getNewAlphabet("B"));
-        //Permutation p3 = getNewPermutation("", getNewAlphabet(""));
+        Permutation p2 = getNewPermutation("(B)", getNewAlphabet("B"));
+        Permutation p3 = getNewPermutation("", getNewAlphabet(""));
 
         assertEquals(p1.size(), 4);
-        //assertEquals(p2.size(), 1);
-        //assertEquals(p3.size(), 0);
+        assertEquals(p2.size(), 1);
+        assertEquals(p3.size(), 0);
     }
 
     @Test
     public void testPermuteChar() {
         Permutation p1 = getNewPermutation("(ACBD)", getNewAlphabet("ABCD"));
-        //Permutation p2 = getNewPermutation("(B)", getNewAlphabet("ABCD"));
+        Permutation p2 = getNewPermutation("(B)", getNewAlphabet("ABCD"));
 
         assertEquals('C', p1.permute('A'));
         assertEquals('B', p1.permute('C'));
         assertEquals('D', p1.permute('B'));
         assertEquals('A', p1.permute('D'));
 
-        //assertEquals('B', p2.permute('B'));
+        assertEquals('B', p2.permute('B'));
     }
 
     @Test
@@ -128,8 +128,41 @@ public abstract class PermutationTest {
     @Test
     public void testPermuteInt() {
         Permutation p1 = getNewPermutation("(ACBD)", getNewAlphabet("ABCD"));
-        //Permutation p2 = getNewPermutation("(B)", getNewAlphabet("ABCD"));
+        Permutation p2 = getNewPermutation("(B)", getNewAlphabet("ABCD"));
 
-        //assertEquals()
+        assertEquals(2, p1.permute(0));
+        assertEquals(3, p1.permute(1));
+        assertEquals(1, p1.permute(2));
+        assertEquals(0, p1.permute(3));
+
+        assertEquals(1, p2.permute(1));
+    }
+
+    @Test
+    public void testInverseInt() {
+        Permutation p1 = getNewPermutation("(ACBDEF)", getNewAlphabet("ABCDEF"));
+        Permutation p2 = getNewPermutation("(BA)", getNewAlphabet("ABCD"));
+
+        assertEquals(5, p1.invert(0));
+        assertEquals(2, p1.permute(1));
+        assertEquals(0, p1.permute(2));
+        assertEquals(1, p1.permute(3));
+        assertEquals(3, p1.permute(4));
+        assertEquals(4, p1.permute(5));
+
+        assertEquals(0, p2.permute(1));
+    }
+
+    @Test
+    public void testDerangement() {
+        Permutation p1 = getNewPermutation("(ACBDEF)", getNewAlphabet("ABCDEF"));
+        Permutation p2 = getNewPermutation("(BA) (CDA)", getNewAlphabet("ABCD"));
+        Permutation p3 = getNewPermutation("(A) (CBDEF)", getNewAlphabet("ABCDEF"));
+        Permutation p4 = getNewPermutation("(B)", getNewAlphabet("ABCD"));
+
+        assertTrue(p1.derangement());
+        assertTrue(p2.derangement());
+        assertFalse(p3.derangement());
+        assertFalse(p4.derangement());
     }
 }
