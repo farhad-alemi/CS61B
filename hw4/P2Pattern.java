@@ -17,6 +17,8 @@ public class P2Pattern {
     public static String P4 = "[^\\d][^ ]*";
 
     /* Pattern to match a valid IPv4 address. Eg: 127.0.0.1 */
-    public static String P5 = "";; //FIXME: Add your regex here
+    public static String P5 = "((0?0?[\\d])|(0?[\\d][\\d])|(1[\\d][\\d])" +
+            "|(2[0-4][\\d])|(25[0-5]))([\\.]((0?0?[\\d])|(0?[\\d][\\d])" +
+            "|(1[\\d][\\d])|(2[0-4][\\d])|(25[0-5]))){3}";
 
 }
