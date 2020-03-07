@@ -4,7 +4,7 @@ import static enigma.EnigmaException.*;
 
 /** Represents a permutation of a range of integers starting at 0 corresponding
  *  to the characters of an alphabet.
- *  @author
+ *  @author Farhad Alemi
  */
 class Permutation {
 
@@ -15,7 +15,7 @@ class Permutation {
      *  Whitespace is ignored. */
     Permutation(String cycles, Alphabet alphabet) {
         _alphabet = alphabet;
-        // FIXME
+        _cycles = cycles;
     }
 
     /** Add the cycle c0->c1->...->cm->c0 to the permutation, where CYCLE is
@@ -35,30 +35,30 @@ class Permutation {
 
     /** Returns the size of the alphabet I permute. */
     int size() {
-        return 0; // FIXME
+        return _alphabet.size();
     }
 
     /** Return the result of applying this permutation to P modulo the
      *  alphabet size. */
     int permute(int p) {
-        return 0;  // FIXME
+        return alphabet().toInt(permute(alphabet().toChar(p)));
     }
 
     /** Return the result of applying the inverse of this permutation
      *  to  C modulo the alphabet size. */
     int invert(int c) {
-        return 0;  // FIXME
+        return alphabet().toInt(invert(alphabet().toChar(c)));
     }
 
     /** Return the result of applying this permutation to the index of P
      *  in ALPHABET, and converting the result to a character of ALPHABET. */
     char permute(char p) {
-        return 0;  // FIXME
+        return _cycles.charAt((_cycles.indexOf(p) + 1) % _cycles.length());
     }
 
     /** Return the result of applying the inverse of this permutation to C. */
     char invert(char c) {
-        return 0;  // FIXME
+        return _cycles.charAt((_cycles.indexOf(c) - 1) % _cycles.length());
     }
 
     /** Return the alphabet used to initialize this Permutation. */
@@ -75,5 +75,5 @@ class Permutation {
     /** Alphabet of this permutation. */
     private Alphabet _alphabet;
 
-    // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
+    private String _cycles;
 }

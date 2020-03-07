@@ -2,14 +2,14 @@ package enigma;
 
 /** An alphabet of encodable characters.  Provides a mapping from characters
  *  to and from indices into the alphabet.
- *  @author
+ *  @author Farhad Alemi
  */
 class Alphabet {
 
     /** A new alphabet containing CHARS.  Character number #k has index
      *  K (numbering from 0). No character may be duplicated. */
     Alphabet(String chars) {
-        // FIXME
+        _chars = chars;
     }
 
     /** A default alphabet of all upper-case characters. */
@@ -39,4 +39,5 @@ class Alphabet {
         return ch - 'A'; // FIXME
     }
 
+    private String _chars;
 }
