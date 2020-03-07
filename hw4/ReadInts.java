@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- *  @author Josh Hug and Paul Hilfinger
+ *  @author Josh Hug, Paul Hilfinger and Farhad Alemi
  */
 
 public class ReadInts {

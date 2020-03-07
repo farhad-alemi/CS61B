@@ -58,7 +58,7 @@ public class TestP2Pattern {
         String bad2 = "(6, 1, 4, 1, 2, 3,)";
         String bad3 = "(, 6, 1, 4, 1, 2, 3)";
         String bad4 = "(,6, 1, 4, 1, 2, 3)";
-        String bad5 = "()";
+        String bad5 = "()";// [a-z]+ +[a-z]+ +[a-z]+
         assertFalse(checkMatch(p, bad1));
         assertFalse(checkMatch(p, bad2));
         assertFalse(checkMatch(p, bad3));
