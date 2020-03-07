@@ -8,7 +8,7 @@ public class P2Pattern {
             "|([1-2]{1}[0-9]{1})|(3[01]{1}))[/](19[0-9]{2}|[2-9][0-9]{3})";
 
     /** Pattern to match 61b notation for literal IntLists. */
-    public static String P2 = "\\([\\d]*([,] [\\d]*)*\\)";
+    public static String P2 = "\\([\\d]+([,][ ]+[\\d]*)*\\)";
 
     /* Pattern to match a valid domain name. Eg: www.support.facebook-login.com */
     public static String P3 = ""; //FIXME: Add your regex here
