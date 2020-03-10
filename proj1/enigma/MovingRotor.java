@@ -24,6 +24,6 @@ class MovingRotor extends Rotor {
         // FIXME
     }
 
+    /** */
     String _notches;
-
 }

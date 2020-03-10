@@ -19,25 +19,26 @@ class Alphabet {
 
     /** Returns the size of the alphabet. */
     int size() {
-        return 26; // FIXME
+        return _chars.length();
     }
 
     /** Returns true if CH is in this alphabet. */
     boolean contains(char ch) {
-        return 'A' <= ch && ch <= 'Z'; // FIXME
+        return _chars.indexOf(ch) != -1;
     }
 
     /** Returns character number INDEX in the alphabet, where
      *  0 <= INDEX < size(). */
     char toChar(int index) {
-        return (char) ('A' + index); // FIXME
+        return _chars.charAt(index);
     }
 
     /** Returns the index of character CH which must be in
      *  the alphabet. This is the inverse of toChar(). */
     int toInt(char ch) {
-        return ch - 'A'; // FIXME
+        return _chars.indexOf(ch);
     }
 
+    /** Al the characters in the alphabet. */
     private String _chars;
 }

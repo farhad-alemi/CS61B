@@ -11,7 +11,7 @@ public class UnitTest {
      *  the arguments of runClasses to run other JUnit tests. */
     public static void main(String[] ignored) {
         System.exit(textui.runClasses(PermutationTest.class,
-                                      MovingRotorTest.class));
+                                      MovingRotorTest.class, RotorTest.class));
     }
 
 }

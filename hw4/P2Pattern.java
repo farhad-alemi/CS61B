@@ -1,5 +1,5 @@
 /** P2Pattern class
- *  @author Josh Hug & Vivant Sakore
+ *  @author Josh Hug, Vivant Sakore & Farhad Alemi
  */
 
 public class P2Pattern {
@@ -11,10 +11,10 @@ public class P2Pattern {
     public static String P2 = "\\([\\d]+([,][ ]+[\\d]*)*\\)";
 
     /* Pattern to match a valid domain name. Eg: www.support.facebook-login.com */
-    public static String P3 = "[^\\.\\-].*[^\\.\\-]";
+    public static String P3 = "^(([a-zA-Z]{1})|([a-zA-Z]{1}[a-zA-Z]{1})|([a-zA-Z]{1}[0-9]{1})|([0-9]{1}[a-zA-Z]{1})|([a-zA-Z0-9][a-zA-Z0-9-_]{1,61}[a-zA-Z0-9]))\\.([a-zA-Z]{2,6}|[a-zA-Z0-9-]{2,30}\\.[a-zA-Z]{2,3})$";//"[^\\.\\-].*[^\\.\\-]";
 
     /* Pattern to match a valid java variable name. Eg: _child13$ */
-    public static String P4 = "[^\\d][^ ]*";
+    public static String P4 = "//[^\\d][^ ]*";
 
     /* Pattern to match a valid IPv4 address. Eg: 127.0.0.1 */
     public static String P5 = "((0?0?[\\d])|(0?[\\d][\\d])|(1[\\d][\\d])" +

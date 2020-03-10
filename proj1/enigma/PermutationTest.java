@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 import static enigma.TestUtils.*;
 
 /** The suite of all JUnit tests for the Permutation class.
- *  @author
+ *  @author Farhad Alemi
  */
 public class PermutationTest {
 
@@ -53,18 +53,24 @@ public class PermutationTest {
 
     @Test
     public void testInvertChar() {
-        Permutation p = new Permutation("(BACD)", new Alphabet("ABCD"));
-        Permutation p1 = new Permutation("(!@) (12)", new Alphabet("1!@2"));
+        Permutation p1 = new Permutation("(BACD)", new Alphabet("ABCD"));
+        Permutation p2 = new Permutation("(!@) (12)", new Alphabet("1!@2"));
+        Permutation p3 = new Permutation("", new Alphabet("1!@2"));
 
-        assertEquals('B', p.invert('A'));
-        assertEquals('A', p.invert('C'));
-        assertEquals('C', p.invert('D'));
-        assertEquals('D', p.invert('B'));
+        assertEquals('B', p1.invert('A'));
+        assertEquals('A', p1.invert('C'));
+        assertEquals('C', p1.invert('D'));
+        assertEquals('D', p1.invert('B'));
 
-        assertEquals('2', p1.invert('1'));
-        assertEquals('@', p1.invert('!'));
-        assertEquals('!', p1.invert('@'));
-        assertEquals('1', p1.invert('2'));
+        assertEquals('2', p2.invert('1'));
+        assertEquals('@', p2.invert('!'));
+        assertEquals('!', p2.invert('@'));
+        assertEquals('1', p2.invert('2'));
+
+        assertEquals('2', p3.invert('2'));
+        assertEquals('@', p3.invert('@'));
+        assertEquals('!', p3.invert('!'));
+        assertEquals('1', p3.invert('1'));
     }
 
     @Test
@@ -83,7 +89,7 @@ public class PermutationTest {
     @Test
     public void testPermuteChar() {
         Permutation p1 = new Permutation("(ACBD)", new Alphabet("ABCD"));
-        Permutation p2 = new Permutation("(B)", new Alphabet("ABCD"));
+        Permutation p2 = new Permutation("", new Alphabet("ABCD"));
         Permutation p3 = new Permutation("(!@) (12)", new Alphabet("1!@2"));
 
         assertEquals('C', p1.permute('A'));
@@ -92,6 +98,9 @@ public class PermutationTest {
         assertEquals('A', p1.permute('D'));
 
         assertEquals('B', p2.permute('B'));
+        assertEquals('C', p2.permute('C'));
+        assertEquals('A', p2.permute('A'));
+        assertEquals('D', p2.permute('D'));
 
         assertEquals('2', p3.permute('1'));
         assertEquals('@', p3.permute('!'));
@@ -127,7 +136,10 @@ public class PermutationTest {
         assertEquals(1, p1.permute(2));
         assertEquals(0, p1.permute(3));
 
+        assertEquals(0, p2.permute(0));
         assertEquals(1, p2.permute(1));
+        assertEquals(2, p2.permute(2));
+        assertEquals(3, p2.permute(3));
 
         assertEquals(3, p3.permute(0));
         assertEquals(2, p3.permute(1));
