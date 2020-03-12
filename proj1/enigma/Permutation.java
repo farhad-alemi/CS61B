@@ -49,7 +49,7 @@ class Permutation {
     /** Return the result of applying the inverse of this permutation
      *  to C modulo the alphabet size. */
     int invert(int c) {
-        char invertChar = invert(alphabet().toChar(c));
+        char invertChar = invert(alphabet().toChar(wrap(c)));
         return alphabet().toInt(invertChar);
     }
 

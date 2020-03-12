@@ -11,7 +11,14 @@ class Rotor {
     Rotor(String name, Permutation perm) {
         _name = name;
         _permutation = perm;
-        // FIXME
+        _setting = 0;
+    }
+
+    public static int wrap(int p, int size) {
+        if (p < 0) {
+            return p + size;
+        }
+        return p;
     }
 
     /** Return my name. */
@@ -31,7 +38,7 @@ class Rotor {
 
     /** Return the size of my alphabet. */
     int size() {
-        return _permutation.size();
+        return permutation().size();
     }
 
     /** Return true iff I have a ratchet and can move. */
@@ -46,29 +53,35 @@ class Rotor {
 
     /** Return my current setting. */
     int setting() {
-        return 0; // FIXME
+        return _setting;
     }
 
     /** Set setting() to POSN.  */
     void set(int posn) {
-        // FIXME
+        _setting = posn;
+        // DONE?FIXME
     }
 
     /** Set setting() to character CPOSN. */
     void set(char cposn) {
-        // FIXME
+        _setting = alphabet().toInt(cposn);
+        // DONE? FIXME
     }
 
     /** Return the conversion of P (an integer in the range 0..size()-1)
      *  according to my permutation. */
     int convertForward(int p) {
-        return 0;  // FIXME
+        int permuted, contact;
+        permuted = permutation().permute((p + setting()) % size());
+        return wrap(permuted - setting() % size(), size());
     }
 
     /** Return the conversion of E (an integer in the range 0..size()-1)
      *  according to the inverse of my permutation. */
     int convertBackward(int e) {
-        return 0;  // FIXME
+        int inverted;
+        inverted = permutation().invert(e + setting() % size());
+        return wrap(inverted - setting() % size(), size());
     }
 
     /** Returns true iff I am positioned to allow the rotor to my left
@@ -92,6 +105,7 @@ class Rotor {
     /** The permutation implemented by this rotor in its 0 position. */
     private Permutation _permutation;
 
-    // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
-
+    /** Current setting of the rotor. */
+    protected int _setting;
+    // DONE?FIXME ADDITIONAL FIELDS HERE, AS NEEDED
 }

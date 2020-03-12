@@ -15,8 +15,8 @@ import static enigma.TestUtils.*;
 public class MovingRotorTest {
 
     /** Testing time limit. */
-    @Rule
-    public Timeout globalTimeout = Timeout.seconds(5);
+    //@Rule
+    //public Timeout globalTimeout = Timeout.seconds(5);
 
     /* ***** TESTING UTILITIES ***** */
 
@@ -71,4 +71,17 @@ public class MovingRotorTest {
         checkRotor("Rotor I set", UPPER_STRING, NAVALZ_MAP.get("I"));
     }
 
+    @Test
+    public void checkAtNotch() {
+        setRotor("I", NAVALA, "ZM");
+        for (int i = 0; i < rotor.alphabet().size(); ++i) {
+            rotor.set(i);
+            if (i == rotor.alphabet().toInt('Z')
+                    || i == rotor.alphabet().toInt('M')) {
+                assertTrue(rotor.atNotch());
+            } else {
+                assertFalse(rotor.atNotch());
+            }
+        }
+    }
 }

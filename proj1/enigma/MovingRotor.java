@@ -17,13 +17,27 @@ class MovingRotor extends Rotor {
         _notches = notches;
     }
 
-    // FIXME?
-
     @Override
     void advance() {
-        // FIXME
+        _setting = (_setting + 1) % size();
     }
 
-    /** */
+    @Override
+    boolean rotates() {
+        return true;
+    }
+
+    @Override
+    boolean atNotch() {
+        char currLetter = permutation().alphabet().toChar(setting());
+        for (int i = 0; i < _notches.length(); ++i) {
+            if (_notches.charAt(i) == currLetter) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Rotor notches. */
     String _notches;
 }
