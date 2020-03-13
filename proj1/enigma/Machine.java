@@ -48,7 +48,8 @@ class Machine {
             for (int i = 0; i < rotors.length; ++i) {
                 if (tempRotor.name().equals(rotors[i])) {
                     _currRotors[i] = tempRotor;
-                    countMoving = (tempRotor.rotates()) ? (countMoving + 1) : countMoving;
+                    countMoving = (tempRotor.rotates()) ? (countMoving + 1)
+                            : countMoving;
                     i = rotors.length;
                 }
             }
@@ -60,10 +61,10 @@ class Machine {
             throw new EnigmaException("Rotor 1 is not Reflector");
         }
 
-        for (int i = 1; i <_currRotors.length; ++i) {
+        for (int i = 1; i < _currRotors.length; ++i) {
             if (!_currRotors[i].rotates() && _currRotors[i - 1].rotates()) {
-                throw new EnigmaException("Moving rotors must be to the left" +
-                        " of non-moving rotors");
+                throw new EnigmaException("Moving rotors must be to the left"
+                        + " of non-moving rotors");
             }
         }
     }
@@ -75,7 +76,7 @@ class Machine {
         assertEquals(setting.length(), _currRotors.length - 1);
 
         for (int i = 0; i < setting.length(); ++i) {
-            _currRotors[i].set(setting.charAt(i));
+            _currRotors[i + 1].set(setting.charAt(i));
         }
     }
 
@@ -98,18 +99,26 @@ class Machine {
         assertTrue(c >= 0 && c < _alphabet.size());
         int permuteChar = _plugboard.permute(c);
 
-        for (int i = numRotors() - 1; i > 0; --i) {
-            if (i == numRotors() - 1) {
-                _currRotors[i].advance();
-            } else if (_currRotors[i + 1].atNotch()) {
+        for (int i = 1; i < numRotors() - 1; ++i) {
+            if (i + 1 < numRotors() - 1) {
+                if (_currRotors[i + 1].atNotch()) {
+                    _currRotors[i].advance();
+                    _currRotors[i + 1].advance();
+                }
+            } else {
+                if (_currRotors[i + 1].atNotch()) {
+                    _currRotors[i].advance();
+                }
                 _currRotors[i + 1].advance();
-                _currRotors[i].advance();
             }
+        }
+
+        for (int i = numRotors() - 1; i > 0; --i) {
             permuteChar = _currRotors[i].convertForward(permuteChar);
         }
 
         for (int i = 0; i < numRotors(); ++i) {
-            permuteChar = _currRotors[i].convertForward(permuteChar);
+            permuteChar = _currRotors[i].convertBackward(permuteChar);
         }
         return _plugboard.permute(permuteChar);
     }
@@ -120,7 +129,7 @@ class Machine {
         String result = "";
 
         for (int i = 0; i < msg.length(); ++i) {
-            result += convert(_alphabet.toInt(msg.charAt(i)));
+            result += _alphabet.toChar(convert(_alphabet.toInt(msg.charAt(i))));
         }
         return result;
     }
@@ -129,17 +138,17 @@ class Machine {
     private final Alphabet _alphabet;
 
     /** Number of rotor slots in the machine.*/
-    int _numRotors;
+    private final int _numRotors;
 
     /** Number of pawls, i.e. moving rotors in the machine. */
-    int _pawls;
+    private final int _pawls;
 
-    /** Rotors in the machine */
-    Rotor[] _currRotors;
+    /** Rotors in the machine. */
+    private Rotor[] _currRotors;
 
-    /** Set of all available rotors */
-    Collection<Rotor> _allRotors;
+    /** Set of all available rotors. */
+    private final Collection<Rotor> _allRotors;
 
-    /** Plug-board configuration for the machine */
-    Permutation _plugboard;
+    /** Plug-board configuration for the machine. */
+    private Permutation _plugboard;
 }

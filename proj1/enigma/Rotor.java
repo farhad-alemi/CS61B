@@ -18,10 +18,11 @@ class Rotor {
      *  permutation. Performs the wrapping around the current alphabet, and
      *  returns P + SIZE if P < 0 and otherwise P */
     public static int wrap(int p, int size) {
-        if (p < 0) {
-            return p + size;
+        int r = p % size;
+        if (r < 0) {
+            r += size;
         }
-        return p;
+        return r;
     }
 
     /** Return my name. */
@@ -74,7 +75,7 @@ class Rotor {
     int convertForward(int p) {
         int permuted;
         permuted = permutation().permute((p + setting()) % size());
-        return wrap(permuted - setting() % size(), size());
+        return wrap(permuted - setting(), size());
     }
 
     /** Return the conversion of E (an integer in the range 0..size()-1)
