@@ -95,7 +95,6 @@ public final class Main {
     /** Return a rotor, reading its description from _config. */
     private Rotor readRotor() {
         try {
-            _config.
             return null; // FIXME
         } catch (NoSuchElementException excp) {
             throw error("bad rotor description");
