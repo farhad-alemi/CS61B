@@ -39,5 +39,5 @@ class MovingRotor extends Rotor {
     }
 
     /** Rotor notches. */
-    String _notches;
+    private String _notches;
 }

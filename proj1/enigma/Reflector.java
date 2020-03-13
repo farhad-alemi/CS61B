@@ -11,10 +11,17 @@ class Reflector extends FixedRotor {
      * is PERM. */
     Reflector(String name, Permutation perm) {
         super(name, perm);
-        // FIXME
     }
 
-    // FIXME?
+    @Override
+    boolean reflecting() {
+        return true;
+    }
+
+    @Override
+    void set(char cposn) {
+        set(alphabet().toInt(cposn));
+    }
 
     @Override
     void set(int posn) {

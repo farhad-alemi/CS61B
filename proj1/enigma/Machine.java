@@ -6,7 +6,7 @@ import java.util.Collection;
 import static enigma.EnigmaException.*;
 
 /** Class that represents a complete enigma machine.
- *  @author
+ *  @author Farhad Alemi
  */
 class Machine {
 
@@ -50,7 +50,6 @@ class Machine {
 
     /** Returns the result of converting the input character C (as an
      *  index in the range 0..alphabet size - 1), after first advancing
-
      *  the machine. */
     int convert(int c) {
         return 0; // FIXME

@@ -19,8 +19,8 @@ public class RotorTest {
     /* ***** TEST UTILITIES ***** */
 
     private String alphabet = UPPER_STRING;
-    private Permutation p = new Permutation("(AELTPHQXRU) (BKNW) (CMOY)" +
-            " (DFG) (IV) (JZ) (S)", new Alphabet(alphabet));
+    private Permutation p = new Permutation("(AELTPHQXRU) (BKNW) (CMOY)"
+            + " (DFG) (IV) (JZ) (S)", new Alphabet(alphabet));
     private Rotor rotorI = new Rotor("I", p);
 
     @Test
@@ -53,15 +53,6 @@ public class RotorTest {
         rotorI.set(5);
         int perm = rotorI.convertForward(rotorI.alphabet().toInt('F'));
         assertEquals(rotorI.alphabet().toInt('I'), perm);
-
-        /*rotorI.set(0);
-        String fromAlpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        String toAlpha = "JLEKFCPUYMSNVXGWTROZHAQBID";
-
-        for (int i = 0; i < fromAlpha.length(); ++i) {
-            System.out.println(fromAlpha.charAt(i));
-            assertEquals(fromAlpha.charAt(rotorI.convertForward(fromAlpha.charAt(i))), toAlpha.charAt(i));
-        }*/
     }
 
     @Test

@@ -14,6 +14,9 @@ class Rotor {
         _setting = 0;
     }
 
+    /** The inputs are P, the valued to be wrapped, and SIZE, the size of the
+     *  permutation. Performs the wrapping around the current alphabet, and
+     *  returns P + SIZE if P < 0 and otherwise P */
     public static int wrap(int p, int size) {
         if (p < 0) {
             return p + size;
@@ -59,19 +62,17 @@ class Rotor {
     /** Set setting() to POSN.  */
     void set(int posn) {
         _setting = posn;
-        // DONE?FIXME
     }
 
     /** Set setting() to character CPOSN. */
     void set(char cposn) {
         _setting = alphabet().toInt(cposn);
-        // DONE? FIXME
     }
 
     /** Return the conversion of P (an integer in the range 0..size()-1)
      *  according to my permutation. */
     int convertForward(int p) {
-        int permuted, contact;
+        int permuted;
         permuted = permutation().permute((p + setting()) % size());
         return wrap(permuted - setting() % size(), size());
     }
@@ -107,5 +108,4 @@ class Rotor {
 
     /** Current setting of the rotor. */
     protected int _setting;
-    // DONE?FIXME ADDITIONAL FIELDS HERE, AS NEEDED
 }
