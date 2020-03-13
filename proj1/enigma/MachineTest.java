@@ -22,8 +22,6 @@ public class MachineTest {
 
     static String alphabet = UPPER_STRING;
 
-    static Permutation plugboard = new Permutation("(YF) (ZH)",
-            new Alphabet(alphabet));
     static Permutation i = new Permutation("(AELTPHQXRU) (BKNW)"
             + " (CMOY) (DFG) (IV) (JZ) (S)", new Alphabet(alphabet));
     static Permutation ii = new Permutation("(FIXVYOMW) (CDKLHUP)"
@@ -79,23 +77,40 @@ public class MachineTest {
         allRotors.add(MachineTest.rotorB);
         allRotors.add(MachineTest.rotorC);
 
-        String[] rotorsList = {"B", "Beta", "III", "IV", "I"};
-
-        Machine machine = new Machine(new Alphabet(alphabet), 5, 3, allRotors);
-        machine.setPlugboard(plugboard);
-        machine.insertRotors(rotorsList);
-        machine.setRotors("AXLE");
-
-        String input = "FHELLOMYNAMEISFARHADHELLOMYNAMEISF"
+        String[] rotors1List = {"B", "Beta", "III", "IV", "I"};
+        Permutation plugboard1 = new Permutation("(YF) (ZH)",
+                new Alphabet(alphabet));
+        Machine machine1 = new Machine(new Alphabet(alphabet), 5, 3, allRotors);
+        machine1.setPlugboard(plugboard1);
+        machine1.insertRotors(rotors1List);
+        machine1.setRotors("AXLE");
+        String input1 = "FHELLOMYNAMEISFARHADHELLOMYNAMEISF"
                 + "ARHADHELLOMYNAMEISFARHADHELLOMYNAMEISFARHADHELLOMYNAMEISFAR"
                 + "HADHELLOMYNAMEISFARHADHELLOMYNAMEISFARHADLLOMYNAMEISFARHAD";
-
-        String simulatorOutput = "AJDGZPYWJTVCYMUFMOYVVNYVQYFZJKVRJZTAOBLNNSCD"
+        String simulatorOutput1 = "AJDGZPYWJTVCYMUFMOYVVNYVQYFZJKVRJZTAOBLNNSCD"
                 + "ZIKLAIRNMZASWQFFXCNFOMFURJYNNUMVNQFDMYEKZOHCAXKPIOHAUZQZUBJ"
                 + "MPPSKROFMISPLOIEMDMATUQKPLYUGOVYOVTDEVBMQYGDZVNG";
+        String machineOutput1 = machine1.convert(input1);
+        assertTrue(simulatorOutput1.equals(machineOutput1));
 
-        String machineOutput = machine.convert(input);
+        Permutation plugboard2 = new Permutation("(HQ) (EX) (IP) (TR) (BY)",
+                new Alphabet(alphabet));
+        Machine machine2 = new Machine(new Alphabet(alphabet), 5, 3, allRotors);
+        machine2.setPlugboard(plugboard2);
+        machine2.insertRotors(rotors1List);
+        machine2.setRotors("AXLE");
+        String input2 = "FROMHISSHOULDERHIAWATHATOOKTHECAMERAOFROSEWOODMADEOF"
+                + "SLIDINGFOLDINGROSEWOODNEATLYPUTITALLTOGETHERINITSCASEITLAYCO"
+                + "MPACTLYFOLDEDINTONEARLYNOTHINGBUTHEOPENEDOUTTHEHINGESPUSHEDA"
+                + "NDPULLEDTHEJOINTSANDHINGESTILLITLOOKEDALLSQUARESANDOBLONGSLI"
+                + "KEACOMPLICATEDFIGUREINTHESECONDBOOKOFEUCLID";
+        String simulatorOutput2 = "QVPQSOKOILPUBKJZPISFXDWBHCNSCXNUOAATZXSRCF"
+                + "YDGUFLPNXGXIXTYJUJRCAUGEUNCFMKUFWJFGKCIIRGXODJGVCGPQOHALWEBU"
+                + "HTZMOXIIVXUEFPRPRKCGVPFPYKIKITLBURVGTSFUSMBNKFRIIMPDOFJVTT"
+                + "UGRZMUVCYLFDZPGIBXREWXUEBZQJOYMHIPGRREGOHETUXDTWLCMMWAVNV"
+                + "JVHOUFANTQACKKTOZZRDABQNNVPOIEFQAFSVVICVUDUEREYNPFFMNBJVGQ";
 
-        assertTrue(simulatorOutput.equals(machineOutput));
+        String machineOutput2 = machine2.convert(input2);
+        assertTrue(simulatorOutput2.equals(machineOutput2));
     }
 }
