@@ -3,8 +3,6 @@ package enigma;
 import java.util.Collection;
 import java.util.Iterator;
 
-import
-
 import static org.junit.Assert.*;
 
 /** Class that represents a complete enigma machine.
@@ -43,23 +41,28 @@ class Machine {
     void insertRotors(String[] rotors) {
         assertEquals(rotors.length, numRotors());
         _currRotors = new Rotor[rotors.length];
+        int countMoving = 0;
 
         for (Iterator<Rotor> iter = _allRotors.iterator(); iter.hasNext();) {
             Rotor tempRotor = iter.next();
             for (int i = 0; i < rotors.length; ++i) {
                 if (tempRotor.name().equals(rotors[i])) {
                     _currRotors[i] = tempRotor;
+                    countMoving = (tempRotor.rotates()) ? (countMoving + 1) : countMoving;
                     i = rotors.length;
                 }
             }
         }
+
+        assertEquals(_pawls, countMoving);
+
         if (!_currRotors[0].reflecting()) {
             throw new EnigmaException("Rotor 1 is not Reflector");
         }
 
         for (int i = 1; i <_currRotors.length; ++i) {
-            if (_currRotors[i].rotates() && !_currRotors[i].rotates()) {
-                throw new EnigmaException("Fixed rotors must be to the left" +
+            if (!_currRotors[i].rotates() && _currRotors[i - 1].rotates()) {
+                throw new EnigmaException("Moving rotors must be to the left" +
                         " of non-moving rotors");
             }
         }
@@ -69,25 +72,57 @@ class Machine {
      *  numRotors()-1 characters in my alphabet. The first letter refers
      *  to the leftmost rotor setting (not counting the reflector).  */
     void setRotors(String setting) {
-        assertEquals(setting.length(), numRotors() - 1);
+        assertEquals(setting.length(), _currRotors.length - 1);
+
+        for (int i = 0; i < setting.length(); ++i) {
+            _currRotors[i].set(setting.charAt(i));
+        }
     }
 
     /** Set the plugboard to PLUGBOARD. */
     void setPlugboard(Permutation plugboard) {
-       _plugboard = plugboard;
+        assertEquals(plugboard.alphabet().size(), _alphabet.size());
+
+        for (int i = 0; i < _alphabet.size(); ++i) {
+            if (plugboard.alphabet().toChar(i) != _alphabet.toChar(i)) {
+                throw new EnigmaException("Letter not in machine alphabet");
+            }
+        }
+        _plugboard = plugboard;
     }
 
     /** Returns the result of converting the input character C (as an
      *  index in the range 0..alphabet size - 1), after first advancing
      *  the machine. */
     int convert(int c) {
-        return 0; // FIXME
+        assertTrue(c >= 0 && c < _alphabet.size());
+        int permuteChar = _plugboard.permute(c);
+
+        for (int i = numRotors() - 1; i > 0; --i) {
+            if (i == numRotors() - 1) {
+                _currRotors[i].advance();
+            } else if (_currRotors[i + 1].atNotch()) {
+                _currRotors[i + 1].advance();
+                _currRotors[i].advance();
+            }
+            permuteChar = _currRotors[i].convertForward(permuteChar);
+        }
+
+        for (int i = 0; i < numRotors(); ++i) {
+            permuteChar = _currRotors[i].convertForward(permuteChar);
+        }
+        return _plugboard.permute(permuteChar);
     }
 
     /** Returns the encoding/decoding of MSG, updating the state of
      *  the rotors accordingly. */
     String convert(String msg) {
-        return ""; // FIXME
+        String result = "";
+
+        for (int i = 0; i < msg.length(); ++i) {
+            result += convert(_alphabet.toInt(msg.charAt(i)));
+        }
+        return result;
     }
 
     /** Common alphabet of my rotors. */
