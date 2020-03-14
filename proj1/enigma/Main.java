@@ -156,24 +156,39 @@ public final class Main {
      *  which must have the format specified in the assignment. */
     private void setUp(Machine M, String[] settings) {
         String[] rotors = new String[M.numRotors()];
-        String initialSetting = settings[M.numRotors()];
-        String temp1Token = settings[M.numRotors() + 1];
-        String temp2Token = settings[M.numRotors() + 2];
+        String initialSettings = settings[M.numRotors()];
 
         System.arraycopy(settings, 0, rotors, 0, M.numRotors());
+
+        for (int i = 0; i < rotors.length; ++i) {
+            for (int j = i + 1; j < rotors.length; ++j) {
+                if (rotors[i].equals(rotors[j])) {
+                    throw new EnigmaException("Duplicate Rotors");
+                }
+            }
+        }
         M.insertRotors(rotors);
 
-        if (initialSetting.equals("")) {
+        if (initialSettings.equals("")) {
             throw new EnigmaException("No initial setting");
-        } else if (temp1Token.equals("")) {
+        } else if (settings.length == M.numRotors() + 1) {
             M.setPlugboard(new Permutation("", _alphabet));
-            M.setRotors(initialSetting);
-        } else if (temp1Token.charAt(0) == '(') {
-            M.setPlugboard(new Permutation(temp1Token, _alphabet));
-            M.setRotors(initialSetting);
+            M.setRotors(initialSettings);
+        } else if (settings.length == M.numRotors() + 2) {
+            if (settings[M.numRotors() + 1].charAt(0) == '(') {
+                M.setPlugboard(new Permutation(settings[M.numRotors() + 1],
+                        _alphabet));
+                M.setRotors(initialSettings);
+            } else {
+                M.setPlugboard(new Permutation("", _alphabet));
+                M.setRotors(initialSettings, settings[M.numRotors() + 1]);
+            }
+        } else if (settings.length == M.numRotors() + 3) {
+            M.setPlugboard(new Permutation(settings[M.numRotors() + 2],
+                    _alphabet));
+            M.setRotors(initialSettings, settings[M.numRotors() + 1]);
         } else {
-            M.setPlugboard(new Permutation(temp2Token, _alphabet));
-            M.setRotors(initialSetting, temp2Token);
+            throw new EnigmaException("Too many parameters in input settings");
         }
     }
 
@@ -216,17 +231,17 @@ public final class Main {
                 for (int j = i; j < configArr.length; ++j) {
                     cycles += " " + configArr[j];
                 }
-                i = configArr.length;
                 cycles = cycles.substring(1);
+                break;
             }
         }
         if (!cycles.equals("")) {
-            String[] newConfig = new String[cycleIndex + 2];
+            String[] newConfig = new String[cycleIndex];
             System.arraycopy(configArr, 1, newConfig, 0, cycleIndex - 1);
             newConfig[cycleIndex - 1] = cycles;
             setUp(m, newConfig);
         } else {
-            String[] newConfig = new String[configArr.length + 1];
+            String[] newConfig = new String[configArr.length - 1];
             System.arraycopy(configArr, 1, newConfig, 0, configArr.length - 1);
             setUp(m, newConfig);
         }
