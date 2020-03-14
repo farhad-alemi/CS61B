@@ -56,7 +56,9 @@ class Machine {
             }
         }
 
-        assertEquals(_pawls, countMoving);
+        if (_pawls != countMoving) {
+            throw new EnigmaException("Incorrect number of moving rotors").
+        }
 
         if (!_currRotors[0].reflecting()) {
             throw new EnigmaException("Rotor 1 is not Reflector");
