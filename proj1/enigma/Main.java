@@ -3,8 +3,10 @@ package enigma;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.*;
-import java.lang.*;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+import java.util.Collection;
+import java.util.HashSet;
 
 import static enigma.EnigmaException.*;
 import static org.junit.Assert.*;
@@ -51,8 +53,8 @@ public final class Main {
         } else {
             _output = System.out;
         }
-        rotorNames = new String[]{"I", "II", "III", "IV", "V", "VI", "VII", "VIII",
-                "Beta", "Gamma", "B", "C"};
+        rotorNames = new String[]{"I", "II", "III", "IV", "V", "VI", "VII",
+                                  "VIII", "Beta", "Gamma", "B", "C"};
     }
 
     /** Return a Scanner reading from the file named NAME. */
@@ -80,7 +82,7 @@ public final class Main {
         Machine machine = readConfig();
         parseConfig(_input.nextLine().split("[ ]"), machine);
 
-        while(_input.hasNext()) {
+        while (_input.hasNext()) {
             String temp = _input.nextLine(), processed;
             if (temp.charAt(0) == '*') {
                 parseConfig(temp.split("[ ]"), machine);
@@ -133,14 +135,14 @@ public final class Main {
             if (temp.charAt(0) != 'M' && temp.length() > 1) {
                 throw new NoSuchElementException();
             } else if (temp.charAt(0) == 'N') {
-                return new FixedRotor(rotorName, new Permutation
-                        (_config.nextLine(), _alphabet));
+                return new FixedRotor(rotorName, new Permutation(
+                        _config.nextLine(), _alphabet));
             } else if (temp.charAt(0) == 'R') {
-                return new Reflector(rotorName, new Permutation
-                        (_config.nextLine(), _alphabet));
+                return new Reflector(rotorName, new Permutation(
+                        _config.nextLine(), _alphabet));
             } else if (temp.charAt(0) == 'M') {
-                return new MovingRotor(rotorName, new Permutation
-                        (_config.nextLine(), _alphabet), temp.substring(1));
+                return new MovingRotor(rotorName, new Permutation(
+                        _config.nextLine(), _alphabet), temp.substring(1));
             } else {
                 throw new NoSuchElementException();
             }
@@ -237,5 +239,5 @@ public final class Main {
     private PrintStream _output;
 
     /** Names of all rotors. */
-    static String[] rotorNames;
+    private static String[] rotorNames;
 }

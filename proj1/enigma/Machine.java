@@ -79,10 +79,10 @@ class Machine {
 
     /** Set my rotors according to SETTING, which must be a string of
      *  numRotors()-1 characters in my alphabet. The first letter refers
-     *  to the leftmost rotor setting (not counting the reflector).  */
+     *  to the leftmost rotor setting (not counting the reflector).
+     *  ALPHASETTING is used to adjust rotor alphabet position. */
     void setRotors(String setting, String alphaSetting) {
         assertEquals(setting.length(), _currRotors.length - 1);
-        //fixme argument
         for (int i = 0; i < setting.length(); ++i) {
             _currRotors[i + 1].set(setting.charAt(i));
         }
