@@ -104,7 +104,9 @@ class Machine {
      *  index in the range 0..alphabet size - 1), after first advancing
      *  the machine. */
     int convert(int c) {
-        assertTrue(c >= 0 && c < _alphabet.size());
+        if (c < 0 || c >= _alphabet.size()) {
+            throw new EnigmaException("Character not in alphabet");
+        }
         int permuteChar = _plugboard.permute(c);
         Vector<String> rotorsTurned = new Vector<>();
 
