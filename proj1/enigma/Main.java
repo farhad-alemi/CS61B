@@ -138,8 +138,9 @@ public final class Main {
                 return new FixedRotor(rotorName, new Permutation(
                         _config.nextLine(), _alphabet));
             } else if (temp.charAt(0) == 'R') {
+                String perm = _config.nextLine() + " " + _config.nextLine();
                 return new Reflector(rotorName, new Permutation(
-                        _config.nextLine(), _alphabet));
+                        perm, _alphabet));
             } else if (temp.charAt(0) == 'M') {
                 return new MovingRotor(rotorName, new Permutation(
                         _config.nextLine(), _alphabet), temp.substring(1));
@@ -204,9 +205,12 @@ public final class Main {
 
     /** Parses the input using CONFIGARR array and calls setUp using M. */
     public void parseConfig(String[] configArr, Machine m) {
+        if (!configArr[0].equals("*")) {
+            throw new EnigmaException("Bad configuration");
+        }
         String cycles = "";
         int cycleIndex = -1;
-        for (int i = 0; i < configArr.length; ++i) {
+        for (int i = 1; i < configArr.length; ++i) {
             if (configArr[i].contains("(")) {
                 cycleIndex = i;
                 for (int j = i; j < configArr.length; ++j) {
@@ -217,12 +221,14 @@ public final class Main {
             }
         }
         if (!cycles.equals("")) {
-            String[] newConfig = new String[cycleIndex + 1];
-            System.arraycopy(configArr, 0, newConfig, 0, cycleIndex);
-            newConfig[cycleIndex] = cycles;
+            String[] newConfig = new String[cycleIndex + 2];
+            System.arraycopy(configArr, 1, newConfig, 0, cycleIndex - 1);
+            newConfig[cycleIndex - 1] = cycles;
             setUp(m, newConfig);
         } else {
-            setUp(m, configArr);
+            String[] newConfig = new String[configArr.length + 1];
+            System.arraycopy(configArr, 1, newConfig, 0, configArr.length - 1);
+            setUp(m, newConfig);
         }
     }
 

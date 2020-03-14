@@ -47,7 +47,6 @@ class Machine {
             Rotor tempRotor = iter.next();
             for (int i = 0; i < rotors.length; ++i) {
                 if (tempRotor.name().equals(rotors[i])) {
-
                     _currRotors[i] = tempRotor;
                     countMoving = (tempRotor.rotates()) ? (countMoving + 1)
                             : countMoving;
@@ -137,7 +136,11 @@ class Machine {
         String result = "";
 
         for (int i = 0; i < msg.length(); ++i) {
-            result += _alphabet.toChar(convert(_alphabet.toInt(msg.charAt(i))));
+            char c = msg.charAt(i);
+            if (c == ' ' || c == '\t') {
+                continue;
+            }
+            result += _alphabet.toChar(convert(_alphabet.toInt(c)));
         }
         return result;
     }
