@@ -159,6 +159,9 @@ public final class Main {
      *  which must have the format specified in the assignment. */
     private void setUp(Machine M, String[] settings) {
         String[] rotors = new String[M.numRotors()];
+        if (settings.length <= M.numRotors()) {
+            throw new EnigmaException("Invalid initial setting");
+        }
         String initialSettings = settings[M.numRotors()];
 
         System.arraycopy(settings, 0, rotors, 0, M.numRotors());
