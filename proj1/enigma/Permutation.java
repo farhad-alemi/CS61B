@@ -57,8 +57,10 @@ class Permutation {
      *  in ALPHABET, and converting the result to a character of ALPHABET. */
     char permute(char p) {
         int indexOfP = _cycles.indexOf(p), permIndex;
-        if (indexOfP == -1 || !alphabet().contains(p)) {
+        if (indexOfP == -1) {
             return p;
+        } else if (!alphabet().contains(p)) {
+            throw new EnigmaException("Letter not in alphabet");
         }
 
         if (_cycles.charAt(indexOfP + 1) == ')') {

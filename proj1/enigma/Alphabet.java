@@ -40,5 +40,5 @@ class Alphabet {
     }
 
     /** Al the characters in the alphabet. */
-    private String _chars;
+    public String _chars;
 }
