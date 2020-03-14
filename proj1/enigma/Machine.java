@@ -76,7 +76,7 @@ class Machine {
      *  numRotors()-1 characters in my alphabet. The first letter refers
      *  to the leftmost rotor setting (not counting the reflector).  */
     void setRotors(String setting) {
-        setRotors(setting, "AAAA");
+        setRotors(setting, "AAAAAAAAAAAA");
     }
 
     /** Set my rotors according to SETTING, which must be a string of
