@@ -131,21 +131,22 @@ public final class Main {
             rotorName = _config.next();
 
             temp = _config.next();
+            String perm = _config.nextLine();
+            if (_config.hasNext(Pattern.compile("\\(([^\\)])*\\)"))) {
+                perm += " " + _config.nextLine();
+            }
+
             if (temp.charAt(0) != 'M' && temp.length() > 1) {
                 throw new NoSuchElementException();
             } else if (temp.charAt(0) == 'N') {
-                return new FixedRotor(rotorName, new Permutation(
-                        _config.nextLine(), _alphabet));
+                return new FixedRotor(rotorName, new Permutation(perm,
+                        _alphabet));
             } else if (temp.charAt(0) == 'R') {
-                String perm = _config.nextLine();
-                if (_config.hasNext(Pattern.compile("\\(..\\)"))) {
-                    perm += " " + _config.nextLine();
-                }
-                return new Reflector(rotorName, new Permutation(
-                        perm, _alphabet));
+                return new Reflector(rotorName, new Permutation(perm,
+                        _alphabet));
             } else if (temp.charAt(0) == 'M') {
                 return new MovingRotor(rotorName, new Permutation(
-                        _config.nextLine(), _alphabet), temp.substring(1));
+                        perm, _alphabet), temp.substring(1));
             } else {
                 throw new NoSuchElementException();
             }

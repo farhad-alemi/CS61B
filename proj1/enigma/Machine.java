@@ -111,7 +111,8 @@ class Machine {
         if (_currRotors.length != 2) {
             for (int i = 1; i < numRotors() - 1; ++i) {
                 if (i + 1 < numRotors() - 1) {
-                    if (_currRotors[i + 1].atNotch()) {
+                    if (_currRotors[i + 1].atNotch()
+                            && _currRotors[i].rotates()) {
                         if (!rotorsTurned.contains(_currRotors[i].name())) {
                             rotorsTurned.add(_currRotors[i].name());
                             _currRotors[i].advance();
@@ -123,7 +124,8 @@ class Machine {
                         }
                     }
                 } else {
-                    if (_currRotors[i + 1].atNotch()) {
+                    if (_currRotors[i + 1].atNotch()
+                            && _currRotors[i].rotates()) {
                         if (!rotorsTurned.contains(_currRotors[i].name())) {
                             rotorsTurned.add(_currRotors[i].name());
                             _currRotors[i].advance();
