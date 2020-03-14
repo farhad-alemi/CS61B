@@ -84,7 +84,8 @@ public final class Main {
 
         while (_input.hasNext()) {
             String temp = _input.nextLine(), processed;
-            if (temp.charAt(0) == '*') {
+
+            if (!temp.equals("") && temp.charAt(0) == '*') {
                 parseConfig(temp.split("[ ]"), machine);
                 continue;
             }
