@@ -105,6 +105,13 @@ class Permutation {
         return true;
     }
 
+    /** Getter methods which returns the _CYLCES and enables
+     * adjustable ring feature.
+     */
+    String getCycles() {
+        return _cycles;
+    }
+
     /** Alphabet of this permutation. */
     private Alphabet _alphabet;
 

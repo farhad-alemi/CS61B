@@ -40,6 +40,11 @@ class Rotor {
         return _permutation;
     }
 
+    /** Sets the permutation using PERM. */
+    void setPermutation(Permutation perm) {
+        _permutation = perm;
+    }
+
     /** Return the size of my alphabet. */
     int size() {
         return permutation().size();

@@ -57,7 +57,7 @@ class Machine {
         }
 
         if (_pawls != countMoving) {
-            throw new EnigmaException("Incorrect number of moving rotors").
+            throw new EnigmaException("Incorrect number of moving rotor");
         }
 
         if (!_currRotors[0].reflecting()) {
@@ -86,6 +86,16 @@ class Machine {
     void setRotors(String setting, String alphaSetting) {
         assertEquals(setting.length(), _currRotors.length - 1);
         for (int i = 0; i < setting.length(); ++i) {
+            if (alphaSetting.charAt(i) != 'A') {
+                String prevChars = _currRotors[i + 1].alphabet().getAlphabet();
+                String tempStr = prevChars.substring(prevChars.indexOf
+                        (alphaSetting.charAt(i)));
+                tempStr += prevChars.substring(0, prevChars.length()
+                        - tempStr.length());
+                _currRotors[i + 1].setPermutation(new Permutation(_currRotors
+                        [i + 1].permutation().getCycles(),
+                        new Alphabet(tempStr)));
+            }
             _currRotors[i + 1].set(setting.charAt(i));
         }
     }
@@ -146,6 +156,11 @@ class Machine {
         }
 
         for (int i = numRotors() - 1; i > 0; --i) {
+            if (!_currRotors[i].alphabet().getAlphabet().equals(_alphabet
+                    .getAlphabet())) {
+                permuteChar = _currRotors[i].alphabet().toInt(_alphabet
+                        .toChar(permuteChar));
+            }
             permuteChar = _currRotors[i].convertForward(permuteChar);
         }
 

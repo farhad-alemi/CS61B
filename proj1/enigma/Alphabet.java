@@ -39,6 +39,11 @@ class Alphabet {
         return _chars.indexOf(ch);
     }
 
+    /** Getter method which return the characters in the alphabet. */
+    String getAlphabet() {
+        return _chars;
+    }
+
     /** Al the characters in the alphabet. */
     private String _chars;
 }
