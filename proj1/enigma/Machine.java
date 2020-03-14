@@ -17,7 +17,7 @@ class Machine {
             Collection<Rotor> allRotors) {
         assertTrue(numRotors > 1);
         assertTrue(pawls >= 0 && pawls < numRotors);
-        assertTrue(allRotors.size() > numRotors);
+        assertTrue(allRotors.size() >= numRotors);
 
         _alphabet = alpha;
         _numRotors = numRotors;
@@ -106,18 +106,22 @@ class Machine {
         assertTrue(c >= 0 && c < _alphabet.size());
         int permuteChar = _plugboard.permute(c);
 
-        for (int i = 1; i < numRotors() - 1; ++i) {
-            if (i + 1 < numRotors() - 1) {
-                if (_currRotors[i + 1].atNotch()) {
-                    _currRotors[i].advance();
+        if (_currRotors.length != 2) {
+            for (int i = 1; i < numRotors() - 1; ++i) {
+                if (i + 1 < numRotors() - 1) {
+                    if (_currRotors[i + 1].atNotch()) {
+                        _currRotors[i].advance();
+                        _currRotors[i + 1].advance();
+                    }
+                } else {
+                    if (_currRotors[i + 1].atNotch()) {
+                        _currRotors[i].advance();
+                    }
                     _currRotors[i + 1].advance();
                 }
-            } else {
-                if (_currRotors[i + 1].atNotch()) {
-                    _currRotors[i].advance();
-                }
-                _currRotors[i + 1].advance();
             }
+        } else {
+            _currRotors[1].advance();
         }
 
         for (int i = numRotors() - 1; i > 0; --i) {

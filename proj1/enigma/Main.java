@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.regex.Pattern;
 
 import static enigma.EnigmaException.*;
 import static org.junit.Assert.*;
@@ -128,9 +129,6 @@ public final class Main {
         String rotorName, temp;
         try {
             rotorName = _config.next();
-            if (!containsName(rotorName)) {
-                throw new NoSuchElementException();
-            }
 
             temp = _config.next();
             if (temp.charAt(0) != 'M' && temp.length() > 1) {
@@ -139,7 +137,10 @@ public final class Main {
                 return new FixedRotor(rotorName, new Permutation(
                         _config.nextLine(), _alphabet));
             } else if (temp.charAt(0) == 'R') {
-                String perm = _config.nextLine() + " " + _config.nextLine();
+                String perm = _config.nextLine();
+                if (_config.hasNext(Pattern.compile("\\(..\\)"))) {
+                    perm += " " + _config.nextLine();
+                }
                 return new Reflector(rotorName, new Permutation(
                         perm, _alphabet));
             } else if (temp.charAt(0) == 'M') {
