@@ -83,7 +83,7 @@ public final class Main {
         Machine machine = readConfig();
         parseConfig(_input.nextLine().split("[ ]"), machine);
 
-        while (_input.hasNext()) {
+        while (_input.hasNext() || _input.hasNextLine()) {
             String temp = _input.nextLine(), processed;
 
             if (!temp.equals("") && temp.charAt(0) == '*') {
