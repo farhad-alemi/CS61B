@@ -2,6 +2,7 @@ package enigma;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Vector;
 
 import static org.junit.Assert.*;
 
@@ -105,19 +106,33 @@ class Machine {
     int convert(int c) {
         assertTrue(c >= 0 && c < _alphabet.size());
         int permuteChar = _plugboard.permute(c);
+        Vector<String> rotorsTurned = new Vector<>();
 
         if (_currRotors.length != 2) {
             for (int i = 1; i < numRotors() - 1; ++i) {
                 if (i + 1 < numRotors() - 1) {
                     if (_currRotors[i + 1].atNotch()) {
-                        _currRotors[i].advance();
-                        _currRotors[i + 1].advance();
+                        if (!rotorsTurned.contains(_currRotors[i].name())) {
+                            rotorsTurned.add(_currRotors[i].name());
+                            _currRotors[i].advance();
+                        }
+                        if (!rotorsTurned.contains(_currRotors[i + 1]
+                                .name())) {
+                            rotorsTurned.add(_currRotors[i + 1].name());
+                            _currRotors[i + 1].advance();
+                        }
                     }
                 } else {
                     if (_currRotors[i + 1].atNotch()) {
-                        _currRotors[i].advance();
+                        if (!rotorsTurned.contains(_currRotors[i].name())) {
+                            rotorsTurned.add(_currRotors[i].name());
+                            _currRotors[i].advance();
+                        }
                     }
-                    _currRotors[i + 1].advance();
+                    if (!rotorsTurned.contains(_currRotors[i + 1].name())) {
+                        rotorsTurned.add(_currRotors[i + 1].name());
+                        _currRotors[i + 1].advance();
+                    }
                 }
             }
         } else {
