@@ -20,7 +20,7 @@ public class BitExercise {
     * For example: 2, 32, and 8192 are powers of two.
     */
     public static boolean powerOfTwo(int x) {
-        return x % 2 == 0;
+        return (x & 1) == 0;
     }
     
     /** Fill in the function below so that it returns 
