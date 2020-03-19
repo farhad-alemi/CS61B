@@ -38,6 +38,22 @@ class MovingRotor extends Rotor {
         return false;
     }
 
+    /** Returns the notch. */
+    String getNotches() {
+        return _notches;
+    }
+
+    //fixme
+    /** Updates the notches using alphaSetting parameter. */
+    void setNotches(char charSetting) {
+        String newNotches = "";
+        for (int i = 0; i < _notches.length(); ++i) {
+            newNotches += alphabet().toChar((alphabet().size() + alphabet().toInt(charSetting) + alphabet().toInt(_notches.charAt(i))) % alphabet().size());
+                       //(_alphabet.size() - _alphabet.toInt(alphaSetting.charAt(i)) + _currRotors[i + 1].setting()) % _alphabet.size()
+        }
+        _notches = newNotches;
+    }
+
     /** Rotor notches. */
     private String _notches;
 }
