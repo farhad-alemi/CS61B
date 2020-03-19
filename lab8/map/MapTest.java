@@ -8,9 +8,9 @@ import static org.junit.Assert.*;
 
 public class MapTest {
 
-    private final static long SEED = 0x61b;
-    private final static int TEST_MAP_SIZE = 15_000;
-    private final static int NUM_TRIALS = 10;
+    private static final long SEED = 0x61b;
+    private static final int TEST_MAP_SIZE = 15_000;
+    private static final int NUM_TRIALS = 10;
 
     /**
      * Tests the functionality of a SimpleMap for a set of key-values pairs
@@ -18,8 +18,8 @@ public class MapTest {
      * that updates are handled accordingly.
      */
     private void smallTestMap(SimpleMap<Integer, Integer> otherMap) {
-        int[] keys = {2,5,3,1,4,1};
-        int[] values = {1,5,4,3,4,2};
+        int[] keys = {2, 5, 3, 1, 4, 1};
+        int[] values = {1, 5, 4, 3, 4, 2};
         java.util.TreeMap<Integer, Integer> solnMap = new java.util.TreeMap<>();
         for (int i = 0; i < keys.length; i += 1) {
             otherMap.put(keys[i], values[i]);
@@ -97,12 +97,13 @@ public class MapTest {
             }
 
             if (otherTime / solnTime < minRatio) {
-                minRatio = otherTime /solnTime;
+                minRatio = otherTime / solnTime;
             }
-            System.out.println("otherMap ran " + otherTime / solnTime + "x the speed as java.util.TreeMap");
+            System.out.println("otherMap ran " + otherTime / solnTime
+                    + "x the speed as java.util.TreeMap");
         }
-        assertTrue("otherMap must be at most 10 times slower than Java's TreeMap.\n" +
-                "Smallest ratio obtained was: " + minRatio, minRatio < 10);
+        assertTrue("otherMap must be at most 10 times slower than Java's TreeMap.\n"
+                + "Smallest ratio obtained was: " + minRatio, minRatio < 10);
     }
 
     @Test
