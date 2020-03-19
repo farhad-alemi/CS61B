@@ -1,5 +1,5 @@
 /** A collection of bit twiddling exercises.
- *  @author
+ *  @author Farhad Alemi
  */
 
 public class BitExercise {
@@ -11,7 +11,8 @@ public class BitExercise {
     * should return 4, which in binary is 0b100.
     */
     public static int lastBit(int x) {
-        return 0; //TODO: Your code here
+        int twoComp = ~x + 1;
+        return x & twoComp;
     }
 
     /** Fill in the function below so that it returns 
@@ -19,7 +20,7 @@ public class BitExercise {
     * For example: 2, 32, and 8192 are powers of two.
     */
     public static boolean powerOfTwo(int x) {
-        return false; //TODO: Your code here
+        return x % 2 == 0;
     }
     
     /** Fill in the function below so that it returns 
@@ -29,6 +30,7 @@ public class BitExercise {
     * absolute(-1) should return 1.
     */
     public static int absolute(int x) {
-        return 0; //TODO: your code here
+        int mask = x >> 31;
+        return (mask ^ x) - mask;
     } 
 }

@@ -1,6 +1,6 @@
 /** Represents an array of integers each in the range -8..7.
  *  Such integers may be represented in 4 bits (called nybbles).
- *  @author
+ *  @author Farhad Alemi
  */
 public class Nybbles {
 
@@ -25,7 +25,8 @@ public class Nybbles {
         if (k < 0 || k >= _n) {
             throw new IndexOutOfBoundsException();
         } else {
-            return 0; // REPLACE WITH SOLUTION
+            int val = (_data[k / 8] << (k % 8 * 4)) >>> MAX_VALUE * 4;
+            return (val <= MAX_VALUE) ? val : (val - 16);
         }
     }
 
@@ -37,7 +38,11 @@ public class Nybbles {
         } else if (val < (-MAX_VALUE - 1) || val > MAX_VALUE) {
             throw new IllegalArgumentException();
         } else {
-            _data[0] = 0; // REPLACE WITH SOLUTION
+            val = (val << MAX_VALUE * 4) >>> ((k % 8) * 4);
+            int pre = _data[k / 8], post = _data[k / 8];
+            pre = (pre >>> (8 - k % 8) * 4) << ((8 - k % 8) * 4);
+            post = (post << (1 + k % 8) * 4) >>> ((1 + k % 8) * 4);
+            _data[k / 8] = pre | val | post;
         }
     }
 
