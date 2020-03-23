@@ -131,6 +131,12 @@ public class ArrayHeapTest {
         for (int item: items) {
             hp.changePriority(item, -1 * item);
         }
+
+        /*ArrayHeap<Integer> hp1 = new ArrayHeap<>();
+        for (int i = 0; i < sortedItems.length; ++i) {
+            hp1.insert(sortedItems[i], -1*items[i]);
+        }*/
+
         for (int i = 0; i < sortedItems.length; i++) {
             assertEquals(String.format("removing %d-th item", i),
                     (Integer) sortedItems[sortedItems.length - 1 - i],
