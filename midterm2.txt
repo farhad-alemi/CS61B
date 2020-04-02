@@ -1,0 +1,89 @@
+1.a) HashSet does not allow duplicates. Therefore, a destructive method may alter the object to become a
+duplicate of another object in H which violates the rules for H or change it in such a way that the object position as 
+calculated by the hash function is not its current one. On top of that, if we are doing open-addressed hashing, 
+modifying the obj may break the chain for colliding entries and we may lose some entries as a result.
+
+1.b) i would make sure not to modify it to become duplicate or alter it in such a way that the position calculated for it
+by the hash function does not agree with its current position.
+
+1.c) Worst case is Theta(N^2).
+1.d) Theta(N^2)
+1.e) O(1)
+1.f) Linked lists are in O(n) and BSTs are in O(lg(n)). Therefore, it is an improvement.
+
+////////////////////////////////////////////////////////////
+
+2.a) removeMin(); removeMin(); add(X); add(A); -> RRXA
+2.b) D > E, X > G, B > C, G < F
+
+////////////////////////////////////////////////////////////
+
+3)
+valuesLess:
+return L.getList();
+
+Lister:
+_limit = limit;
+lessKey = new ArrayList<>();
+
+doLeft:
+return tree.left != null;
+
+doRight:
+return tree.right != null && tree.key < _limit;
+
+doHere:
+return tree.key < _limit;
+
+visit:
+lessKey.add(tree.key);
+
+public ArrayList<Integer> getList() {
+        return lessKey;
+    }
+
+private int _limit;
+private ArrayList<Integer> lessKey;
+
+////////////////////////////////////////////////////////////
+
+4.a)
+mix:
+return ((~c & a) | (c & b));
+
+4.b)
+(~(~x ^ y))
+
+4.c)
+int M1 = n & (0b10000000_10000000_10000000_10000000);
+return (((M1 ^ n) << 1) | (M1 >>> 7));
+
+////////////////////////////////////////////////////////////
+
+5)
+R = 10 units
+
+////////////////////////////////////////////////////////////
+
+6.a) Best Case: O(1)          Worst Case: O(nlog(n))
+6.b) Best Case: O(1)         Worst Case: O(nlog(n))
+6.c) Best Case: O(1)       Worst Case: O(nlog(n))
+6.d) Best Case: O(1)         Worst Case: O(2^n)
+6.e) Best Case: O(1)        Worst Case: O(2^n)
+6.f) Since n/M would then only be integral values, it would be O(log(n)).
+
+////////////////////////////////////////////////////////////
+
+7)
+a: 14
+b: 13
+c: 14
+d: 4
+e: 13
+g: 14
+h: 20
+i: 4
+j: 12
+k: 14
+
+The edges P and I(thus S and T) are pruned.
