@@ -66,7 +66,8 @@ class MachinePlayer extends Player {
         return _foundMove;
     }
 
-    /** The function performs heuristics on the board BOARD. */
+    /** The function performs heuristics on the board BOARD and returns a
+     * heuristic score. */
     private int doHeuristics(Board board) {
         List<Integer> whiteRegions = board.getRegionSizes(WP);
         List<Integer> blackRegions = board.getRegionSizes(BP);
@@ -106,7 +107,7 @@ class MachinePlayer extends Player {
 
         for (Move move : legalMoves) {
             board.makeMove(move);
-            int score = findMove(board, depth -1,  saveMove, -1 * sense,
+            int score = findMove(board, depth - 1,  saveMove, -1 * sense,
                     alpha, beta);
             if (sense == 1) {
                 if (score > bestScore && saveMove) {

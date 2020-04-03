@@ -117,7 +117,7 @@ class Board {
 
         Piece fromPiece = get(move.getFrom()),
                 toPiece = get(move.getTo());
-        if (/*fromPiece.opposite()!= null &&*/ !toPiece.fullName().equals("-")
+        if (!toPiece.fullName().equals("-")
                 && toPiece.fullName().equals(fromPiece.opposite()
                 .fullName())) {
             move = move.captureMove();
@@ -228,6 +228,7 @@ class Board {
     /** Return the winning side, if any. If the game is not over, result is
      *  null.  If the game has ended in a tie, returns EMP. */
     Piece winner() {
+        computeRegions();
         if (!_winnerKnown) {
             if (_whiteRegionSizes.size() == 1 && _blackRegionSizes.size()
                     == 1) {
@@ -289,7 +290,7 @@ class Board {
             for (int i = 0; i < sqList.size() - 1; ++i) {
                 String piece = get(sqList.get(i)).fullName();
                 if (piece.equals(opposite) && from.distance(sqList.get(i))
-                        != sqList.size() + 1) {
+                        < sqList.size() + 1) {
                     return true;
                 }
             }
