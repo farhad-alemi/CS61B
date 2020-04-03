@@ -24,7 +24,7 @@ class HumanPlayer extends Player {
     @Override
     String getMove() {
         Scanner input = getGame().getInput();
-        return (input.hasNext()) ? input.nextLine() : "";
+        return (input.hasNext()) ? input.nextLine() : null;
     }
 
     @Override
