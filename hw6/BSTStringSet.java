@@ -6,7 +6,7 @@ import java.util.Stack;
 
 /**
  * Implementation of a BST based String Set.
- * @author
+ * @author Farhad Alemi
  */
 public class BSTStringSet implements StringSet, Iterable<String> {
     /** Creates a new empty set. */

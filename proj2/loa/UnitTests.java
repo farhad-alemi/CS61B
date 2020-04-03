@@ -7,7 +7,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /** The suite of all JUnit tests for the loa package.
- *  @author
+ *  @author Farhad Alemi
  */
 public class UnitTests {
 
@@ -20,6 +20,7 @@ public class UnitTests {
     /** A dummy test to avoid complaint. */
     @Test
     public void placeholderTest() {
+
     }
 
 }

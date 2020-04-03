@@ -18,7 +18,7 @@
 # Name of package containing main procedure 
 PACKAGE = loa
 
-STYLEPROG = style61b
+STYLEPROG = "C:\Users\Abdullah Mohammad\cs61b-software\bin\style61b"
 
 # Targets that don't correspond to files, but are to be treated as commands.
 .PHONY: default check integration unit clean style jar

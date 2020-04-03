@@ -2,8 +2,10 @@
  * University of California.  All rights reserved. */
 package loa;
 
+import java.util.Scanner;
+
 /** A Player that prompts for moves and reads them from its Game.
- *  @author
+ *  @author Farhad Alemi
  */
 class HumanPlayer extends Player {
 
@@ -21,7 +23,8 @@ class HumanPlayer extends Player {
 
     @Override
     String getMove() {
-        return "";          // FIXME
+        Scanner input = getGame().getInput();
+        return (input.hasNext()) ? input.nextLine() : "";
     }
 
     @Override
@@ -33,7 +36,4 @@ class HumanPlayer extends Player {
     boolean isManual() {
         return true;
     }
-
-
-
 }

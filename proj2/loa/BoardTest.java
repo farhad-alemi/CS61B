@@ -3,6 +3,10 @@
 package loa;
 
 import org.junit.Test;
+
+import java.util.List;
+import java.util.Objects;
+
 import static org.junit.Assert.*;
 
 import static loa.Piece.*;
@@ -10,7 +14,7 @@ import static loa.Square.sq;
 import static loa.Move.mv;
 
 /** Tests of the Board class API.
- *  @author
+ *  @author Farhad Alemi
  */
 public class BoardTest {
 
@@ -50,6 +54,29 @@ public class BoardTest {
         { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP },
     };
 
+    static final Piece[][] BLACK_WIN = {
+            { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP },
+            { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP },
+            { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP },
+            { EMP, BP, WP, BP, BP, BP, EMP, EMP },
+            { EMP, WP, BP, WP, WP, EMP, EMP, EMP },
+            { EMP, EMP, BP, BP, WP, WP, EMP, WP },
+            { EMP, WP, WP, BP, EMP, EMP, EMP, EMP },
+            { EMP, EMP, EMP, BP, EMP, EMP, EMP, EMP }
+
+    };
+
+    static final Piece[][] WHITE_WIN = {
+            { EMP, WP, EMP, EMP, EMP, EMP, EMP, EMP },
+            { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP },
+            { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP },
+            { EMP, BP, WP, EMP, BP, EMP, EMP, EMP },
+            { EMP, WP, BP, WP, WP, EMP, EMP, EMP },
+            { EMP, EMP, BP, BP, WP, WP, WP, EMP },
+            { EMP, WP, WP, WP, EMP, EMP, EMP, EMP },
+            { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP }
+
+    };
 
     static final String BOARD1_STRING =
         "===\n"
@@ -83,6 +110,12 @@ public class BoardTest {
         assertFalse("f3-e4", b.isLegal(mv("f3-e4")));
         assertFalse("c4-c7", b.isLegal(mv("c4-c7")));
         assertFalse("b1-b4", b.isLegal(mv("b1-b4")));
+
+        List<Move> legalMoves = b.legalMoves();
+        assertTrue(legalMoves.contains(mv("f3-h5")));
+        assertTrue(legalMoves.contains(mv("f3-h1")));
+        assertTrue(legalMoves.contains(mv("f3-b3")));
+        assertTrue(legalMoves.contains(mv("f3-d5")));
     }
 
     /** Test contiguity. */
@@ -100,6 +133,24 @@ public class BoardTest {
         assertTrue("Board 3 white contiguous?", b3.piecesContiguous(WP));
         assertTrue("Board 3 black contiguous?", b3.piecesContiguous(BP));
         assertTrue("Board 3 game over", b3.gameOver());
+
+        Board b4 = new Board(BLACK_WIN, WP);
+        assertTrue(b4.piecesContiguous(BP));
+        assertFalse(b4.piecesContiguous(WP));
+        assertEquals(b4.winner(), BP);
+        assertTrue(b4.gameOver());
+
+        Board b5 = new Board(WHITE_WIN, WP);
+        assertFalse(b5.piecesContiguous(BP));
+        assertFalse(b5.piecesContiguous(WP));
+        assertNull(b5.winner());
+        assertFalse(b5.gameOver());
+
+        b5.makeMove(mv("b1-e4"));
+        assertTrue(b5.piecesContiguous(BP));
+        assertTrue(b5.piecesContiguous(WP));
+        assertEquals(b5.winner(), WP);
+        assertTrue(b5.gameOver());
     }
 
     @Test
@@ -123,6 +174,61 @@ public class BoardTest {
         assertEquals("Check for board 1 restored after retraction", b0, b1);
         assertEquals("Check move count for board 1 after move + retraction",
                      0, b1.movesMade());
+
+        b1.makeMove(mv("c8-c5"));
+        assertEquals(b1.get(Objects.requireNonNull(sq("c8"))).fullName(),
+                EMP.fullName());
+        assertEquals(b1.get(Objects.requireNonNull(sq("c5"))).fullName(),
+                BP.fullName());
+
+        b1.makeMove(mv("g8-c8"));
+        assertEquals(b1.get(Objects.requireNonNull(sq("c8"))).fullName(),
+                BP.fullName());
+        assertEquals(b1.get(Objects.requireNonNull(sq("g8"))).fullName(),
+                EMP.fullName());
+
+        b1.makeMove(mv("f8-h6"));
+        assertEquals(b1.get(Objects.requireNonNull(sq("f8"))).fullName(),
+                EMP.fullName());
+        assertEquals(b1.get(Objects.requireNonNull(sq("h6"))).fullName(),
+                BP.fullName());
+
+        b1.retract();
+        b1.retract();
+        b1.retract();
+        assertEquals(b0, b1);
     }
 
+    @Test
+    public void testConstructor() {
+        Board b0 = new Board();
+        Board b1 = new Board(Board.INITIAL_PIECES, BP);
+        assertEquals(b0, b1);
+
+        Board b2 = new Board(BOARD3, WP);
+        b0 = new Board(b2);
+        assertEquals(b2, b0);
+
+        b1.initialize(BOARD3, BP);
+        assertNotEquals(b1, b2);
+
+        b0.clear();
+        assertEquals(b0, new Board());
+
+        b1.copyFrom(b0);
+        assertEquals(b0, b1);
+    }
+
+    @Test
+    public void testGetSet() {
+        Board b0 = new Board();
+        assertEquals(b0.get(Square.sq(6, 7)).fullName(), BP.fullName());
+
+        b0.set(Square.sq(6, 7), EMP);
+        assertEquals(b0.get(Square.sq(6, 7)).fullName(), EMP.fullName());
+
+        b0.set(Square.sq(5, 7), WP, null);
+        assertEquals(b0.get(Square.sq(5, 7)).fullName(), WP.fullName());
+        assertEquals(BP.fullName(), b0.turn().fullName());
+    }
 }

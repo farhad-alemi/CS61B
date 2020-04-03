@@ -15,7 +15,8 @@ import static loa.Main.*;
 import static loa.Utils.*;
 
 /** Represents one game of Lines of Action.
- *  @author  */
+ *  @author  Farhad Alemi
+ *  */
 class Game {
 
     /** Number of milliseconds in 1 second. */
@@ -308,6 +309,11 @@ class Game {
     /** Print a help message. */
     void help() {
         Main.printResource(HELP_FILE);
+    }
+
+    /** Returns the input stream. */
+    Scanner getInput() {
+        return _input;
     }
 
     /** The official game board. */

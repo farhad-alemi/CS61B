@@ -65,6 +65,7 @@ enum Piece {
 
     /** The textual representation of this piece. */
     private String _fullName;
+
     /** The one-character abbreviation of this piece, used in printed
      *  representations ot the board. */
     private String _abbrev;

@@ -2,7 +2,7 @@
  * University of California.  All rights reserved. */
 package loa;
 
-import static loa.Piece.*;
+
 
 /** Represents a player.  Extensions of this class do the actual playing.
  *  @author P. N. Hilfinger
@@ -39,13 +39,13 @@ public abstract class Player {
 
     /** A factory method that returns a Player with my concrete type that
      *  plays the side indicated by PIECE in a game controlled by
-     *  GAME.  This typically will call the constructor for the class
+     *  GAME. This typically will call the constructor for the class
      *  it appears in. */
     abstract Player create(Piece piece, Game game);
 
     /** This player's side. */
     private final Piece _side;
+
     /** The game this player is part of. */
     private Game _game;
-
 }

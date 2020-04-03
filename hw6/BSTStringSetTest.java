@@ -1,4 +1,7 @@
 import org.junit.Test;
+
+import javax.swing.*;
+
 import static org.junit.Assert.*;
 import java.util.List;
 
@@ -12,5 +15,9 @@ public class BSTStringSetTest  {
     @Test
     public void testNothing() {
         // FIXME: Delete this function and add your own tests
+    }
+
+    public static final void main(String[] as) {
+        
     }
 }

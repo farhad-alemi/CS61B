@@ -12,9 +12,10 @@ import java.util.regex.Pattern;
 
 import static loa.Piece.*;
 import static loa.Square.*;
+import static org.junit.Assert.assertNotEquals;
 
 /** Represents the state of a game of Lines of Action.
- *  @author
+ *  @author Farhad Alemi
  */
 class Board {
 
@@ -51,7 +52,10 @@ class Board {
 
     /** Set my state to CONTENTS with SIDE to move. */
     void initialize(Piece[][] contents, Piece side) {
-        // FIXME
+        for (int i = 0; i < contents.length; ++i) {
+            System.arraycopy(contents[i], 0, _board, i * contents[i].length,
+                    contents[i].length);
+        }
         _turn = side;
         _moveLimit = DEFAULT_MOVE_LIMIT;
     }
@@ -66,7 +70,15 @@ class Board {
         if (board == this) {
             return;
         }
-        // FIXME
+        System.arraycopy(board._board, 0, _board, 0, board._board.length);
+        _moves = new ArrayList<>(board._moves);
+        _turn = board._turn;
+        _moveLimit = board._moveLimit;
+        _winnerKnown = board._winnerKnown;
+        _winner = board._winner;
+        _subsetsInitialized = board._subsetsInitialized;
+        _whiteRegionSizes = new ArrayList<>(board._whiteRegionSizes);
+        _blackRegionSizes = new ArrayList<>(board._blackRegionSizes);
     }
 
     /** Return the contents of the square at SQ. */
@@ -77,7 +89,8 @@ class Board {
     /** Set the square at SQ to V and set the side that is to move next
      *  to NEXT, if NEXT is not null. */
     void set(Square sq, Piece v, Piece next) {
-        // FIXME
+        _turn = (next != null) ? next : _turn;
+        _board[sq.index()] = v;
     }
 
     /** Set the square at SQ to V, without modifying the side that
@@ -101,14 +114,36 @@ class Board {
      *  the capturing move. */
     void makeMove(Move move) {
         assert isLegal(move);
-        // FIXME
+
+        Piece fromPiece = get(move.getFrom()),
+                toPiece = get(move.getTo());
+        if (/*fromPiece.opposite()!= null &&*/ !toPiece.fullName().equals("-")
+                && toPiece.fullName().equals(fromPiece.opposite()
+                .fullName())) {
+            move = move.captureMove();
+        }
+        set(move.getTo(), fromPiece, turn().opposite());
+        set(move.getFrom(), EMP);
+
+        _moves.add(move);
+        _subsetsInitialized = false;
+        _winnerKnown = false;
     }
 
     /** Retract (unmake) one move, returning to the state immediately before
      *  that move.  Requires that movesMade () > 0. */
     void retract() {
         assert movesMade() > 0;
-        // FIXME
+        Move move = _moves.remove(_moves.size() - 1);
+
+        set(move.getFrom(), get(move.getTo()), turn().opposite());
+        if (move.isCapture()) {
+            set(move.getTo(), get(move.getFrom()).opposite());
+        } else {
+            set(move.getTo(), EMP);
+        }
+        _subsetsInitialized = false;
+        _winnerKnown = false;
     }
 
     /** Return the Piece representing who is next to move. */
@@ -119,7 +154,36 @@ class Board {
     /** Return true iff FROM - TO is a legal move for the player currently on
      *  move. */
     boolean isLegal(Square from, Square to) {
-        return true;   // FIXME
+        if (!from.isValidMove(to) || blocked(from, to)) {
+            return false;
+        } else {
+            int direction = from.direction(to);
+            int numSquaresInLOA = squaresInLine(from, direction).size()
+                    + squaresInLine(from, (direction + 4) % BOARD_SIZE).size();
+            return from.moveDest(direction, numSquaresInLOA + 1) == to;
+        }
+    }
+
+    /** Returns the list of squares in the line of action from FROM
+     * in direction DIR. */
+    ArrayList<Square> squaresInLine(Square from, int dir) {
+        return squaresInLine(from, dir, false);
+    }
+
+    /** Returns the list of squares in the line of action from FROM
+     * in direction DIR taking into account INCLUDEEMP for empty squares. */
+    ArrayList<Square> squaresInLine(Square from, int dir, boolean includeEMP) {
+        ArrayList<Square> sqList = new ArrayList<>();
+
+        for (int step = 1; step < BOARD_SIZE; ++step) {
+            Square sq = from.moveDest(dir, step);
+            if (sq == null) {
+                break;
+            } else if (!get(sq).fullName().equals("-") || includeEMP) {
+                sqList.add(sq);
+            }
+        }
+        return sqList;
     }
 
     /** Return true iff MOVE is legal for the player currently on move.
@@ -130,26 +194,52 @@ class Board {
 
     /** Return a sequence of all legal moves from this position. */
     List<Move> legalMoves() {
-        return null;  // FIXME
+        ArrayList<Move> moves = new ArrayList<>();
+
+        for (int i = 0; i < _board.length; ++i) {
+            if (_board[i].fullName().equals(turn().fullName())) {
+                Square from = Square.sq(i % BOARD_SIZE, i / BOARD_SIZE);
+
+                for (int dir = 0; dir < 8; ++dir) {
+                    ArrayList<Square> sqList = squaresInLine(from, dir, true);
+                    for (Square sq : sqList) {
+                        if (isLegal(from, sq)) {
+                            moves.add(Move.mv(from, sq));
+                        }
+                    }
+                }
+            }
+        }
+
+        return moves;
     }
 
     /** Return true iff the game is over (either player has all his
-     *  pieces continguous or there is a tie). */
+     *  pieces contiguous or there is a tie). */
     boolean gameOver() {
         return winner() != null;
     }
 
-    /** Return true iff SIDE's pieces are continguous. */
+    /** Return true iff SIDE's pieces are contiguous. */
     boolean piecesContiguous(Piece side) {
         return getRegionSizes(side).size() == 1;
     }
 
-    /** Return the winning side, if any.  If the game is not over, result is
+    /** Return the winning side, if any. If the game is not over, result is
      *  null.  If the game has ended in a tie, returns EMP. */
     Piece winner() {
         if (!_winnerKnown) {
-            // FIXME
-            _winnerKnown = true;
+            if (_whiteRegionSizes.size() == 1 && _blackRegionSizes.size()
+                    == 1) {
+                _winner = turn().opposite();
+            } else if (_whiteRegionSizes.size() == 1) {
+                _winner = WP;
+            } else if (_blackRegionSizes.size() == 1) {
+                _winner = BP;
+            } else if (movesMade() >= DEFAULT_MOVE_LIMIT) {
+                _winner = EMP;
+            }
+            _winnerKnown = _winner != null;
         }
         return _winner;
     }
@@ -175,22 +265,36 @@ class Board {
     @Override
     public String toString() {
         Formatter out = new Formatter();
-        out.format("===%n");
+        out.format("===\n");
         for (int r = BOARD_SIZE - 1; r >= 0; r -= 1) {
             out.format("    ");
             for (int c = 0; c < BOARD_SIZE; c += 1) {
                 out.format("%s ", get(sq(c, r)).abbrev());
             }
-            out.format("%n");
+            out.format("\n");
         }
-        out.format("Next move: %s%n===", turn().fullName());
+        out.format("Next move: %s\n===", turn().fullName());
         return out.toString();
     }
 
     /** Return true if a move from FROM to TO is blocked by an opposing
      *  piece or by a friendly piece on the target square. */
     private boolean blocked(Square from, Square to) {
-        return false; // FIXME
+        if (get(to).fullName().equals(get(from).fullName())) {
+            return true;
+        } else {
+            ArrayList<Square> sqList = squaresInLine(from, from.direction(to));
+            String opposite = get(from).opposite().fullName();
+
+            for (int i = 0; i < sqList.size() - 1; ++i) {
+                String piece = get(sqList.get(i)).fullName();
+                if (piece.equals(opposite) && from.distance(sqList.get(i))
+                        != sqList.size() + 1) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
     /** Return the size of the as-yet unvisited cluster of squares
@@ -198,7 +302,54 @@ class Board {
      *  have already been processed or are in different clusters.  Update
      *  VISITED to reflect squares counted. */
     private int numContig(Square sq, boolean[][] visited, Piece p) {
-        return 0;  // FIXME
+        if (p == EMP || get(sq) == EMP || visited[sq.row()][sq.col()]) {
+            return 0;
+        } else {
+            int counter = 0;
+            for (Square s1 : sq.adjacent()) {
+                visited[sq.row()][sq.col()] = true;
+                counter += numContig(s1, visited, p);
+            }
+            return counter + 1;
+        }
+    }
+
+    /** Generates and returns the visited boolean array for piece P. */
+    boolean[][] generateVisited(Piece p) {
+        assertNotEquals(p, EMP);
+        boolean[][] visited = new boolean[BOARD_SIZE][BOARD_SIZE];
+
+        for (int i = 0; i < _board.length; ++i) {
+            visited[i / BOARD_SIZE][i % BOARD_SIZE] = _board[i] != p;
+        }
+        return visited;
+    }
+
+    /** Counts and returns the number of current piece using boolean
+     * map array VISITED. */
+    int countPiece(boolean[][] visited) {
+        int counter = 0;
+        for (int row = 0; row < visited.length; ++row) {
+            for (int col = 0; col < visited[row].length; ++col) {
+                if (!visited[row][col]) {
+                    ++counter;
+                }
+            }
+        }
+        return counter;
+    }
+
+    /** Calculates the region sizes for P using VISITED and modifies
+     *  REGIONSIZE and VISITED. */
+    private void calcRegions(ArrayList<Integer> regionSize,
+                             boolean[][] visited, Piece p) {
+        for (int row = 0; row < visited.length; ++row) {
+            for (int col = 0; col < visited[row].length; ++col) {
+                if (!visited[row][col]) {
+                    regionSize.add(numContig(Square.sq(col, row), visited, p));
+                }
+            }
+        }
     }
 
     /** Set the values of _whiteRegionSizes and _blackRegionSizes. */
@@ -208,7 +359,13 @@ class Board {
         }
         _whiteRegionSizes.clear();
         _blackRegionSizes.clear();
-        // FIXME
+
+        boolean[][] blackVisited = generateVisited(BP),
+                whiteVisited = generateVisited(WP);
+
+        calcRegions(_blackRegionSizes, blackVisited, BP);
+        calcRegions(_whiteRegionSizes, whiteVisited, WP);
+
         Collections.sort(_whiteRegionSizes, Collections.reverseOrder());
         Collections.sort(_blackRegionSizes, Collections.reverseOrder());
         _subsetsInitialized = true;
@@ -220,12 +377,12 @@ class Board {
         computeRegions();
         if (s == WP) {
             return _whiteRegionSizes;
-        } else {
+        } else if (s == BP) {
             return _blackRegionSizes;
+        } else {
+            throw new IllegalArgumentException("Not a valid piece.");
         }
     }
-
-    // FIXME: Other methods, variables?
 
     /** The standard initial configuration for Lines of Action (bottom row
      *  first). */
@@ -244,13 +401,17 @@ class Board {
     private final Piece[] _board = new Piece[BOARD_SIZE  * BOARD_SIZE];
 
     /** List of all unretracted moves on this board, in order. */
-    private final ArrayList<Move> _moves = new ArrayList<>();
+    private ArrayList<Move> _moves = new ArrayList<>();
+
     /** Current side on move. */
     private Piece _turn;
+
     /** Limit on number of moves before tie is declared.  */
     private int _moveLimit;
+
     /** True iff the value of _winner is known to be valid. */
     private boolean _winnerKnown;
+
     /** Cached value of the winner (BP, WP, EMP (for tie), or null (game still
      *  in progress).  Use only if _winnerKnown. */
     private Piece _winner;
@@ -259,7 +420,7 @@ class Board {
     private boolean _subsetsInitialized;
 
     /** List of the sizes of continguous clusters of pieces, by color. */
-    private final ArrayList<Integer>
+    private ArrayList<Integer>
         _whiteRegionSizes = new ArrayList<>(),
         _blackRegionSizes = new ArrayList<>();
 }
