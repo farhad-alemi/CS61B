@@ -238,7 +238,7 @@ class Board {
                 _winner = WP;
             } else if (_blackRegionSizes.size() == 1) {
                 _winner = BP;
-            } else if (movesMade() >= DEFAULT_MOVE_LIMIT) {
+            } else if (movesMade() >= _moveLimit) {
                 _winner = EMP;
             }
             _winnerKnown = _winner != null;
@@ -287,16 +287,18 @@ class Board {
         } else {
             ArrayList<Square> sqList = squaresInLine(from, from.direction(to));
             String opposite = get(from).opposite().fullName();
+            int lengthOfAction = sqList.size() + 1 + squaresInLine(from,
+                    (from.direction(to) + 4) % BOARD_SIZE).size();
 
             if (sqList.size() == 1 && get(sqList.get(0)) == get(from).opposite()
-                    && from.distance(sqList.get(0)) == 1) {
+                && from.distance(sqList.get(0)) < lengthOfAction) {
                 return true;
             }
 
             for (int i = 0; i < sqList.size() - 1; ++i) {
                 String piece = get(sqList.get(i)).fullName();
                 if (piece.equals(opposite) && from.distance(sqList.get(i))
-                        < sqList.size() + 1) {
+                        < lengthOfAction) {
                     return true;
                 }
             }
@@ -389,11 +391,6 @@ class Board {
         } else {
             throw new IllegalArgumentException("Not a valid piece.");
         }
-    }
-
-    /** Getter method which returns the moves made on board. */
-    ArrayList<Move> getMoves() {
-        return _moves;
     }
 
     /** Getter method which returns the board. */
