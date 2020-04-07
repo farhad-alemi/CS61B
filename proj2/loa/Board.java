@@ -154,7 +154,8 @@ class Board {
     /** Return true iff FROM - TO is a legal move for the player currently on
      *  move. */
     boolean isLegal(Square from, Square to) {
-        if (!from.isValidMove(to) || blocked(from, to)) {
+        if (!from.isValidMove(to) || blocked(from, to) || get(from)
+                != turn()) {
             return false;
         } else {
             int direction = from.direction(to);
@@ -287,6 +288,11 @@ class Board {
             ArrayList<Square> sqList = squaresInLine(from, from.direction(to));
             String opposite = get(from).opposite().fullName();
 
+            if (sqList.size() == 1 && get(sqList.get(0)) == get(from).opposite()
+                    && from.distance(sqList.get(0)) == 1) {
+                return true;
+            }
+
             for (int i = 0; i < sqList.size() - 1; ++i) {
                 String piece = get(sqList.get(i)).fullName();
                 if (piece.equals(opposite) && from.distance(sqList.get(i))
@@ -384,6 +390,17 @@ class Board {
             throw new IllegalArgumentException("Not a valid piece.");
         }
     }
+
+    /** Getter method which returns the moves made on board. */
+    ArrayList<Move> getMoves() {
+        return _moves;
+    }
+
+    /** Getter method which returns the board. */
+    Piece[] getBoard() {
+        return _board;
+    }
+
 
     /** The standard initial configuration for Lines of Action (bottom row
      *  first). */

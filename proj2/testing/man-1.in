@@ -1,0 +1,34 @@
+# Both players use the folowing instructions.
+#* java -ea loa.Main 
+manual white
+dump
+b1-d3
+dump
+h3-e3
+dump
+g8-e6
+dump
+a7-d4
+dump
+b8-d6
+dump
+h4-e4
+f8-c5
+dump
+h5-e5
+dump
+c1-c4
+dump
+a5-c3
+dump
+d8-c7
+dump
+h6-f4
+dump
+e8-c6
+dump
+h2-f2
+dump
+d1-e2
+dump
+#*move/win

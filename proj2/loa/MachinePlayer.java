@@ -4,8 +4,7 @@ package loa;
 
 import java.util.List;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
+import static java.lang.Math.*;
 import static loa.Piece.*;
 
 /** An automated Player.
@@ -58,6 +57,8 @@ class MachinePlayer extends Player {
         int value;
         assert side() == work.turn();
         _foundMove = null;
+        _alpha = -INFTY;
+        _beta = INFTY;
         if (side() == WP) {
             value = findMove(work, chooseDepth(), true, 1, -INFTY, INFTY);
         } else {
@@ -72,24 +73,49 @@ class MachinePlayer extends Player {
         List<Integer> whiteRegions = board.getRegionSizes(WP);
         List<Integer> blackRegions = board.getRegionSizes(BP);
         int numWhite, numBlack, score = 0;
+        final int weight = 100;
 
         numWhite = board.countPiece(board.generateVisited(WP));
         numBlack = board.countPiece(board.generateVisited(BP));
 
         if (numWhite == 1 || whiteRegions.size() == 1) {
-            score += 100;
+            score += weight;
         } else if (numWhite <= 3) {
-            score += 10;
+            score += weight / 2;
         }
         if (numBlack == 1 || blackRegions.size() == 1) {
-            score -= 100;
+            score -= weight;
         } else if (numBlack <= 3) {
-            score -= 10;
+            score -= weight / 2;
         }
-        score += (blackRegions.size() - whiteRegions.size());
+
+        score += calcDistance(board, BP) - calcDistance(board, WP)
+                + (blackRegions.size() - whiteRegions.size());
         return score;
     }
 
+    /** Returns the distance between two regions in board B for piece P. */
+    int calcDistance(Board b, Piece p) {
+        int counter = 0;
+
+        int start = (b.getRegionSizes(p).size() == 2) ? 0 : (int) (random()
+                % b.getBoard().length);
+        for (int i = start; i < b.getBoard().length; ++i) {
+            if (b.getBoard()[i] == p) {
+                for (int j = i; j < b.getBoard().length; ++j) {
+                    if (b.getBoard()[j] != p) {
+                        for (int k = j; k < b.getBoard().length
+                                && b.getBoard()[k] != p; ++k) {
+                            ++counter;
+                        }
+                        break;
+                    }
+                }
+            }
+
+        }
+        return counter;
+    }
     /** Find a move from position BOARD and return its value, recording
      *  the move found in _foundMove iff SAVEMOVE. The move
      *  should have maximal value or have value > BETA if SENSE==1,
@@ -108,19 +134,19 @@ class MachinePlayer extends Player {
         for (Move move : legalMoves) {
             board.makeMove(move);
             int score = findMove(board, depth - 1,  saveMove, -1 * sense,
-                    alpha, beta);
+                    _alpha, _beta);
             if (sense == 1) {
-                if (score > bestScore && saveMove) {
+                if (score > bestScore && saveMove && depth == chooseDepth()) {
                     _foundMove = move;
                 }
                 bestScore = max(bestScore, score);
-                alpha = max(alpha, score);
+                _alpha = max(alpha, score);
             } else if (sense == -1) {
-                if (score < bestScore && saveMove) {
+                if (score < bestScore && saveMove && depth == chooseDepth()) {
                     _foundMove = move;
                 }
                 bestScore = min(bestScore, score);
-                beta = min(beta, score);
+                _beta = min(beta, score);
             } else {
                 throw new IllegalArgumentException("Incorrect value for SENSE");
             }
@@ -142,4 +168,10 @@ class MachinePlayer extends Player {
 
     /** Used to convey moves discovered by findMove. */
     private Move _foundMove;
+
+    /** Used as the best maximum attainable value. */
+    private int _alpha;
+
+    /** Used as the best minimum attainable value. */
+    private int _beta;
 }
