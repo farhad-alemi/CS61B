@@ -107,7 +107,6 @@ class Game {
                 _board = new Board();
                 _playing = true;
                 manualCommand("black");
-                autoCommand("white");
                 break;
             case "dump":
                 System.out.printf("%s%n", _board);
