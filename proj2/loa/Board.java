@@ -2,6 +2,7 @@
  * University of California.  All rights reserved. */
 package loa;
 
+import java.util.Objects;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -154,8 +155,8 @@ class Board {
     /** Return true iff FROM - TO is a legal move for the player currently on
      *  move. */
     boolean isLegal(Square from, Square to) {
-        if (!from.isValidMove(to) || blocked(from, to) || get(from)
-                != turn()) {
+        if (get(from) == EMP || !from.isValidMove(to) || blocked(from, to)
+                || get(from) != turn()) {
             return false;
         } else {
             int direction = from.direction(to);
@@ -282,11 +283,13 @@ class Board {
     /** Return true if a move from FROM to TO is blocked by an opposing
      *  piece or by a friendly piece on the target square. */
     private boolean blocked(Square from, Square to) {
-        if (get(to).fullName().equals(get(from).fullName())) {
+        if (get(from).opposite() == null || get(to).fullName()
+                .equals(get(from).fullName())) {
             return true;
         } else {
             ArrayList<Square> sqList = squaresInLine(from, from.direction(to));
-            String opposite = get(from).opposite().fullName();
+            String opposite = Objects.requireNonNull(get(from).opposite())
+                    .fullName();
             int lengthOfAction = sqList.size() + 1 + squaresInLine(from,
                     (from.direction(to) + 4) % BOARD_SIZE).size();
 

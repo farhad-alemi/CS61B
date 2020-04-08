@@ -104,7 +104,10 @@ class Game {
                 break;
             case "new":
                 _board.clear();
+                _board = new Board();
                 _playing = true;
+                manualCommand("black");
+                autoCommand("white");
                 break;
             case "dump":
                 System.out.printf("%s%n", _board);
@@ -114,6 +117,9 @@ class Game {
                 break;
             case "auto":
                 autoCommand(command.group(2).toLowerCase());
+                break;
+            case "retract":
+                retractCommand();
                 break;
             case "quit":
                 quit();
@@ -138,6 +144,16 @@ class Game {
                 break;
             }
         }
+    }
+
+    /** Retracts the move(s) on board. */
+    private void retractCommand() {
+        if (_board.movesMade() == 0 || (!manualBlack() && !manualWhite())) {
+            return;
+        } else if ((manualBlack() ^ manualWhite()) && _board.movesMade() > 1) {
+            _board.retract();
+        }
+        _board.retract();
     }
 
     /** Return true iff white is a manual player. */

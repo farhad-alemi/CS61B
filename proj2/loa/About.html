@@ -1,15 +1,76 @@
 <!--Skeleton Copyright (C) 2015, 2020 Paul N. Hilfinger and the Regents of the
  * University of California.  All rights reserved. -->
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
-<body style="font-family: Courier; background-color: #EFEFEF; color: black; font-size: 14px; font-weight: bold;">
+<body style="font-family: serif; background-color: #EFEFEF; color: black;
+font-size: 9px; padding: 10px; text-align: justify;">
+
+<p style="font-size: 12px; font-weight: bold; margin: 0;">Introduction</p>
 
 <p>
-LOA CS61B, Version 2.0.
+    <em>Lines of Action</em> is a board game invented by Claude Soucie.
+    It is played on a checkerboard with
+    ordinary checkers pieces.  The two players take turns, each moving a
+    piece, and possibly capturing an opposing piece.
+    The goal of the game is to get all of one's pieces into one group of pieces that
+    are connected. Two pieces are connected if they are adjacent horizontally,
+    vertically, or diagonally.
+    Initially, the pieces are arranged as shown in Figure 1.
+    Play alternates between Black and White, with Black moving first.
+</p>
+
+<div style="text-align: center; margin-top: 10px">
+    <img alt="Initial Board and Moves"
+         height = 200 src="https://inst.eecs.berkeley.edu/~cs61b/sp20/materials/proj/proj2/img/fig1.png" width = 400>
+    <blockquote><strong>Figure 1.</strong> (a) Initial position, showing standard designations for rows
+        and columns. (b) Possible moves for the black piece at f3. In (b) the
+        piece at f3 cannot move horizontally to the right because it would be forced to
+        move 4 steps, which would push it off the board. The same piece cannot move
+        vertically up because there are 4 pieces in the vertical line of action and moving
+        4 steps up would require it to move over enemy pieces.
+    </blockquote>
+</div>
+
+<p>
+    Figure 1b illustrates the four possible moves
+    for a black piece in the position shown.
+    (The examples here are taken from the
+    <a href="http://www.boardspace.net/loa/english/index.html">BoardSpace webpage</a>.)
+    The move f3-d5 is a capture; all others are ordinary moves.
+    The diagonal moves are all two squares, since there are two pieces
+    along each of the diagonals shown.  The horizontal move is four squares
+    because of the four pieces in row 3.
 </p>
 
 <p>
-This is an implementation of a version of the board game Lines of Action.
+    The game ends when one side's pieces are contiguous: that is, there is
+    a path connecting any two pieces of that side's color by a sequence of steps to
+    adjacent squares (horizontally, vertically, or diagonally), each of which
+    contains a piece of same color.  Hence, when a side is reduced to a single
+    piece, all of its pieces are contiguous.  If a move causes both sides' pieces
+    to be contiguous, the winner is the side that made that move.
+    One can have infinite games, where players just
+    repeat positions indefinitely.  We will prevent this with a move-limit
+    rule: if the current move limit is <em>L</em> moves (the default is 60),
+    then after the two sides both make <em>L</em> moves combined, the game ends in a tie.
+    Figure 2a shows a final position.
+    Figure 2b shows a board just before a move that will give both sides
+    contiguous pieces.  Since the move is White's,  White wins this game.
+</p>
+
+<div style="text-align: center; margin-top: 10px;">
+    <img alt="Initial Board and Moves" height=200 width=400 src="https://inst.eecs.berkeley.edu/~cs61b/sp20/materials/proj/proj2/img/fig2.png">
+    <blockquote><strong>Figure 2.</strong> End positions. Position (a) is a win for Black.  In position (b),
+        White can move as shown, capturing an isolated black piece and
+        giving <em>both</em> players contiguous pieces. Since
+        it is White's move, however, the result is counted as a winning position for
+        White.
+    </blockquote>
+</div>
+
+<p>
+    <strong>Source:</strong> <a href="https://inst.eecs.berkeley.edu/~cs61b/sp20/materials/proj/proj2/index.html">CS 61B SP20 Project# 2</a>
 </p>
 
 </body>

@@ -55,7 +55,8 @@ class BoardWidget extends Pad {
                                         BasicStroke.JOIN_ROUND),
         PIECE_BOUNDARY_STROKE = new BasicStroke(1.0f);
 
-    /** A graphical representation of a Loa board that sends commands
+
+    /** A graphical representation of a "LOA" board that sends commands
      *  derived from mouse clicks to COMMANDS.  */
     BoardWidget(ArrayBlockingQueue<String> commands) {
         _commands = commands;
@@ -93,7 +94,6 @@ class BoardWidget extends Pad {
         for (Square sq : Square.ALL_SQUARES) {
             drawPiece(g, sq);
         }
-
     }
 
     /** Draw the contents of S on G. */
@@ -121,13 +121,20 @@ class BoardWidget extends Pad {
 
     /** Handle a mouse-button push on S. */
     private void mousePressed(Square s) {
-
+        _from = s;
         repaint();
     }
 
     /** Handle a mouse-button release on S. */
     private void mouseReleased(Square s) {
+        Move move;
 
+        setMoveCollection(true);
+        move = Move.mv(_from, s);
+        if ((move != null)) {
+            _commands.offer(move.toString());
+        }
+        _from = null;
         repaint();
     }
 
@@ -155,7 +162,6 @@ class BoardWidget extends Pad {
     /** Revise the displayed board according to BOARD. */
     synchronized void update(Board board) {
         _board.copyFrom(board);
-
         repaint();
     }
 
@@ -164,7 +170,7 @@ class BoardWidget extends Pad {
      *  the board. */
     void setMoveCollection(boolean collecting) {
         _acceptingMoves = collecting;
-
+        _commands.clear();
         repaint();
     }
 
@@ -194,10 +200,13 @@ class BoardWidget extends Pad {
 
     /** Queue on which to post move commands (from mouse clicks). */
     private ArrayBlockingQueue<String> _commands;
+
     /** Board being displayed. */
     private final Board _board = new Board();
 
     /** True iff accepting moves from user. */
     private boolean _acceptingMoves;
 
+    /** Stores the from square. */
+    private Square _from;
 }
