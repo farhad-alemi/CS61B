@@ -1,22 +1,17 @@
-/**
- * Simple Red-Black tree implementation, where the keys are of type T.
- @ author
+/** Simple Red-Black tree implementation, where the keys are of type T.
+ @author Farhad Alemi
  */
 public class RedBlackTree<T extends Comparable<T>> {
 
     /** Root of the tree. */
     private RBTreeNode<T> root;
 
-    /**
-     * Empty constructor.
-     */
+    /** Empty constructor */
     public RedBlackTree() {
         root = null;
     }
 
-    /**
-     * Constructor that builds this from given BTree (2-3-4) tree.
-     *
+    /** Constructor that builds this from given BTree (2-3-4) tree.
      * @param tree BTree (2-3-4 tree).
      */
     public RedBlackTree(BTree<T> tree) {
@@ -24,48 +19,56 @@ public class RedBlackTree<T extends Comparable<T>> {
         root = buildRedBlackTree(btreeRoot);
     }
 
-    /**
-     * Builds a RedBlack tree that has isometry with given 2-3-4 tree rooted at
+    /** Builds a RedBlack tree that has isometry with given 2-3-4 tree rooted at
      * given node r, and returns the root node.
-     *
      * @param r root of the 2-3-4 tree.
      * @return root of the Red-Black tree for given 2-3-4 tree.
      */
     RBTreeNode<T> buildRedBlackTree(BTree.Node<T> r) {
-        // YOUR CODE HERE
+        /* YOUR CODE HERE */
         return null;
     }
 
-    /**
-     * Rotates the (sub)tree rooted at given node to the right, and returns the
+    /** Rotates the (sub)tree rooted at given node to the right, and returns the
      * new root of the (sub)tree. If rotation is not possible somehow,
      * immediately return the input node.
-     *
      * @param node root of the given (sub)tree.
      * @return new root of the (sub)tree.
      */
     RBTreeNode<T> rotateRight(RBTreeNode<T> node) {
-        // YOUR CODE HERE
-        return null;
+        if (node == null || node.left == null) {
+            return node;
+        }
+        RBTreeNode<T> newRoot = node.left;
+        node.left = newRoot.right;
+        newRoot.right = node;
+        newRoot.isBlack = node.isBlack;
+        node.isBlack = false;
+
+        return newRoot;
     }
 
-    /**
-     * Rotates the (sub)tree rooted at given node to the left, and returns the
+    /** Rotates the (sub)tree rooted at given node to the left, and returns the
      * new root of the (sub)tree. If rotation is not possible somehow,
      * immediately return the input node.
-     *
      * @param node root of the given (sub)tree.
      * @return new root of the (sub)tree.
      */
     RBTreeNode<T> rotateLeft(RBTreeNode<T> node) {
-        // YOUR CODE HERE
-        return null;
+        if (node == null || node.right == null) {
+            return node;
+        }
+        RBTreeNode<T> newRoot = node.right;
+        node.right = newRoot.left;
+        newRoot.left = node;
+        newRoot.isBlack = node.isBlack;
+        node.isBlack = false;
+
+        return newRoot;
     }
 
-    /**
-     * Flips the color of the node and its children. Assume that the node has
+    /** Flips the color of the node and its children. Assume that the node has
      * both left and right children.
-     *
      * @param node tree node
      */
     void flipColors(RBTreeNode<T> node) {
@@ -74,10 +77,8 @@ public class RedBlackTree<T extends Comparable<T>> {
         node.right.isBlack = !node.right.isBlack;
     }
 
-    /**
-     * Returns whether a given node is red. null nodes (children of leaf) are
+    /** Returns whether a given node is red. null nodes (children of leaf) are
      * automatically considered black.
-     *
      * @param node node
      * @return node is red.
      */
@@ -85,9 +86,7 @@ public class RedBlackTree<T extends Comparable<T>> {
         return node != null && !node.isBlack;
     }
 
-    /**
-     * Insert given item into this tree.
-     *
+    /** Insert given item into this tree.
      * @param item item
      */
     void insert(T item) {
@@ -95,64 +94,54 @@ public class RedBlackTree<T extends Comparable<T>> {
         root.isBlack = true;
     }
 
-    /**
-     * Recursivelty insert item into this tree. returns the (new) root of the
+    /** Recursively insert item into this tree. returns the (new) root of the
      * subtree rooted at given node after insertion. node == null implies that
      * we are inserting a new node at the bottom.
-     *
      * @param node node
      * @param item item
      * @return (new) root of the subtree rooted at given node.
      */
     private RBTreeNode<T> insert(RBTreeNode<T> node, T item) {
-
-        // Insert (return) new red leaf node.
+        /* Insert (return) new red leaf node. */
         if (node == null) {
-            // YOUR CODE HERE
-
+            return new RBTreeNode<>(false, item, null, null);
         }
 
-        // Handle normal binary search tree insertion.
+        /* Handle normal binary search tree insertion. */
         int comp = item.compareTo(node.item);
+
         if (comp == 0) {
-            return node; // do nothing.
+            return node; /* do nothing. */
         } else if (comp < 0) {
-            // YOUR CODE HERE
-
+            node.left = insert(node.left, item);
         } else {
-            // YOUR CODE HERE
-
+            node.right = insert(node.right, item);
         }
 
-        // handle case C and "Right-leaning" situation.
+        /* handle case C and "Right-leaning" situation. */
         if (isRed(node.right) && !isRed(node.left)) {
-            // YOUR CODE HERE
-
+            node = rotateLeft(node);
         }
 
-        // handle case B
+        /* handle case B. */
         if (isRed(node.left) && isRed(node.left.left)) {
-            // YOUR CODE HERE
-
+            node = rotateRight(node);
         }
 
-        // handle case A
+        /* handle case A. */
         if (isRed(node.left) && isRed(node.right)) {
-            // YOUR CODE HERE
-
+            flipColors(node);
         }
         return node;
     }
 
-    /** Public accesser method for the root of the tree.*/
+    /** Public accessor method for the root of the tree.*/
     public RBTreeNode<T> graderRoot() {
         return root;
     }
 
 
-    /**
-     * RedBlack tree node.
-     *
+    /** RedBlack tree node.
      * @param <T> type of item.
      */
     static class RBTreeNode<T> {
@@ -169,16 +158,14 @@ public class RedBlackTree<T extends Comparable<T>> {
         /** Pointer to right child. */
         protected RBTreeNode<T> right;
 
-        /**
-         * A node that is black iff BLACK, containing VALUE, with empty
+        /** A node that is black iff BLACK, containing VALUE, with empty
          * children.
          */
         RBTreeNode(boolean black, T value) {
             this(black, value, null, null);
         }
 
-        /**
-         * Node that is black iff BLACK, contains VALUE, and has children
+        /** Node that is black iff BLACK, contains VALUE, and has children
          * LFT AND RGHT.
          */
         RBTreeNode(boolean black, T value,
@@ -189,5 +176,4 @@ public class RedBlackTree<T extends Comparable<T>> {
             right = rght;
         }
     }
-
 }
