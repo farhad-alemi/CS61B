@@ -58,19 +58,11 @@ public class BSTStringSet implements StringSet, Iterable<String>, SortedStringSe
 
     @Override
     public List<String> asList() {
-        return asListHelper(_root);
-    }
-
-    /** Helper method used for asList operation. */
-    private List<String> asListHelper(Node node) {
+        BSTIterator iter = new BSTIterator(_root);
         LinkedList<String> lst = new LinkedList<>();
-        if (node == null) {
-            return lst;
+        while(iter.hasNext()) {
+            lst.add(iter.next());
         }
-        lst.addAll(asListHelper(node.left));
-        lst.add(node.s);
-        lst.addAll(asListHelper(node.right));
-
         return lst;
     }
 
