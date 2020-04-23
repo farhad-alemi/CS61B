@@ -51,7 +51,6 @@ public class BSTStringSetRangeTest {
              it.hasNext(); ) {
             found.add(it.next());
         }
-
         assertEquals(WORDS2, found);
     }
 
@@ -72,6 +71,4 @@ public class BSTStringSetRangeTest {
     private static final ArrayList<String> WORDS2 = new ArrayList<>();
     private static String _low, _high;
     private static BSTStringSet _S = new BSTStringSet();
-
-
 }

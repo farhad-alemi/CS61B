@@ -1,6 +1,6 @@
 SHELL = bash
 
-STYLEPROG = style61b
+STYLEPROG = "C:\Users\Abdullah Mohammad\cs61b-software\bin\style61b"
 
 JFLAGS = -g -Xlint:unchecked -encoding utf8
 

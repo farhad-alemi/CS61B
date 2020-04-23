@@ -76,5 +76,4 @@ public class StringUtils {
     public static boolean isAllzs(String s) {
         return Pattern.matches("[z]+", s);
     }
-
 }
