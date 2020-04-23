@@ -60,7 +60,7 @@ public class BSTStringSet implements StringSet, Iterable<String>, SortedStringSe
     public List<String> asList() {
         BSTIterator iter = new BSTIterator(_root);
         LinkedList<String> lst = new LinkedList<>();
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             lst.add(iter.next());
         }
         return lst;

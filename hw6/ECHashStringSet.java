@@ -8,14 +8,14 @@ class ECHashStringSet implements StringSet {
     /** Default array size. */
     private static final int DEFAULT_ARRAY_SIZE = 4;
     /** Default load factor limit. */
-    private static final double LOAD_FACTOR_LIMIT = 0.5;
+    private static final double LOAD_FACTOR_LIMIT = 5;
     /** The factor by which to resize the array. */
     private static final int MULTIPLICATION_FACTOR = 2;
 
     /** The default constructor which initializes the main array */
     ECHashStringSet() {
         resize(DEFAULT_ARRAY_SIZE);
-        lstCount = 0;
+        n = 0;
     }
 
     /** Resize the hash table to NEWSIZE provided that the table has met the
@@ -31,7 +31,7 @@ class ECHashStringSet implements StringSet {
         for (int i = 0; i < bins.length; ++i) {
             bins[i] = new LinkedList<>();
         }
-        lstCount = 0;
+        n = 0;
         for (int i = 0; i < oldBinsSize; ++i) {
             while (oldBins[i].size() != 0) {
                 put(oldBins[i].pop());
@@ -53,15 +53,13 @@ class ECHashStringSet implements StringSet {
         if (loadFactor() > LOAD_FACTOR_LIMIT) {
             resize(bins.length * MULTIPLICATION_FACTOR);
         }
-        if (bins[hashFunction(s)].size() == 0) {
-            ++lstCount;
-        }
+        ++n;
         bins[hashFunction(s)].add(s);
     }
 
     /** Returns the load factor for the hash. */
     private double loadFactor() {
-        return (bins == null) ? -1 : lstCount / bins.length;
+        return (bins == null) ? -1 : n / bins.length;
     }
 
     @Override
@@ -83,6 +81,6 @@ class ECHashStringSet implements StringSet {
 
     /** The main hash array. */
     private LinkedList<String>[] bins;
-    /** Number of non-empty linked lists. */
-    double lstCount;
+    /** Number of elements in the table. */
+    double n;
 }

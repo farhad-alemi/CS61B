@@ -16,7 +16,7 @@ public class ECHashStringSetTest  {
         obj.put("c");
         obj.put("a");
         obj.put("B");
-        obj.put("c");
+        obj.put("g");
         obj.put("d");
         obj.put("e");
 

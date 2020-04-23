@@ -1,12 +1,12 @@
 1a. Results for InsertRandomSpeedTest for N = 1000000:
 Inserting 1000000 random length 10 Strings into a StringSet of type BSTStringSet
-Took: 1.70 sec.
+Took: 1.75 sec.
 
 Inserting 1000000 random length 10 Strings into a StringSet of type ECHashStringSet
-Took: 1.38 sec.
+Took: 0.80 sec.
 
 Inserting 1000000 random length 10 Strings into a StringSet of type java.util.TreeSet
-Took: 1.75 sec.
+Took: 1.66 sec.
 
 Inserting 1000000 random length 10 Strings into a StringSet of type java.util.HashSet
 Took: 0.70 sec.
@@ -14,16 +14,16 @@ Took: 0.70 sec.
 
 1b. Results for InsertRandomSpeedTest for N = 2000000:
 Inserting 2000000 random length 10 Strings into a StringSet of type BSTStringSet
-Took: 3.67 sec.
+Took: 3.75 sec.
 
 Inserting 2000000 random length 10 Strings into a StringSet of type ECHashStringSet
-Took: 3.27 sec.
+Took: 1.88 sec.
 
 Inserting 2000000 random length 10 Strings into a StringSet of type java.util.TreeSet
-Took: 3.69 sec.
+Took: 3.55 sec.
 
 Inserting 2000000 random length 10 Strings into a StringSet of type java.util.HashSet
-Took: 1.61 sec.
+Took: 1.45 sec.
 
 
 1c. Does your ECHashStringSet look roughly linear or roughly quadratic
@@ -34,30 +34,30 @@ Roughly linear.
 
 2a. Results for InsertInOrderSpeedTest for N = 10000:
 Inserting 10000 in-order strings into a StringSet of type BSTStringSet
-Took: 1.00 sec.
+Took: 0.95 sec.
 
 Inserting 10000 in-order strings into a StringSet of type ECHashStringSet
-Took: 0.02 sec.
+Took: 0.00 sec.
 
 Inserting 10000 in-order strings Strings into a StringSet of type java.util.TreeSet
 Took: 0.03 sec.
 
 Inserting 10000 in-order strings Strings into a StringSet of type java.util.HashSet
-Took: 0.02 sec.
+Took: 0.00 sec.
 
 
 2b. Results for InsertInOrderSpeedTest for N = 20000:
 Inserting 20000 in-order strings into a StringSet of type BSTStringSet
-Took: 2.27 sec.
+Took: 2.19 sec.
 
 Inserting 20000 in-order strings into a StringSet of type ECHashStringSet
-Took: 0.05 sec.
+Took: 0.03 sec.
 
 Inserting 20000 in-order strings Strings into a StringSet of type java.util.TreeSet
 Took: 0.05 sec.
 
 Inserting 20000 in-order strings Strings into a StringSet of type java.util.HashSet
-Took: 0.03 sec.
+Took: 0.05 sec.
 
 
 2c. Does your **BST**StringSet look roughly linear or roughly
