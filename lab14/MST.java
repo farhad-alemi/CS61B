@@ -2,10 +2,9 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 /** Minimal spanning tree utility.
- *  @author
+ *  @author Farhad Alemi
  */
 public class MST {
-
     /** Given an undirected, weighted, connected graph whose vertices are
      *  numbered 1 to V, and an array E of edges, returns an array of edges
      *  in E that form a minimal spanning tree of the input graph.
@@ -18,10 +17,19 @@ public class MST {
      *  original edges, just the original edges themselves.) */
     public static int[][] mst(int V, int[][] E) {
         E = Arrays.copyOf(E, E.length);
-        int numEdgesInResult = 0; // FIXME: how many edges should there be in our MST?
+        int numEdgesInResult = V - 1;
         int[][] result = new int[numEdgesInResult][];
-        // FIXME: what other data structures do I need?
-        // FIXME: do Kruskal's Algorithm
+        Arrays.sort(E, EDGE_WEIGHT_COMPARATOR);
+        UnionFind disjointSet = new UnionFind(V);
+        var counter = 0;
+
+        for (int[] edge : E) {
+            if (!disjointSet.samePartition(edge[0], edge[1])) {
+                disjointSet.union(edge[0], edge[1]);
+                result[counter] = edge;
+                ++counter;
+            }
+        }
         return result;
     }
 
@@ -33,5 +41,4 @@ public class MST {
                 return e0[2] - e1[2];
             }
         };
-
 }
