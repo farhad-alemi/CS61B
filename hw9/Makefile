@@ -19,7 +19,7 @@ compile: NFATests.class
 
 # Run our style checks.
 style:
-	style61b $(SRCS)
+	"C:\Users\Abdullah Mohammad\cs61b-software\bin\style61b" $(SRCS)
 
 # Test the compiled program, after first making sure it is up-to-date.
 check: NFATests.class

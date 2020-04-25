@@ -2,16 +2,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 
 /**
  * An implementation of a Non-deterministic Finite Automaton (NFA).
- *
  *
  * For this implementation, our legal symbols are every Java character with the
  * exception with {*, +, (, ), |} which are reserved for operations/grouping.
  * We could extend our code to allow for these symbols by escaping them, which
  * is when you add a special character (usually '\') to devoid any special
- * meaning the proceeding character might have. Thus '/*' would be interpreted
+ * meaning the proceeding character might have. Thus '\*' would be interpreted
  * as the * character while '*' would be interpreted as the Kleene Star
  * operator. Again, our implementation will not do this.
  *
@@ -26,8 +26,7 @@ import java.util.HashSet;
  * expression implementations, it's just something we've chosen to add. '\d' is,
  * however, standard and that should work as you've learned from lecture.
  *
- * @author
- *
+ * @author Farhad Alemi
  *
  * */
 public class NFA {
@@ -47,7 +46,7 @@ public class NFA {
 
     /** To shorted useful patterns (digits and lowercase letters). */
     private static final Map<Character, String> ESCAPED_TO_PATTERN =
-            new HashMap<Character, String>();
+            new HashMap<>();
 
     static {
         String lowerLetterPattern = "(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s"
@@ -69,7 +68,6 @@ public class NFA {
 
 
     /** The internal States in an NFA. */
-    // TODO: Read this inner class, then you may delete this comment
     private class State {
 
         /**
@@ -85,7 +83,7 @@ public class NFA {
         /** Adds an edge from this State to NEIGHBOR with edge label C. */
         public void addEdge(Character c, State neighbor) {
             if (!_edges.containsKey(c)) {
-                _edges.put(c, new HashSet<State>());
+                _edges.put(c, new HashSet<>());
             }
             _edges.get(c).add(neighbor);
         }
@@ -94,19 +92,33 @@ public class NFA {
          * Returns a Set of all the States that can be reached from this
          * State by taking an edge with label C.
          *
-         * If C is EPSILON, the  it returns all the valid States that
-         * can be reached using  only EPSILON edges (this may span
+         * If C is EPSILON, the it returns all the valid States that
+         * can be reached using only EPSILON edges (this may span
          * multiple consecutive EPSILON edges).
          *
          * If this State has no outgoing edges with label C, then
          * return an empty Set. */
         public Set<State> successors(char c) {
-            // TODO: Implement this method
-            return new HashSet<State>();
+            Set<NFA.State> edges = _edges.get(c);
+
+            if (edges == null) {
+                return new HashSet<>();
+            } else if (c != EPSILON) {
+                return edges;
+            } else {
+                HashSet<State> S = new HashSet<>(edges);
+                HashSet<State> sNew = new HashSet<>();
+
+                for (State state : S) {
+                    sNew.addAll(state.successors(c));
+                }
+                sNew.addAll(S);
+                return sNew;
+            }
         }
 
         /**
-         * @return: Whether or not this State is an accepting State.
+         * @return Whether or not this State is an accepting State.
          * */
         public boolean isAccepting() {
             return _accepting;
@@ -124,7 +136,7 @@ public class NFA {
 
         /** A State may have many outgoing edges with the same edge label. */
         private Map<Character, Set<State>> _edges =
-            new HashMap<Character, Set<State>>();
+            new HashMap<>();
 
         /** Whether or not this State is an accepting state. */
         private boolean _accepting;
@@ -156,7 +168,6 @@ public class NFA {
                 numOpenSeen -= 1;
                 break;
             default:
-                continue;
             }
         }
         return numOpenSeen == 0 ? n - 1 : -1;
@@ -204,7 +215,7 @@ public class NFA {
     /** Returns the NFA constructed by taking the Or of the NFAs S and T. */
     private static NFA or(NFA s, NFA t) {
 
-        /** As is the case at the beginning of the pattern. */
+        /* As is the case at the beginning of the pattern. */
         if (s == null) {
             return t;
         }
@@ -237,7 +248,7 @@ public class NFA {
      * and T. */
     private static NFA concat(NFA s, NFA t) {
 
-        /** As is the case at the beginning of the pattern. */
+        /* As is the case at the beginning of the pattern. */
         if (s == null) {
             return t;
         }
@@ -254,8 +265,7 @@ public class NFA {
     }
 
     /**
-     * @param type either OR or CONCAT, denoting the type of operation to
-     *             apply
+     * @param type either OR or CONCAT, denoting the type of operation to apply
      * @param s the NFA on the left of the join
      * @param t the NFA on the right of the join
      *
@@ -307,7 +317,7 @@ public class NFA {
         int i = 0;
         char c;
         NFA nfa = null;
-        NFA subNFA = null;
+        NFA subNFA;
         String operationType = CONCAT;
 
         while (i < n) {
@@ -351,7 +361,7 @@ public class NFA {
             nfa = apply(operationType, nfa, subNFA);
             operationType = CONCAT;
         }
-        nfa.setPattern(pattern);
+        Objects.requireNonNull(nfa).setPattern(pattern);
         return nfa;
     }
 
@@ -359,8 +369,30 @@ public class NFA {
      * @param s the query String
      * @return whether or not the string S is accepted by this NFA. */
     public boolean matches(String s) {
-        // TODO: write the matching algorithm
-        return true;
+        HashSet<State> S = new HashSet<>(_startState.successors(EPSILON));
+        S.add(_startState);
+
+        for (int i = 0; i < s.length(); ++i) {
+            HashSet<State> sNew = new HashSet<>();
+
+            for (State state : S) {
+                sNew.addAll(state.successors(s.charAt(i)));
+            }
+            S = sNew;
+            sNew = new HashSet<>();
+
+            for (State state : S) {
+                sNew.addAll(state.successors(EPSILON));
+            }
+            S.addAll(sNew);
+        }
+
+        for (State state : S) {
+            if (state.isAccepting()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** Returns the pattern used to make this NFA. */
