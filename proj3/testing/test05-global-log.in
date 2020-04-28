@@ -1,0 +1,83 @@
+# Testing global-log
+> init
+<<<
++ ver1.txt file_ver1.txt
+> global-log
+===
+commit [a-f0-9]+
+Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d
+initial commit
+
+<<<*
+> add ver1.txt
+<<<
+> commit ver
+<<<
+> global-log
+===
+commit [a-f0-9]+
+Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d
+[a-z ]+
+
+===
+commit [a-f0-9]+
+Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d
+[a-z ]+
+
+<<<*
+> branch newBranch
+<<<
+> checkout newBranch
+<<<
++ ver2.txt file_ver2.txt
+> add ver2.txt
+<<<
+> commit "newbranch"
+<<<
+> global-log
+===
+commit [a-f0-9]+
+Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d
+[a-z ]+
+
+===
+commit [a-f0-9]+
+Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d
+[a-z ]+
+
+===
+commit [a-f0-9]+
+Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d
+[a-z ]+
+
+<<<*
+> checkout master
+<<<
+> log
+===
+commit [a-f0-9]+
+Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d
+ver
+
+===
+commit [a-f0-9]+
+Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d
+initial commit
+
+<<<*
+> global-log
+===
+commit [a-f0-9]+
+Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d
+[a-z ]+
+
+===
+commit [a-f0-9]+
+Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d
+[a-z ]+
+
+===
+commit [a-f0-9]+
+Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d
+[a-z ]+
+<<<*

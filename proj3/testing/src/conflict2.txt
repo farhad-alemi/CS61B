@@ -1,0 +1,5 @@
+<<<<<<< HEAD
+version2
+=======
+version1
+>>>>>>>

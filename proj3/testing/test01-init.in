@@ -1,0 +1,15 @@
+# Testing init
+> init
+<<<
+E .gitlet
+E .gitlet/refs
+E .gitlet/refs/heads
+E .gitlet/refs/heads/master
+E .gitlet/commits
+E .gitlet/blobs
+E .gitlet/index/addition
+E .gitlet/index/removal
+E .gitlet/HEAD
+> init
+A Gitlet version-control system already exists in the current directory.
+<<<

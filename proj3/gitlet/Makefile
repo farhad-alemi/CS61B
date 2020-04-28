@@ -18,7 +18,7 @@
 # I strongly recommend that you try to figure it out, and where you cannot,
 # that you ask questions.  The Lab Reader contains documentation.
 
-STYLEPROG = style61b
+STYLEPROG = "C:\Users\Abdullah Mohammad\cs61b-software\bin\style61b"
 
 JFLAGS = -g -Xlint:unchecked -Xlint:deprecation
 

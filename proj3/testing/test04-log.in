@@ -1,0 +1,67 @@
+# Testing log
+> init
+<<<
++ ver1.txt file_ver1.txt
+> log
+===
+commit [a-f0-9]+
+Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d
+initial commit
+
+<<<*
+> add ver1.txt
+<<<
+> commit "added ver1.txt"
+<<<
+> log
+===
+commit [a-f0-9]+
+Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d
+added ver1.txt
+
+===
+commit [a-f0-9]+
+Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d
+initial commit
+
+<<<*
+> branch newBranch
+<<<
+> checkout newBranch
+<<<
++ ver2.txt file_ver2.txt
+> add ver2.txt
+<<<
+> commit "added ver2 to newBranch"
+<<<
+> log
+===
+commit [a-f0-9]+
+Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d
+added ver2 to newBranch
+
+===
+commit [a-f0-9]+
+Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d
+added ver1.txt
+
+===
+commit [a-f0-9]+
+Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d
+initial commit
+
+<<<*
+> checkout master
+<<<
+> log
+===
+commit [a-f0-9]+
+Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d
+added ver1.txt
+
+===
+commit [a-f0-9]+
+Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d
+initial commit
+
+<<<*

@@ -1,0 +1,24 @@
+# Testing commit
+> init
+<<<
++ ver1.txt file_ver1.txt
+> commit "commited nothing"
+No changes added to the commit.
+<<<
+> add ver1.txt
+<<<
+> commit "ver1.txt"
+<<<
+= ver1.txt file_ver1.txt
++ ver2.txt file_ver2.txt
+> rm ver2.txt
+No reason to remove the file.
+<<<
+> rm ver1.txt
+<<<
+* ver1.txt
+> commit ""
+Please enter a commit message.
+<<<
+> commit "removed file"
+<<<

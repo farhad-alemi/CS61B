@@ -1,0 +1,112 @@
+# Testing branch rm-branch
+> init
+<<<
+> status
+=== Branches ===
+*master
+
+=== Staged Files ===
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
+
+<<<
+> branch newBr
+<<<
+> status
+=== Branches ===
+*master
+newBr
+
+=== Staged Files ===
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
+
+<<<
+> branch newBr
+A branch with that name already exists.
+<<<
+> checkout newBr
+<<<
+> status
+=== Branches ===
+master
+*newBr
+
+=== Staged Files ===
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
+
+<<<
+> rm-branch newbr
+Cannot remove the current branch.
+<<<
+> rm-branch newBr
+Cannot remove the current branch.
+<<<
+> status
+=== Branches ===
+master
+*newBr
+
+=== Staged Files ===
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
+
+<<<
+> rm-branch master
+<<<
+> status
+=== Branches ===
+*newBr
+
+=== Staged Files ===
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
+
+<<<
++ ver1.txt file_ver1.txt
+> add ver1.txt
+<<<
+> commit ver1added
+<<<
+- ver1.txt
+* ver1.txt
+> checkout -- ver1.txt
+<<<
+= ver1.txt file_ver1.txt
+> checkout -- nofile.txt
+File does not exist in that commit.
+<<<
+> status
+=== Branches ===
+*newBr
+
+=== Staged Files ===
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
+
+<<<

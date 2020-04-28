@@ -1,0 +1,174 @@
+# Testing status
+> init
+<<<
++ ver1.txt file_ver1.txt
+> status
+=== Branches ===
+\*master
+
+=== Staged Files ===
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
+ver1.txt
+
+<<<*
+> add ver1.txt
+<<<
+> status
+=== Branches ===
+\*master
+
+=== Staged Files ===
+ver1.txt
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
+
+<<<*
++ ver2.txt file_ver2.txt
+> add ver2.txt
+<<<
+> status
+=== Branches ===
+\*master
+
+=== Staged Files ===
+ver1.txt
+ver2.txt
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
+
+<<<*
+> commit ver1ver2
+<<<
+- ver2.txt
++ ver1.txt file_ver2.txt
+> status
+=== Branches ===
+*master
+
+=== Staged Files ===
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+ver1.txt (modified)
+ver2.txt (deleted)
+
+=== Untracked Files ===
+
+<<<
+> rm ver2.txt
+<<<
+> status
+=== Branches ===
+*master
+
+=== Staged Files ===
+
+=== Removed Files ===
+ver2.txt
+
+=== Modifications Not Staged For Commit ===
+ver1.txt (modified)
+
+=== Untracked Files ===
+
+<<<
+> branch beans
+<<<
+> checkout beans
+<<<
+> rm ver1.txt
+<<<
+> rm ver2.txt
+<<<
+> commit remver12
+<<<
+> status
+=== Branches ===
+*beans
+master
+
+=== Staged Files ===
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
+
+<<<
++ ver1.txt file_ver1.txt
++ ver2.txt file_ver2.txt
+> add ver1.txt
+<<<
+> add ver2.txt
+<<<
++ ver1.txt file_ver2.txt
+- ver2.txt
+> status
+=== Branches ===
+*beans
+master
+
+=== Staged Files ===
+ver1.txt
+ver2.txt
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+ver1.txt (modified)
+ver2.txt (deleted)
+
+=== Untracked Files ===
+
+<<<
+> commit ver1ver2
+<<<
+> status
+=== Branches ===
+*beans
+master
+
+=== Staged Files ===
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+ver1.txt (modified)
+ver2.txt (deleted)
+
+=== Untracked Files ===
+
+<<<
+> rm ver2.txt
+<<<
+> status
+=== Branches ===
+*beans
+master
+
+=== Staged Files ===
+
+=== Removed Files ===
+ver2.txt
+
+=== Modifications Not Staged For Commit ===
+ver1.txt (modified)
+
+=== Untracked Files ===
+
+<<<

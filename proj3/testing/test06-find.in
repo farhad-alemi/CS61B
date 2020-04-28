@@ -1,0 +1,42 @@
+# Testing find
+> init
+<<<
++ ver1.txt file_ver1.txt
+> find
+Incorrect operands.
+<<<
+> find initial
+Found no commit with that message.
+<<<
+> find "initial commit"
+[a-f0-9]+
+<<<*
+> add ver1.txt
+<<<
+> commit ver
+<<<
+> find ver
+[a-f0-9]+
+<<<*
+> branch newBranch
+<<<
+> checkout newBranch
+<<<
++ ver2.txt file_ver2.txt
+> add ver2.txt
+<<<
+> commit ver
+<<<
+> find ver
+[a-f0-9]+
+[a-f0-9]+
+<<<*
+> checkout master
+<<<
+> find ver
+[a-f0-9]+
+[a-f0-9]+
+<<<*
+> find "initial commit"
+[a-f0-9]+
+<<<*

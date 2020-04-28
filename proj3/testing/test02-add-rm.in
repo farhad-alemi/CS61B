@@ -1,0 +1,10 @@
+# Testing add and remove
+> init
+<<<
++ ver1.txt file_ver1.txt
+> add ver1.txt
+<<<
+> rm ver1.txt
+<<<
+E ver1.txt
+= ver1.txt file_ver1.txt

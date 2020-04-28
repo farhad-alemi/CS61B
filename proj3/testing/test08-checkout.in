@@ -1,0 +1,132 @@
+# Testing checkout
+> init
+<<<
++ ver1.txt file_ver1.txt
+> status
+=== Branches ===
+*master
+
+=== Staged Files ===
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
+ver1.txt
+
+<<<
+> add ver1.txt
+<<<
+> commit ver1added
+<<<
+- ver1.txt
+* ver1.txt
+> checkout -- ver1.txt
+<<<
+= ver1.txt file_ver1.txt
+> checkout -- nofile.txt
+File does not exist in that commit.
+<<<
+> status
+=== Branches ===
+*master
+
+=== Staged Files ===
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
+
+<<<
+> checkout 3e8bf1d794ca2e9ef8a4007275acf3751c71zzzz -- ver1.txt
+No commit with that id exists.
+<<<
+> checkout beans
+No such branch exists.
+<<<
+> checkout master
+No need to checkout the current branch.
+<<<
++ ver2.txt file_ver2.txt
+> add ver2.txt
+<<<
+> status
+=== Branches ===
+*master
+
+=== Staged Files ===
+ver2.txt
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
+
+<<<
+> commit ver2.txt
+<<<
+> branch bean
+<<<
+> checkout bean
+<<<
++ wug.txt wug.txt
+> add wug.txt
+<<<
+> commit addedwug
+<<<
+> checkout master
+<<<
+* wug.txt
+= ver1.txt file_ver1.txt
+= ver2.txt file_ver2.txt
++ wug.txt wug.txt
+> checkout bean
+There is an untracked file in the way; delete it, or add and commit it first.
+<<<
+> add wug.txt
+<<<
+> commit wugtomaster
+<<<
++ notwug.txt notwug.txt
+> add notwug.txt
+<<<
+> status
+=== Branches ===
+bean
+*master
+
+=== Staged Files ===
+notwug.txt
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
+
+<<<
+> checkout bean
+<<<
+E wug.txt
+= ver1.txt file_ver1.txt
+= ver2.txt file_ver2.txt
+= notwug.txt notwug.txt
+> status
+=== Branches ===
+*bean
+master
+
+=== Staged Files ===
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
+notwug.txt
+
+<<<

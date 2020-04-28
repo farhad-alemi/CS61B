@@ -18,7 +18,7 @@
 # Name of package containing main procedure 
 PACKAGE = gitlet
 
-STYLEPROG = style61b
+STYLEPROG = "C:\Users\Abdullah Mohammad\cs61b-software\bin\style61b"
 
 # The name of the Python 3 program, used in the 'check' target.  If your system
 # has a different name for this program (such as just "python"), run
