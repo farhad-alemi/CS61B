@@ -1,0 +1,18 @@
+# Testing init
+> init
+<<<
+> add-remote origin
+Incorrect operands.
+<<<
+> add-remote origin ../otherdir/.gitlet
+<<<
+> add-remote origin ../testing/otherdir/.gitlet 
+A remote with that name already exists.
+<<<
+> rm-remote origi
+A remote with that name does not exist.
+<<<
+> rm-remote origin
+<<<
+> add-remote origin ../otherdir/.gitlet
+<<<

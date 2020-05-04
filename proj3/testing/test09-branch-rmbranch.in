@@ -49,9 +49,6 @@ master
 === Untracked Files ===
 
 <<<
-> rm-branch newbr
-Cannot remove the current branch.
-<<<
 > rm-branch newBr
 Cannot remove the current branch.
 <<<

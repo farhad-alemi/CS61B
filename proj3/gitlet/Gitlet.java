@@ -650,6 +650,7 @@ public class Gitlet {
             Main.softFail("Remote directory not found.");
         }
     }
+
     /**
      * Attempts to append the current branch's commits to the end of the given
      * branch at the given remote.
@@ -657,6 +658,44 @@ public class Gitlet {
      * @param args push [remote name] [remote branch name].
      */
     public void doPush(String[] args) {
+        String remoteCommitHash, localCommitHash;
+        File remoteGitlet, remoteBranch;
+        List<String> localNewCommits;
+
+        preRemote(args);
+        remoteGitlet = new File(Utils.readContentsAsString(new
+                File(refsFolder() + SEPARATOR + args[1])));
+
+        localCommitHash = GitletUtils.lastCommitHash();
+        switchGitlet(remoteGitlet.getPath());
+        remoteBranch = new File(headsFolder() + SEPARATOR + args[2]);
+
+        if (!remoteBranch.exists()) {
+            remoteBranch = new File(GitletUtils.getHeadPtr());
+        }
+        remoteCommitHash = Utils.readContentsAsString(remoteBranch);
+
+        switchGitlet(CWD + SEPARATOR + ".gitlet");
+        localNewCommits = Commit.getAncestors(localCommitHash);
+
+        if (remoteCommitHash.equals(localCommitHash)) {
+            Main.softFail("Nothing to push.");
+        } else if (!localNewCommits.contains(remoteCommitHash)) {
+            Main.softFail("Please pull down remote changes before pushing.");
+        } else {
+            for (String commit : localNewCommits) {
+                if (commit.equals(remoteCommitHash) && !Commit.retrieveCommit
+                        (commit).getMessage().equals("initial commit")) {
+                    break;
+                }
+                GitletUtils.copyCommit(CWD, remoteGitlet, commit);
+            }
+            GitletUtils.copyCommit(CWD, remoteGitlet, localCommitHash);
+        }
+        switchGitlet(remoteGitlet.getPath());
+        Utils.writeContents(new File(headsFolder() + SEPARATOR + args[2]),
+                localCommitHash);
+        doReset(new String[]{"reset", localCommitHash});
     }
 
     /**
@@ -666,6 +705,43 @@ public class Gitlet {
      * @param args fetch [remote name] [remote branch name].
      */
     public void doFetch(String[] args) {
+        File remoteGitlet, remoteBranch, remoteDIR;
+        List<String> remoteNewCommits;
+        String localCommitHash, remoteCommitHash;
+
+        preRemote(args);
+        remoteGitlet = new File(Utils.readContentsAsString(new
+                File(refsFolder() + SEPARATOR + args[1])));
+
+        localCommitHash = GitletUtils.lastCommitHash();
+        switchGitlet(remoteGitlet.getPath());
+        remoteBranch = new File(headsFolder() + SEPARATOR + args[2]);
+
+        if (!remoteBranch.exists()) {
+            Main.softFail("That remote does not have that branch.");
+        }
+
+        remoteCommitHash = Utils.readContentsAsString(remoteBranch);
+        remoteNewCommits = Commit.getAncestors(remoteCommitHash);
+
+        for (String commit : remoteNewCommits) {
+            if (commit.equals(localCommitHash) && !Commit.retrieveCommit
+                    (commit).getMessage().equals("initial commit")) {
+                break;
+            }
+            GitletUtils.copyCommit(remoteGitlet.getParentFile(),
+                    new File(CWD + SEPARATOR + ".gitlet"), commit);
+        }
+        GitletUtils.copyCommit(remoteGitlet.getParentFile(),
+                new File(CWD + SEPARATOR + ".gitlet"), remoteCommitHash);
+
+        switchGitlet(CWD + SEPARATOR + ".gitlet");
+        remoteDIR = new File(headsFolder() + SEPARATOR + args[1]);
+        remoteDIR.mkdir();
+        Utils.writeContents(new File(remoteDIR + SEPARATOR + args[2]),
+                remoteCommitHash);
+        Utils.writeContents(new File(headsFolder() + SEPARATOR + "remote_"
+                + args[1] + "_" + args[2]), remoteCommitHash);
     }
 
     /**
@@ -675,8 +751,11 @@ public class Gitlet {
      * @param args pull [remote name] [remote branch name].
      */
     public void doPull(String[] args) {
+        validateInit();
+        validateNumArgs(args, 3);
+        doFetch(new String[]{"fetch", args[1], args[2]});
+        doMerge(new String[]{"merge", "remote_" + args[1] + "_" + args[2]});
     }
-
     /**
      * Switches the .gitlet directory by modifying the path for GITLET_FOLDER.
      *

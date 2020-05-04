@@ -1,0 +1,38 @@
+# Testing pull
+> init
+<<<
+> add-remote origin ../remote2/.gitlet
+<<<
+> pull origin newBranc
+That remote does not have that branch.
+<<<
+> pull origin newBranch
+Current branch fast-forwarded.
+<<<
+> status
+=== Branches ===
+*master
+origin/newBranch
+
+=== Staged Files ===
+
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
+
+<<<
+> log
+===
+commit [a-f0-9]+
+Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d
+[a-z 0-9]+
+
+===
+commit [a-f0-9]+
+Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d
+initial commit
+
+<<<*
