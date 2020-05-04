@@ -87,30 +87,6 @@ public class Commit implements Serializable {
     }
 
     /**
-     * Returns a list of all the ancestors starting from the commit with the
-     * given hash.
-     *
-     * @param commitHash The commit hash starting from which the ancestors are
-     * found.
-     * @return The list of ancestors.
-     */
-    public static List<String> getAncestors(String commitHash) {
-        String[] currParent;
-        List<String> ancestors;
-
-        ancestors = new ArrayList<>();
-        currParent = Objects.requireNonNull(retrieveCommit(commitHash))
-                .getParents();
-
-        while (currParent != null) {
-            ancestors.add(currParent[0]);
-            currParent = Objects.requireNonNull(retrieveCommit(currParent[0]))
-                    .getParents();
-        }
-        return ancestors;
-    }
-
-    /**
      * Returns the commit which has the given hash.
      *
      * @param commitHash The commit hash.
@@ -152,6 +128,30 @@ public class Commit implements Serializable {
                 + " yyyy Z").format(commit.getTimestamp()));
         System.out.println(commit.getMessage());
         System.out.println();
+    }
+
+    /**
+     * Returns a list of all the ancestors starting from the commit with the
+     * given hash.
+     *
+     * @param commitHash The commit hash starting from which the ancestors are
+     * found.
+     * @return The list of ancestors.
+     */
+    public static List<String> getAncestors(String commitHash) {
+        String[] currParent;
+        List<String> ancestors;
+
+        ancestors = new ArrayList<>();
+        currParent = Objects.requireNonNull(retrieveCommit(commitHash))
+                .getParents();
+
+        while (currParent != null) {
+            ancestors.add(currParent[0]);
+            currParent = Objects.requireNonNull(retrieveCommit(currParent[0]))
+                    .getParents();
+        }
+        return ancestors;
     }
 
     /**

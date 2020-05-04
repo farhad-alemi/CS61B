@@ -386,10 +386,16 @@ public class Gitlet {
             checkoutBranch(args);
             break;
         case 3:
+            if (!args[1].equals("--")) {
+                Main.softFail("Incorrect operands.");
+            }
             checkoutFileFromCommit(new String[]{args[0], GitletUtils
                     .lastCommitHash(), args[1], args[2]});
             break;
         case 4:
+            if (!args[2].equals("--")) {
+                Main.softFail("Incorrect operands.");
+            }
             checkoutFileFromCommit(args);
             break;
         default:
@@ -560,16 +566,17 @@ public class Gitlet {
                         if (currFile.equals(splitFile)) {
                             checkoutFileFromCommit(new String[]{"checkout",
                                 givenCommitHash, "--", truncName});
-                            doAdd(new String[]{"add", truncName});
                         } else if (!currFile.equals(givenFile)) {
                             GitletUtils.handleConflict(currFile, givenFile,
                                     truncName);
                             hasConflict = true;
                         }
+                        doAdd(new String[]{"add", truncName});
                     }
                 } else if (!givenFile.equals(splitFile)) {
                     GitletUtils.handleConflict("", givenFile, truncName);
                     hasConflict = true;
+                    doAdd(new String[]{"add", truncName});
                 }
             } else if (!currBlob.containsKey(fileName)) {
                 checkoutFileFromCommit(new String[]{"checkout",
@@ -589,12 +596,14 @@ public class Gitlet {
                     } else {
                         GitletUtils.handleConflict(currFile, "", truncName);
                         hasConflict = true;
+                        doAdd(new String[]{"add", truncName});
                     }
                 }
             } else if (givenBlob.containsKey(fileName) && !currFile
                     .equals(givenFile)) {
                 GitletUtils.handleConflict(currFile, givenFile, truncName);
                 hasConflict = true;
+                doAdd(new String[]{"add", truncName});
             }
         }
         return hasConflict;

@@ -143,12 +143,8 @@ master
 === Removed Files ===
 
 === Modifications Not Staged For Commit ===
-conf1.txt (modified)
-conf2.txt (modified)
-conf3curr.txt (modified)
 
 === Untracked Files ===
-conf4given.txt
 
 <<<
 > log
@@ -200,7 +196,4 @@ initial commit
 <<<
 > commit rm1ver1
 <<<
-+ conf4given.txt conf4given.txt
-> merge br1
-There is an untracked file in the way; delete it, or add and commit it first.
-<<<
+
