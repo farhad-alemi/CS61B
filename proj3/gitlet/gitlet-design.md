@@ -77,8 +77,8 @@ commits is not specified.
 11. *void* doRmBranch(*String* name): Removes the branch with the given name.
 12. *void* doReset: Performs the git reset command.
 13. *void* doMerge: Merges the files to current branch from another branch.
-14. /***isInitialized: Returns true iff there is a .gitlet directory within the CWD***/
-15. /*** static boolean validateNumArgs(String[] args, int n) ***/
+14. *boolean* isInitialized: Returns true iff there is a .gitlet directory within the CWD.
+15. static *boolean* validateNumArgs(String[] args, int n): validates number of arguments.
 
 ## Algorithms
 ##### The Blob class:
